@@ -1,29 +1,31 @@
 (ns lipstick.routes
-    (:require-macros [secretary.core :refer [defroute]])
-    (:import goog.History)
-    (:require [secretary.core :as secretary]
-              [goog.events :as events]
-              [goog.history.EventType :as EventType]
-              [re-frame.core :as re-frame]))
-
-(defn hook-browser-navigation! []
-  (doto (History.)
-    (events/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token event))))
-    (.setEnabled true)))
-
-(defn app-routes []
-  (secretary/set-config! :prefix "#")
-  ;; --------------------
-  ;; define routes here
-  (defroute "/" []
-    (re-frame/dispatch [:set-active-panel :home-panel]))
-
-  (defroute "/about" []
-    (re-frame/dispatch [:set-active-panel :about-panel]))
+  (:require [taoensso.timbre :as log :include-macros true]
+            [re-frame.core :as rf]
+            [bidi.bidi :as bidi]
+            [pushy.core :as pushy]))
 
 
-  ;; --------------------
-  (hook-browser-navigation!))
+(log/debug "Registering routes")
+
+
+(def routes ["/" {""        :home-page
+                  "about"   :about-page
+                  "profile" :profile-page
+                  "privacy" :privacy-page}])
+
+
+(defn- parse-url [url]
+  (bidi/match-route routes url))
+
+
+(defn- dispatch-route [matched-route]
+  (let [{handler :handler} matched-route]
+    (rf/dispatch [:set-active-page handler])))
+
+
+(defn init-routes []
+  (log/debug "Initializing routes")
+  (pushy/start! (pushy/pushy dispatch-route parse-url)))
+
+
+(def url-for (partial bidi/path-for routes))

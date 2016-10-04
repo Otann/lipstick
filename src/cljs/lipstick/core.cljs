@@ -1,12 +1,12 @@
 (ns lipstick.core
-    (:require [reagent.core :as reagent]
-              [re-frame.core :as re-frame]
-              [devtools.core :as devtools]
-              [lipstick.handlers]
-              [lipstick.subs]
-              [lipstick.routes :as routes]
-              [lipstick.views :as views]
-              [lipstick.config :as config]))
+  (:require [reagent.core :as reagent]
+            [re-frame.core :as re-frame]
+            [devtools.core :as devtools]
+            [lipstick.routes :as routes]
+            [lipstick.views :as views]
+            [lipstick.config :as config]
+            [lipstick.handlers]
+            [lipstick.subscriptions]))
 
 
 (defn dev-setup []
@@ -15,12 +15,14 @@
     (println "dev mode")
     (devtools/install!)))
 
+
 (defn mount-root []
   (reagent/render [views/main-panel]
                   (.getElementById js/document "app")))
 
+
 (defn ^:export init []
-  (routes/app-routes)
   (re-frame/dispatch-sync [:initialize-db])
+  (routes/init-routes)
   (dev-setup)
   (mount-root))

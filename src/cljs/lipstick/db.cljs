@@ -1,4 +1,0 @@
-(ns lipstick.db)
-
-(def default-db
-  {:name "re-frame"})

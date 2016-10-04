@@ -1,36 +1,32 @@
 (ns lipstick.views
-    (:require [re-frame.core :as re-frame]))
+    (:require [re-frame.core :as rf]
+              [lipstick.routes :refer [url-for]]))
 
 
-;; home
-
-(defn home-panel []
-  (let [name (re-frame/subscribe [:name])]
+(defn home-page []
+  (let [name (rf/subscribe [:name])]
     (fn []
-      [:div (str "Hello from " @name ". This is the Home Page.")
-       [:div [:a {:href "#/about"} "go to About Page"]]])))
+      [:div (str "Hello from " @name ". "
+                 "This is the Home Page.")
+       [:div [:a {:href (url-for :about-page)}
+              "go to About Page"]]])))
 
 
-;; about
-
-(defn about-panel []
+(defn about-page []
   (fn []
     [:div "This is the About Page."
-     [:div [:a {:href "#/"} "go to Home Page"]]]))
+     [:div [:a {:href (url-for :home-page)}
+            "go to Home Page"]]]))
 
 
-;; main
-
-(defmulti panels identity)
-(defmethod panels :home-panel [] [home-panel])
-(defmethod panels :about-panel [] [about-panel])
-(defmethod panels :default [] [:div])
-
-(defn show-panel
+(defn show-page
   [panel-name]
-  [panels panel-name])
+  (case panel-name
+    :home-page  [home-page]
+    :about-page [about-page]
+    [:div "404?"]))
+
 
 (defn main-panel []
-  (let [active-panel (re-frame/subscribe [:active-panel])]
-    (fn []
-      [show-panel @active-panel])))
+  (let [active-page (rf/subscribe [:active-page])]
+    (fn [] [show-page @active-page])))

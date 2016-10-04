@@ -1,13 +1,13 @@
 (ns lipstick.views
-    (:require [re-frame.core :as rf]
-              [lipstick.routes :refer [url-for]]))
+  (:require [re-frame.core :as rf]
+            [lipstick.routes :refer [url-for]]
+            [taoensso.timbre :as log]))
 
 
 (defn home-page []
-  (let [name (rf/subscribe [:name])]
+  (let [spec (rf/subscribe [:spec])]
     (fn []
-      [:div (str "Hello from " @name ". "
-                 "This is the Home Page.")
+      [:div (str "This is the Home Page.")
        [:div [:a {:href (url-for :about-page)}
               "go to About Page"]]])))
 
@@ -20,11 +20,12 @@
 
 
 (defn show-page
-  [panel-name]
-  (case panel-name
+  [page-name]
+  (case page-name
+    :root       [home-page]
     :home-page  [home-page]
     :about-page [about-page]
-    [:div "404?"]))
+    [:div (str "404? - " page-name)]))
 
 
 (defn main-panel []

@@ -1,31 +1,47 @@
 (ns lipstick.routes
-  (:require [taoensso.timbre :as log :include-macros true]
+  (:import goog.History)
+  (:require-macros [secretary.core :refer [defroute]]
+                   [taoensso.timbre :as log])
+  (:require [goog.events :as events]
+            [goog.history.EventType :as EventType]
             [re-frame.core :as rf]
-            [bidi.bidi :as bidi]
-            [pushy.core :as pushy]))
+            [clojure.string :refer [blank? starts-with?]]
+            [clojure.test :refer [function?]]
+            [bidi.bidi :as bidi]))
 
 
-(log/debug "Registering routes")
+(def routes ["/#/" {""      :home-page
+                    "about" :about-page}])
 
 
-(def routes ["/" {""        :home-page
-                  "about"   :about-page
-                  "profile" :profile-page
-                  "privacy" :privacy-page}])
+(defn dispatch-path [dispatch-fn path]
+  (let [handler (->> path
+                     (bidi/match-route routes)
+                     (:handler))]
+    (dispatch-fn [:set-active-page handler])))
 
 
-(defn- parse-url [url]
-  (bidi/match-route routes url))
+(defn navigate-hook [event]
+  (let [raw-path (-> event .-token)
+        path (if-not (blank? raw-path)
+               (str "/#" raw-path) "/#/")]
+    (dispatch-path rf/dispatch path)))
 
 
-(defn- dispatch-route [matched-route]
-  (let [{handler :handler} matched-route]
-    (rf/dispatch [:set-active-page handler])))
+(defn navigate-sync [window]
+  (let [raw-path (-> window .-location .-hash)
+        path (if-not (blank? raw-path)
+               (str "/" raw-path) "/#/")]
+    (dispatch-path rf/dispatch-sync path)))
 
 
 (defn init-routes []
-  (log/debug "Initializing routes")
-  (pushy/start! (pushy/pushy dispatch-route parse-url)))
+  (navigate-sync js/window)
+
+  (log/debug "Hooking into browser navigation")
+  (doto (History.)
+    (events/listen EventType/NAVIGATE navigate-hook)
+    (.setEnabled true)))
 
 
 (def url-for (partial bidi/path-for routes))

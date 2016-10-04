@@ -11,7 +11,7 @@
   (.safeLoad js/jsyaml string))
 
 
-(defn init-async []
+(defn init-spec []
   (go (let [response (<! (http/get "/swagger.yaml"))
             swagger (-> response
                         :body

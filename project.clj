@@ -8,7 +8,7 @@
                  [reagent "0.6.0"]                          ; rendering
                  [re-frame "0.8.0"]                         ; data-flow
                  [bidi "1.20.3"]                            ; frontend routing
-                 [kibu/pushy "0.3.2"]                       ; HTML5 history
+                 [secretary "1.2.3"]                        ; routing
 
                  [cljs-http "0.1.41"]                       ; http async client
                  [cljsjs/js-yaml "3.3.1-0"]                 ; yaml parser

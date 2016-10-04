@@ -5,6 +5,7 @@
             [lipstick.routes :as routes]
             [lipstick.views :as views]
             [lipstick.config :as config]
+            [lipstick.swagger :as swagger]
             [lipstick.handlers]
             [lipstick.subscriptions]))
 
@@ -13,7 +14,7 @@
   (when config/debug?
     (enable-console-print!)
     (println "dev mode")
-    (devtools/install!)))
+    (devtools/install! [:formatters :hints])))
 
 
 (defn mount-root []
@@ -23,6 +24,7 @@
 
 (defn ^:export init []
   (re-frame/dispatch-sync [:initialize-db])
+  (swagger/init-async)
   (routes/init-routes)
   (dev-setup)
   (mount-root))

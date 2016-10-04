@@ -1,15 +1,21 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
             [lipstick.routes :refer [url-for]]
-            [taoensso.timbre :as log]))
+            [lipstick.components.tree-view :refer [tree]]))
 
 
 (defn home-page []
-  (let [spec (rf/subscribe [:spec])]
+  (let [spec (rf/subscribe [:spec])
+        pet (-> @spec :definitions :Pet)]
     (fn []
       [:div (str "This is the Home Page.")
        [:div [:a {:href (url-for :about-page)}
-              "go to About Page"]]])))
+              "go to About Page"]]
+       [:code (str pet)]
+       [tree "foo" ^{:key "bar"} [:div
+                                  [:h1 "Header"]
+                                  [tree "bar" ^{:key "baz"} [tree "baz"]]]]
+       ])))
 
 
 (defn about-page []

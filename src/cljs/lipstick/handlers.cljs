@@ -1,6 +1,7 @@
 (ns lipstick.handlers
   (:require [re-frame.core :as rf]
-            [lipstick.database :as db]))
+            [lipstick.database :as db]
+            [taoensso.timbre :as log]))
 
 
 (rf/reg-event-db :initialize-db

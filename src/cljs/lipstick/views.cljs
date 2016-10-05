@@ -12,10 +12,11 @@
        [:div [:a {:href (url-for :about-page)}
               "go to About Page"]]
        [:code (str pet)]
-       [tree "foo" ^{:key "bar"} [:div
-                                  [:h1 "Header"]
-                                  [tree "bar" ^{:key "baz"} [tree "baz"]]]]
-       ])))
+       [tree "foo"
+        [:div
+         [:h1 "Header"]
+         [tree "bar"
+          [tree "baz"]]]]])))
 
 
 (defn about-page []

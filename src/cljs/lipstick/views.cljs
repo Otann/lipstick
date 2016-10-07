@@ -1,21 +1,29 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
+            [reagent.ratom :as r]
             [lipstick.routes :refer [url-for]]
             [lipstick.components.schema-view :refer [schema field]]
+            [lipstick.utils :refer [with-keys]]
             [lipstick.mock :as m]))
 
 (defn home-page []
-  (let [spec (rf/subscribe [:spec])]
+  (let [spec (rf/subscribe [:spec])
+        schemas (r/reaction (:schemas @spec))]
     (fn []
       [:div
        [:h1 "This is an example of collapsible schemas"]
        [:p [:a {:href (url-for :about-page)} "About Page"]]
 
+       [:h2 "Definitions from /swagger.yaml"]
+       (doall (for [data @schemas] ^{:key (:name data)} [schema data]))
+
+       [:h2 "Examples"]
+
        [:h3 "Object Example"]
        [schema m/Person]
 
        [:h3 "Array Example"]
-       [schema {:name "Siblings" :type :array :items m/Sibling}]
+       [schema {:name "Siblings" :type :array :item-schema m/Sibling}]
 
        [:h3 "Enum Example"]
        [schema m/Gender]
@@ -23,10 +31,7 @@
        [:h3 "Primitive Examples"]
        [schema m/String]
        [schema m/Int]
-       [schema :int64]
-
-       [:h3 "p.s. This project can also parse yaml!"]
-       [:code (str @spec)]])))
+       [schema :int64]])))
 
 
 (defn about-page []

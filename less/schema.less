@@ -16,9 +16,6 @@
 .tree-view_children, .field {
   margin-left: 14px;
 }
-.tree-view_children {
-  //border-left: 1px solid #eee;
-}
 
 .tree-view_children-collapsed {
   height: 0;
@@ -33,13 +30,16 @@
   -ms-user-select: none;
   user-select: none;
 }
+.tree-view.no-arrow .tree-view_arrow {
+  display: none;
+}
 
 .tree-view_arrow:after {
   content: '+';
 }
 
 .tree-view_arrow-collapsed:after {
-  content: "-";
+  content: '-';
 }
 
 .field-label {

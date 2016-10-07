@@ -3,51 +3,46 @@
 ;; Schema = Definition - named set of requirements (definition?)
 ;; Type - type of field
 
-(def Int {:name "int"
-          :type :primitive})
-
-(def String {:name "string"
-             :type :primitive})
-
 (def Gender {:name "Gender"
              :type :enum
-             :item-schema :string
+             :item-type "string"
              :values ["Male", "Female"]})
 
+(def Trait {:type :enum
+            :item-type "int"
+            :values [1, 2, 3, 4, 5]})
 
 (def SiblingEnum {:name "SiblingType"
                   :type :enum
-                  :item-schema :string
+                  :item-type "string"
                   :values ["Sister" "Brother"]})
 
 
 (def Address {:name "Address"
               :type :object
-              :properties {"city" {:schema String}
-                           "street" {:schema String}
-                           "zip" {:schema String}}})
+              :properties {"city" {:schema "string"}
+                           "street" {:schema "string"}
+                           "zip" {:schema "string"}
+                           "location" {:schema {:name "Point"
+                                                :type :array
+                                                :item-schema {:type :array
+                                                              :item-schema {:type "int"}}}}}})
 
 (def Sibling {:name "Sibling"
               :type :object
-              :properties {"first_name" {:schema String}
-                           "last_name" {:schema String}
+              :properties {"first_name" {:schema "string"
+                                         :description "Name given on birth"}
+                           "last_name" {:schema "string"
+                                        :description "Name inherited from parents"}
                            "relation" {:schema SiblingEnum}}})
 
 
 (def Person {:name "Person"
              :type :object
              :properties {"first_name" {:schema "string"}
-                          "last_name" {:schema String}
+                          "last_name" {:schema "string"}
+                          "groups" {:schema {:type :array :item-schema Trait}}
                           "gender" {:schema Gender :optional true}
                           "age" {:schema "int64"}
                           "home" {:schema Address}
-                          "sibs" {:schema {:type :array :item-schema Sibling} :optional true}}})
-
-
-(def SwaggerSample {:ErrorModel {:type :object
-                                 :properties {"message" {:type :string
-                                                         :required true}
-                                              "code" {:type :integer
-                                                      :required true
-                                                      :minimum 100
-                                                      :maximum 600}}}})
+                          "sibs" {:schema {:type :array :item-schema Sibling}}}})

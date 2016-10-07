@@ -31,7 +31,9 @@
   user-select: none;
 }
 .tree-view.no-arrow .tree-view_arrow {
-  display: none;
+  &:after {
+    content: '';
+  }
 }
 
 .tree-view_arrow:after {
@@ -61,4 +63,10 @@
 .schema-name {
   color: #733595;
   font-weight: bold;
+}
+
+.field {
+  .description {
+    color: #96cb8d;
+  }
 }

@@ -26,12 +26,7 @@
        [schema {:name "Siblings" :type :array :item-schema m/Sibling}]
 
        [:h3 "Enum Example"]
-       [schema m/Gender]
-
-       [:h3 "Primitive Examples"]
-       [schema m/String]
-       [schema m/Int]
-       [schema :int64]])))
+       [schema m/Gender]])))
 
 
 (defn about-page []

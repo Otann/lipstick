@@ -4,18 +4,24 @@
             [lipstick.utils :refer [with-keys]]))
 
 
-(def ellipsis (gstring/unescapeEntities "&hellip;"))
+(def ellipsis
+  "A constant to use to indicate collapsed state"
+  (gstring/unescapeEntities "&hellip;"))
 
 
-(defn collapsible []
-  (let [collapsed (r/atom false)]
-    (fn [open-label close-label & children]
+(defn collapsible-view
+  "Type2 Reagent component that can collapse
+  it's content between two labels"
+  []
+  (let [collapsed (r/atom true)]
+    (fn [open-label close-label children]
       ; todo: consider using .no-arrow
       [:div.tree-view
        [:div.tree-view_item
         {:on-click #(swap! collapsed not)}
-        [:div.tree-view_arrow
-         {:class (when @collapsed "tree-view_arrow-collapsed")}]
+        (when (not-empty children)
+          [:div.tree-view_arrow
+           {:class (when @collapsed "tree-view_arrow-collapsed")}])
         [:span.open-label open-label]
         (when @collapsed [:span.close-label ellipsis close-label])]
        [:div.tree-view_children
@@ -24,52 +30,96 @@
         [:div close-label]]])))
 
 
-(defn field [field-name value]
-  (let [{:keys [schema optional]} value
-        opt-label (when optional "(Optional) ")
-        opt-class (when optional "optional")]
-    (case (:type schema)
+(def open-bracket {:object "{"
+                   :array "["
+                   :enum "("})
 
-      :object [collapsible
-               [:span.field-label {:class opt-class}
-                [:span.field-name field-name] ": " opt-label
-                [:span.schema-name (:name schema)] " {"]
-               [:span.field-label {:class opt-class} "}"]
-               (->> schema :properties (map (fn [[k v]] [field k v])) with-keys)]
+(def close-bracket {:object "}"
+                    :array "]"
+                    :enum ")"})
 
-      :array [collapsible
-              [:span.field-label {:class opt-class}
-               [:span.field-name field-name] ": " opt-label
-               "Array[" [:span.schema-name (-> schema :item-schema :name)] "{"]
-              [:span.field-label {:class opt-class} "}]"]
-              (->> schema :item-schema :properties (map (fn [[k v]] [field k v])) with-keys)]
 
-      :enum [collapsible
-             [:span.field-label {:class opt-class}
-              [:span.field-name field-name] ": " opt-label
-              (:item-schema schema) " " [:span.schema-name (:name schema)]  "("]
-             [:span.field-label {:class opt-class} ")"]
-             (->> schema :values (map #(do [:div.field %])) with-keys)]
+(defn schema-type [schema]
+  (if (= :enum (:type schema))
+    (:item-type schema)
+    (:type schema)))
 
-      [:div.field [:span.field-label {:class opt-class}
-                   [:span.field-name field-name]
-                   [:span ": " opt-label (or (-> schema :name)
-                                             (str schema))]]])))
+(defn schema-name [schema]
+  (if-let [name (:name schema)]
+    [:span (schema-type schema) " " [:span.schema-name name]]
+    (or (schema-type schema)
+        (str schema))))
+
+
+(defn open-brackets [{type :type :as schema}]
+  (if-not (= type :array)
+    (open-bracket type)
+    [:span (open-bracket type)
+     (schema-name (:item-schema schema))
+     (open-brackets (-> schema :item-schema))]))
+
+
+(defn close-brackets [{type :type :as schema}]
+  (if-not (= type :array)
+    (close-bracket type)
+    [:span
+     (close-brackets (-> schema :item-schema))
+     (close-bracket type)]))
+
+
+(defn field-labels [field-name properties]
+  (if-not properties
+    [[:span.field-name field-name] nil]
+    (let [schema (:schema properties)
+          optional (:optional properties)]
+      [[:span.field-label {:class (when optional "optional")}
+        [:span.field-name field-name] ": "
+        (when optional "(Optional) ")
+        (schema-name schema)
+        (open-brackets schema)]
+       (close-brackets schema)])))
+
+
+(defn field-children [schema]
+  (case (:type schema)
+    :object (->> schema
+                 :properties
+                 (map (fn [[k v]] [k v])))
+
+    :enum (->> schema
+               :values
+               (map #(do [% nil])))
+
+    :array (field-children (-> schema :item-schema))
+
+    nil))
+
+(defn field [field-name properties]
+  (let [[main-label tail-label] (field-labels field-name properties)
+        schema (:schema properties)
+        children (field-children schema)]
+    (if (seq children)
+      [collapsible-view main-label tail-label
+       (->> children
+            (map (fn [[k v]] [field k v]))
+            (with-keys))]
+
+      [:div.field main-label tail-label])))
 
 (defn schema [schema]
   (let [schema-name (:name schema)]
     (case (:type schema)
-      :object [collapsible
+      :object [collapsible-view
                [:span [:span.schema-name schema-name] " {"]
                [:span "}"]
                (->> schema :properties (map (fn [[k v]] [field k v])) with-keys)]
 
-      :array [collapsible
+      :array [collapsible-view
               [:span [:span.schema-name schema-name] " [" [:span.schema-name (-> schema :item-schema :name)] "{"]
               [:span "}]"]
               (->> schema :item-schema :properties (map (fn [[k v]] [field k v])) with-keys)]
 
-      :enum [collapsible
+      :enum [collapsible-view
              [:span [:span.schema-name schema-name] " ("]
              [:span ")"]
              (->> schema :values (map #(do [:div.field %])) with-keys)]

@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Lipstick by Otann</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Lipstick</h1>
+        <p>Basic makeup for your swagger specs</p>
+
+        <p class="view"><a href="https://github.com/Otann/lipstick">View the Project on GitHub <small>Otann/lipstick</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Otann/lipstick/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Otann/lipstick/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Otann/lipstick">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="lipstick-lipstick" class="anchor" href="#lipstick-lipstick" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>lipstick <g-emoji alias="lipstick" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f484.png" ios-version="6.0">💄</g-emoji>
+</h1>
+
+<p>This projects aims to build basic and clean visualization of
+swagger definitions.</p>
+
+<p>Current progress is shown at <a href="http://otann.github.com/lipstick">http://otann.github.com/lipstick</a></p>
+
+<p>Objective:</p>
+
+<ul>
+<li>single js+html file</li>
+<li>copy-pastable representation of data structures</li>
+<li>outline with endpoints</li>
+<li>"try" button with sane output (status, headers, explore body)</li>
+<li>auth support (bearer module)</li>
+<li>include examples for friboo, play, spring-boot</li>
+</ul>
+
+<p>Inner projects:</p>
+
+<ul>
+<li>Data Explorer with collapsible structure</li>
+<li>Visual HTTP client</li>
+<li>Bearer configuration</li>
+</ul>
+
+<p>Future scope:</p>
+
+<ul>
+<li>search across document</li>
+<li>API aggregator (dynamic sources, search?)</li>
+<li>other auth options (declare intention to accept PR)</li>
+</ul>
+
+<p>Out of scope decisions:</p>
+
+<ul>
+<li>configuration (everything should be in /swagger.yaml)</li>
+</ul>
+
+<h2>
+<a id="development-mode" class="anchor" href="#development-mode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development Mode</h2>
+
+<h3>
+<a id="compile-css" class="anchor" href="#compile-css" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compile css:</h3>
+
+<p>Compile css file once.</p>
+
+<pre><code>lein less once
+</code></pre>
+
+<p>Automatically recompile css file on change.</p>
+
+<pre><code>lein less auto
+</code></pre>
+
+<h3>
+<a id="run-application" class="anchor" href="#run-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run application:</h3>
+
+<pre><code>lein clean
+lein figwheel dev
+</code></pre>
+
+<p>Figwheel will automatically push cljs changes to the browser.
+Wait a bit, then browse to <a href="http://localhost:3449">http://localhost:3449</a>.</p>
+
+<h2>
+<a id="production-build" class="anchor" href="#production-build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Production Build</h2>
+
+<p>To compile clojurescript to javascript:</p>
+
+<pre><code>lein clean
+lein cljsbuild once min
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Otann">Otann</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

@@ -1,22 +1,32 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
             [lipstick.routes :refer [url-for]]
-            [lipstick.components.tree-view :refer [tree]]))
-
+            [lipstick.components.schema-view :refer [schema field]]
+            [lipstick.mock :as m]))
 
 (defn home-page []
-  (let [spec (rf/subscribe [:spec])
-        pet (-> @spec :definitions :Pet)]
+  (let [spec (rf/subscribe [:spec])]
     (fn []
-      [:div (str "This is the Home Page.")
-       [:div [:a {:href (url-for :about-page)}
-              "go to About Page"]]
-       [:code (str pet)]
-       [tree "foo"
-        [:div
-         [:h1 "Header"]
-         [tree "bar"
-          [tree "baz"]]]]])))
+      [:div
+       [:h1 "This is an example of collapsible schemas"]
+       [:p [:a {:href (url-for :about-page)} "About Page"]]
+
+       [:h3 "Object Example"]
+       [schema m/Person]
+
+       [:h3 "Array Example"]
+       [schema {:name "Siblings" :type :array :items m/Sibling}]
+
+       [:h3 "Enum Example"]
+       [schema m/Gender]
+
+       [:h3 "Primitive Examples"]
+       [schema m/String]
+       [schema m/Int]
+       [schema :int64]
+
+       [:h3 "p.s. This project can also parse yaml!"]
+       [:code (str @spec)]])))
 
 
 (defn about-page []

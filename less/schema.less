@@ -1,0 +1,64 @@
+/* the tree node's style */
+.tree-view {
+  overflow-y: hidden;
+  font-size: 14px;
+  font-family: 'Fira Mono', monospace;
+  color: #444;
+}
+
+.tree-view_item {
+  cursor: pointer;
+  /* immediate child of .tree-view, for styling convenience */
+}
+
+
+/* style for the children nodes container */
+.tree-view_children, .field {
+  margin-left: 14px;
+}
+.tree-view_children {
+  //border-left: 1px solid #eee;
+}
+
+.tree-view_children-collapsed {
+  height: 0;
+}
+
+.tree-view_arrow {
+  cursor: pointer;
+  margin-right: 6px;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tree-view_arrow:after {
+  content: '+';
+}
+
+.tree-view_arrow-collapsed:after {
+  content: "-";
+}
+
+.field-label {
+  //TODO: pick and apply color-scheme
+  &.optional, &.optional .field-name {
+    color: #5f7892;
+  }
+
+  .field-name {
+    color: #3e3ee2;
+  }
+
+  &.unknown {
+    color: red;
+    font-weight: bold;
+  }
+}
+
+.schema-name {
+  color: #733595;
+  font-weight: bold;
+}

@@ -3,5 +3,5 @@
 (defn with-keys
   "Adds :key metadata to each child in the list"
   [children]
-  (map-indexed #(with-meta %2 {:key %1})
+  (map-indexed #(if (string? %2) %2 (with-meta %2 {:key %1}))
                children))

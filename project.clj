@@ -15,21 +15,21 @@
                  ]
 
   :plugins [[lein-cljsbuild "1.1.4"]
+            [lein-figwheel "0.5.7"]
             [lein-less "1.7.5"]]
 
   :min-lein-version "2.5.3"
 
   :source-paths ["src/clj"]
 
-  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
+  :clean-targets ^{:protect false} ["resources/public/js" "target"]
 
   :less {:source-paths ["less"]
          :target-path  "resources/public/css"}
 
-  :profiles
-  {:dev {:dependencies []
-         :figwheel     {:css-dirs ["resources/public/css"]}
-         :plugins      [[lein-figwheel "0.5.7"]]}}
+  :npm {:dependencies [[primer-css "4.2.0"]]}
+
+  :figwheel {:css-dirs ["resources/public/css"]}
 
   :cljsbuild
   {:builds
@@ -37,15 +37,15 @@
      :source-paths ["src/cljs"]
      :figwheel     {:on-jsload "lipstick.core/mount-root"}
      :compiler     {:main       lipstick.core
-                    :output-to  "resources/public/js/compiled/app.js"
-                    :output-dir "resources/public/js/compiled/out"
-                    :asset-path "js/compiled/out"
+                    :output-to  "resources/public/js/app.js"
+                    :output-dir "resources/public/js/out"
+                    :asset-path "js/out"
                     :closure-defines {goog.DEBUG true}
                     :source-map-timestamp true}}
     {:id           "min"
      :source-paths ["src/cljs"]
      :compiler     {:main            lipstick.core
-                    :output-to       "resources/public/js/compiled/app.js"
+                    :output-to       "resources/public/js/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}
                     :pretty-print    false}}]})

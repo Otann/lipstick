@@ -10,7 +10,7 @@
 
 (def Trait {:type :enum
             :item-type "int"
-            :values [1, 2, 3, 4, 5]})
+            :values [1, 2, 3]})
 
 (def SiblingEnum {:name "SiblingType"
                   :type :enum

@@ -1,24 +1,21 @@
 @import 'https://code.cdn.mozilla.net/fonts/fira.css';
 /* the tree node's style */
-.tree-view {
+.collapsible {
   overflow-y: hidden;
-  font-size: 14px;
-  font-family: 'Fira Mono', monospace;
-  color: #444;
 }
-.tree-view_item {
+.collapsible-view_item {
   cursor: pointer;
-  /* immediate child of .tree-view, for styling convenience */
+  /* immediate child of .collapsible-view, for styling convenience */
 }
 /* style for the children nodes container */
-.tree-view_children,
+.collapsible-view_children,
 .field {
   margin-left: 14px;
 }
-.tree-view_children-collapsed {
+.collapsible-view_children-collapsed {
   height: 0;
 }
-.tree-view_arrow {
+.collapsible-view_arrow {
   cursor: pointer;
   margin-right: 6px;
   display: inline-block;
@@ -27,11 +24,19 @@
   -ms-user-select: none;
   user-select: none;
 }
-.tree-view_arrow:after {
+.collapsible-view_arrow:after {
+  content: '-';
+}
+.collapsible-view_arrow-collapsed:after {
   content: '+';
 }
-.tree-view_arrow-collapsed:after {
-  content: "-";
+.collapsible.no-arrow > .collapsible-view_item > .collapsible-view_arrow {
+  display: none;
+}
+.schema {
+  font-size: 14px;
+  font-family: 'Fira Mono', monospace;
+  color: #444;
 }
 .field-label.optional,
 .field-label.optional .field-name {
@@ -48,7 +53,140 @@
   color: #733595;
   font-weight: bold;
 }
+.field .description {
+  color: #96cb8d;
+}
+.tags {
+  margin-bottom: .5em;
+}
+.tag .tag-label {
+  font-size: 1.35em;
+  display: inline-block;
+  margin-bottom: .3em;
+}
+.tag .tag-label .name {
+  font-weight: bold;
+}
+.tag .tag-label .description {
+  color: #555;
+}
+.tag .collapsible-view_arrow {
+  font-family: 'Fira Mono', monospace;
+}
+.tag > .collapsible-view_item > .collapsible-view_arrow {
+  font-size: 1.35em;
+  font-weight: bold;
+}
+.path {
+  margin-bottom: .5em;
+}
+.path .method {
+  color: white;
+  font-size: .8em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  display: inline-block;
+  width: 4.5em;
+  margin: .2em;
+  padding: .2em;
+  border-radius: .3em;
+}
+.path .method.put {
+  background-color: #c9510c;
+}
+.path .method.get {
+  background-color: #4078c0;
+}
+.path .method.post {
+  background-color: #6cc644;
+}
+.path .method.head {
+  background-color: #6e5494;
+}
+.path .method.delete {
+  background-color: #c9510c;
+}
+.path .path-name {
+  font-family: 'Fira Mono', monospace;
+}
+.path .content {
+  margin-left: 4.5em;
+  margin-bottom: 1.5em;
+  margin-top: .5em;
+}
+.path .content .description {
+  font-size: .9em;
+  color: #333333;
+}
+.path .parameters thead {
+  color: #666;
+  font-size: .9em;
+}
+.path .parameters td {
+  padding-right: 1em;
+}
+.path .parameters .title {
+  color: #666;
+  font-weight: 600;
+  margin-top: .5em;
+  border-bottom: 1px solid #f5f5f5;
+}
+.path .parameters .location {
+  text-align: center;
+}
+.path .parameters .location .octicon {
+  font-size: 1.3em;
+}
+.path .parameters .location .label {
+  display: inline-block;
+  color: #444;
+  background-color: #eee;
+  padding: 1px 5px;
+  border-radius: .2em;
+  font-size: .7em;
+  font-weight: bold;
+}
+.path .parameters .location .label .tip {
+  width: 7em;
+  font-weight: normal;
+}
+.path .parameters .required {
+  font-weight: bold;
+  font-size: .8em;
+  color: #c9510c;
+}
+.definitions .title {
+  margin-bottom: .5em;
+}
+/* Tooltip container */
+.tooltipped {
+  position: relative;
+  display: inline-block;
+}
+/* Tooltip text */
+.tooltipped .tip {
+  display: inline-block;
+  opacity: 0;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  /* Disable selection*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipped:hover .tip {
+  transition: opacity 1s ease;
+  opacity: 100;
+  top: 0px;
+  right: 110%;
+}
 body {
+  padding: 1em;
+  font-size: 16px;
   font-family: 'Fira Sans', sans-serif;
 }
 code {

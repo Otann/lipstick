@@ -1,0 +1,29 @@
+/* Tooltip container */
+.tooltipped {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltipped .tip {
+  display: inline-block;
+  opacity: 0;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+
+  /* Disable selection*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipped:hover .tip {
+  transition: opacity 1s ease;
+  opacity: 100;
+  top: 0px;
+  right: 110%;
+}

@@ -1,14 +1,133 @@
-.tag-label {
-  font-size: 1.8em;
-  .name {
-    font-weight: bold;
+@import "common";
+
+.tags {
+  margin-bottom: .5em;
+}
+.tag {
+  @tag-font-size: 1.35em;
+
+  .tag-label {
+    font-size: @tag-font-size;
+
+    display: inline-block;
+    margin-bottom: .3em;
+
+    .name {
+      font-weight: bold;
+    }
+    .description {
+      color: #555;
+    }
   }
-  .description {
-    color: gray;
+
+  & .collapsible-view_arrow {
+    font-family: @monospaced;
+  }
+  & > .collapsible-view_item > .collapsible-view_arrow {
+    font-size: @tag-font-size;
+    font-weight: bold;
   }
 }
 
-.tag > .collapsible-view_item > .collapsible-view_arrow {
-  font-size: 1.8em;
-  font-weight: bold;
+.path {
+  @method-width: 4.5em;
+
+  margin-bottom: .5em;
+
+  .method {
+    color: white;
+    font-size: .8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    display: inline-block;
+    width: @method-width;
+    margin: .2em;
+    padding: .2em;
+    border-radius: .3em;
+
+    &.put {  background-color: @gh-orange;  }
+    &.get {  background-color: @gh-blue;  }
+    &.post {  background-color: @gh-green;  }
+    &.head {  background-color: @gh-purple;  }
+    &.delete {  background-color: @gh-red;  }
+  }
+
+  .path-name {
+    font-family: @monospaced;
+    //font-weight: bold;
+    //color: #444;
+  }
+
+  .content {
+    margin-left: @method-width;
+    margin-bottom: 1.5em;
+    margin-top: .5em;
+
+    .description {
+      font-size: .9em;
+      color: @gh-gray-dark;
+    }
+  }
+
+  .parameters {
+    table {
+      //border-spacing: .6em;
+    }
+    thead {
+      color: #666;
+      font-size: .9em;
+      //font-weight: bold;
+    }
+    td {
+      padding-right: 1em;
+    }
+
+    .title {
+      color: #666;
+      font-weight: 600;
+      margin-top: .5em;
+      border-bottom: 1px solid @gh-gray;
+    }
+
+    .location {
+      text-align: center;
+
+      .octicon {
+        font-size: 1.3em;
+      }
+
+      .label {
+        display: inline-block;
+        color: #444;
+        background-color: #eee;
+
+        padding: 1px 5px;
+        //line-height: 1;
+
+        border-radius: .2em;
+        font-size: .7em;
+        font-weight: bold;
+
+        .tip {
+          width: 7em;
+          font-weight: normal;
+        }
+      }
+    }
+
+    .required {
+      font-weight: bold;
+      font-size: .8em;
+      color: @gh-red;
+    }
+
+
+  }
+}
+
+.definitions {
+  .title {
+    margin-bottom: .5em;
+  }
 }

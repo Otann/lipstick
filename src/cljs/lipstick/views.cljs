@@ -1,24 +1,27 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
+            [reagent.ratom :as r]
             [lipstick.routes :refer [url-for]]
             [lipstick.utils :refer [with-keys]]
             [lipstick.components.spec :refer [swagger-spec]]
-            [lipstick.mock :as m]))
+            [lipstick.mock :as m]
+            [lipstick.swagger :as swag]))
 
 (defn home-page []
   (let [spec-data (rf/subscribe [:spec])]
     (fn []
       [:div.container
-       [:p [:a {:href (url-for :about-page)} "About Page"]]
+       [:p [:a {:href (url-for :about-page)} "More mocked examples"]]
        [swagger-spec @spec-data]])))
 
 
 (defn about-page []
-  (let [schemas (rf/subscribe [:schemas])]
+  (let [spec-data (rf/subscribe [:spec])
+        schemas (r/reaction (map swag/definition->schema
+                                 (get @spec-data "definitions")))]
     (fn []
       [:div
-       [:p [:a {:href (url-for :home-page)} "go to Home Page"]]
-       [:h1 "This is the About Page."]
+       [:p [:a {:href (url-for :home-page)} "back to main page"]]
        [m/example @schemas]])))
 
 (defn show-page

@@ -51,10 +51,12 @@
 
 (defn example [schemas]
   [:div
-   [:h1 "This is an example of collapsible schemas"]
+   [:h1 "This is an visualization of collapsible schemas"]
 
    [:h2 "Definitions from /swagger.yaml"]
-   (doall (for [data schemas] ^{:key (:name data)} [schema data]))
+   (doall (for [schema-data schemas]
+            ^{:key (:name schema-data)}
+            [schema schema-data]))
 
    [:h2 "Examples"]
 

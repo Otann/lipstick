@@ -35,17 +35,10 @@
 
 
 (defn init-spec []
-  (go (let [response (<! (http/get "/swagger.yaml"))
+  (go (let [response (<! (http/get "swagger.yaml"))
             spec (-> response
                         :body
                         parse-yaml
                         js->clj)
-            definitions (get spec "definitions")
-            schemas (map definition->schema definitions)]
-        (js/setTimeout #(do
-                         (log/debug "Definitions:" (get spec "definitions"))
-                         (log/debug "Schemas:" schemas))
-                       1)
-        (log/debug "Loaded swagger spec:" spec)
-        (rf/dispatch [:set-schemas] schemas)
+            definitions (get spec "definitions")]
         (rf/dispatch [:set-swager-spec spec]))))

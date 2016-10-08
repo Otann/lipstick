@@ -3,7 +3,7 @@
 This projects aims to build basic and clean visualization of
 swagger definitions.
 
-Current progress is shown at [http://otann.github.com/lipstick](http://otann.github.com/lipstick)
+Current progress is shown at [http://otann.github.com/lipstick/progress](http://otann.github.com/lipstick/progress)
 
 Objective:
 - single js+html file

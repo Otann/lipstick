@@ -1,19 +1,54 @@
 (ns lipstick.components.spec
   (:require [markdown.core :refer [md->html]]
-            [taoensso.timbre :as log]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.utils :refer [with-keys]]))
+            [lipstick.utils :refer [with-keys]]
+            [lipstick.swagger :as swag]
+            [lipstick.components.schema :refer [schema]]))
 
 (defn markdown->div [data]
   [:div {:dangerouslySetInnerHTML
          {:__html (-> data md->html)}}])
 
+(def location-icons {"path"     "/../"
+                     "formData" "form"
+                     "query"    "?&="
+                     "body"     "{...}"})
+
+(defn in-icons [value]
+  [:span.label.tooltipped
+   (or (location-icons value) value)
+   [:span.tip "location: " value]])
+
+(defn parameters [parameters]
+  [:div.parameters
+   [:div.title "Parameters"]
+   [:table
+    [:tbody
+     (for [{:strs [name in required] :as parameter} parameters]
+       ^{:key name}
+       [:tr.parameter
+        [:td.location (in-icons in)]
+        [:td.name name]
+        [:td.required
+         (when required "required")]
+        [:td.format
+         (when-let [schema-data (parameter "schema")]
+           (str schema-data))
+         (when-let [type (parameter "type")]
+           [:code type])]])]]])
+
 (defn path [name method spec]
-  [collapsible {:collapsed true}
-   [:span.path-title
-    [:span.method method] " "
-    [:span.path-name name]]
-   [:pre (str spec)]])
+  (let [params (get spec "parameters")]
+    [collapsible {:collapsed true
+                  :class "path"}
+     [:span.path-title
+      [:code.method {:class method} method] " "
+      [:span.path-name name]]
+     [:div.content
+      [:div.summary (get spec "summary")]
+      [:div.description (get spec "description")]
+      (when params
+        [parameters params])]]))
 
 (defn array-contains? [arr val]
   (some #(= val %) arr))
@@ -51,14 +86,16 @@
   (let [title (get-in spec-data ["info" "title"])
         description (get-in spec-data ["info" "description"])
         tags (get spec-data "tags")
-        all-paths (get spec-data "paths")]
+        all-paths (get spec-data "paths")
+        definitions (get spec-data "definitions")
+        schemas (map swag/definition->schema definitions)]
     [:div.spec
-     [:h1 title]
+     [:h1 "\uD83D\uDC84 " title]
      [:div (markdown->div description)]
 
      (if (not-empty tags)
        [:div.tags
-        [:h2 "By tags:"]
+        #_[:h2 "By tags:"]
         (doall (for [tag-data tags]
                  ^{:key (get tag-data "name")}
                  [tag tag-data all-paths]))
@@ -73,7 +110,10 @@
                  ^{:key (str name method)}
                  [path name method spec]))])
 
-
-     ]))
+     [:div.definitions
+      [:h2.title "Definitions"]
+      (doall (for [schema-data schemas]
+               ^{:key (:name schema-data)}
+               [schema schema-data]))]]))
 
 

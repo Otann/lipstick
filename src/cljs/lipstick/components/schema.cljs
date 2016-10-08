@@ -1,33 +1,12 @@
-(ns lipstick.components.schema-view
-  (:require [reagent.core :as r]
-            [goog.string :as gstring]
+(ns lipstick.components.schema
+  (:require [goog.string :as gstring]
+            [lipstick.components.collapsible :refer [collapsible]]
             [lipstick.utils :refer [with-keys]]))
 
 
 (def ellipsis
   "A constant to use to indicate collapsed state"
   (gstring/unescapeEntities "&hellip;"))
-
-
-(defn collapsible-view
-  "Type2 Reagent component that can collapse
-  it's content between two labels"
-  []
-  (let [collapsed (r/atom true)]
-    (fn [open-label close-label children]
-      ; todo: consider using .no-arrow
-      [:div.tree-view
-       [:div.tree-view_item
-        {:on-click #(swap! collapsed not)}
-        (when (not-empty children)
-          [:div.tree-view_arrow
-           {:class (when @collapsed "tree-view_arrow-collapsed")}])
-        [:span.open-label open-label]
-        (when @collapsed [:span.close-label ellipsis close-label])]
-       [:div.tree-view_children
-        {:class (when @collapsed "tree-view_children-collapsed")}
-        [:div.tree-view_children-content (with-keys children)]
-        [:div close-label]]])))
 
 
 (def open-bracket {:object "{"
@@ -99,29 +78,35 @@
         schema (:schema properties)
         children (field-children schema)]
     (if (seq children)
-      [collapsible-view main-label tail-label
+      [collapsible {:collapsed true
+                    :ellipsis ellipsis
+                    :tail tail-label}
+       main-label
        (->> children
             (map (fn [[k v]] [field k v]))
             (with-keys))]
 
-      [:div.field main-label tail-label])))
+      [:div.field main-label])))
 
 (defn schema [schema]
   (let [schema-name (:name schema)]
     (case (:type schema)
-      :object [collapsible-view
+      :object [collapsible {:collapsed false
+                            :ellipsis ellipsis
+                            :tail [:span "}"]}
                [:span [:span.schema-name schema-name] " {"]
-               [:span "}"]
                (->> schema :properties (map (fn [[k v]] [field k v])) with-keys)]
 
-      :array [collapsible-view
+      :array [collapsible {:collapsed false
+                           :ellipsis ellipsis
+                           :tail [:span "}]"]}
               [:span [:span.schema-name schema-name] " [" [:span.schema-name (-> schema :item-schema :name)] "{"]
-              [:span "}]"]
               (->> schema :item-schema :properties (map (fn [[k v]] [field k v])) with-keys)]
 
-      :enum [collapsible-view
+      :enum [collapsible {:collapsed false
+                          :ellipsis ellipsis
+                          :tail [:span ")"]}
              [:span [:span.schema-name schema-name] " ("]
-             [:span ")"]
              (->> schema :values (map #(do [:div.field %])) with-keys)]
 
       [:div.schema

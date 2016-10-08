@@ -1,27 +1,27 @@
 /* the tree node's style */
-.tree-view {
+.collapsible-view {
   overflow-y: hidden;
   font-size: 14px;
   font-family: 'Fira Mono', monospace;
   color: #444;
 }
 
-.tree-view_item {
+.collapsible-view_item {
   cursor: pointer;
-  /* immediate child of .tree-view, for styling convenience */
+  /* immediate child of .collapsible-view, for styling convenience */
 }
 
 
 /* style for the children nodes container */
-.tree-view_children, .field {
+.collapsible-view_children, .field {
   margin-left: 14px;
 }
 
-.tree-view_children-collapsed {
+.collapsible-view_children-collapsed {
   height: 0;
 }
 
-.tree-view_arrow {
+.collapsible-view_arrow {
   cursor: pointer;
   margin-right: 6px;
   display: inline-block;
@@ -30,18 +30,16 @@
   -ms-user-select: none;
   user-select: none;
 }
-.tree-view.no-arrow .tree-view_arrow {
-  &:after {
-    content: '';
-  }
+.collapsible-view.no-arrow > .collapsible-view_item > .collapsible-view_arrow {
+  //display: none;
 }
 
-.tree-view_arrow:after {
-  content: '+';
-}
-
-.tree-view_arrow-collapsed:after {
+.collapsible-view_arrow:after {
   content: '-';
+}
+
+.collapsible-view_arrow-collapsed:after {
+  content: '+';
 }
 
 .field-label {

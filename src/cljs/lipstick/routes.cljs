@@ -10,7 +10,7 @@
             [bidi.bidi :as bidi]))
 
 
-(def routes ["/#/" {""      :home-page
+(def routes ["#/" {""      :home-page
                     "about" :about-page}])
 
 
@@ -23,15 +23,15 @@
 
 (defn navigate-hook [event]
   (let [raw-path (-> event .-token)
-        path (if-not (blank? raw-path)
-               (str "/#" raw-path) "/#/")]
+        path (if (blank? raw-path)
+               "#/" (str "#" raw-path) )]
     (dispatch-path rf/dispatch path)))
 
 
 (defn navigate-sync [window]
   (let [raw-path (-> window .-location .-hash)
-        path (if-not (blank? raw-path)
-               (str "/" raw-path) "/#/")]
+        path (if (blank? raw-path)
+               "#/" raw-path)]
     (dispatch-path rf/dispatch-sync path)))
 
 

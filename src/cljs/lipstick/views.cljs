@@ -1,16 +1,17 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
-            [reagent.ratom :as r]
             [lipstick.routes :refer [url-for]]
-            [lipstick.components.schema-view :refer [schema field]]
+            [lipstick.components.schema :refer [schema field]]
             [lipstick.utils :refer [with-keys]]
+            [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.mock :as m]))
 
 (defn home-page []
-  (let [spec (rf/subscribe [:spec])
-        schemas (r/reaction (:schemas @spec))]
+  (let [spec-data (rf/subscribe [:spec])
+        schemas (rf/subscribe [:schemas])]
     (fn []
       [:div
+       [swagger-spec @spec-data]
        [:h1 "This is an example of collapsible schemas"]
        [:p [:a {:href (url-for :about-page)} "About Page"]]
 

@@ -7,6 +7,9 @@
   (fn [db]
     (:swagger db)))
 
+(rf/reg-sub :schemas
+  (fn [db]
+    (:schemas db)))
 
 (rf/reg-sub :active-page
   (fn [db _]

@@ -15,3 +15,7 @@
 (rf/reg-event-db :set-swager-spec
   (fn [db [_ spec]]
     (assoc db :swagger spec)))
+
+(rf/reg-event-db :set-schemas
+  (fn [db [_ spec]]
+    (assoc db :schemas spec)))

@@ -11,7 +11,9 @@
                  [secretary "1.2.3"]                        ; routing
 
                  [cljs-http "0.1.41"]                       ; http async client
+                 [markdown-clj "0.9.89"]                    ; markdown parser
                  [cljsjs/js-yaml "3.3.1-0"]                 ; yaml parser
+
                  ]
 
   :plugins [[lein-cljsbuild "1.1.4"]

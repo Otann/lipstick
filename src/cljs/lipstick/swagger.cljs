@@ -47,5 +47,5 @@
                          (log/debug "Schemas:" schemas))
                        1)
         (log/debug "Loaded swagger spec:" spec)
-        (rf/dispatch [:set-swager-spec {:original spec
-                                        :schemas schemas}]))))
+        (rf/dispatch [:set-schemas] schemas)
+        (rf/dispatch [:set-swager-spec spec]))))

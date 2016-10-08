@@ -32,12 +32,16 @@
 
 (defn tag [tag-data all-paths]
   (let [tag-name (get tag-data "name")
+        description (get tag-data "description")
         by-tag-name #(array-contains? (get % "tags") tag-name)
         paths (filter-paths all-paths by-tag-name)]
     [collapsible {:ellipsis nil
-                       :collapsed false
-                       :class "no-arrow"}
-     [:span.name tag-name]
+                  :collapsed false
+                  :class "tag"}
+     [:span.tag-label
+      [:span.name tag-name]
+      (when description
+        [:span.description " : " description])]
      [:div.paths
       (doall (for [{:keys [name method spec]} paths]
                ^{:key (str name method)}
@@ -46,16 +50,30 @@
 (defn swagger-spec [spec-data]
   (let [title (get-in spec-data ["info" "title"])
         description (get-in spec-data ["info" "description"])
+        tags (get spec-data "tags")
         all-paths (get spec-data "paths")]
     [:div.spec
      [:h1 title]
      [:div (markdown->div description)]
-     [:h2 "By tags:"]
-     (doall (for [data (get spec-data "tags")]
-              ^{:key (get data "name")} [tag data all-paths]))
-     (let [paths (filter-paths all-paths
-                               #(empty? (get % "tags")))]
-       (if (not-empty paths)
-         [:h2 "No tags:" [tag {"name" "Without tags"} paths]]))]))
+
+     (if (not-empty tags)
+       [:div.tags
+        [:h2 "By tags:"]
+        (doall (for [tag-data tags]
+                 ^{:key (get tag-data "name")}
+                 [tag tag-data all-paths]))
+        ; Append paths that has no tags assigned
+        (let [paths (filter-paths all-paths
+                                  #(empty? (get % "tags")))]
+          (if (not-empty paths)
+            [:h2 "No tags:" [tag {"name" "Without tags"} paths]]))]
+       [:div.no-tags
+        (doall (for [{:keys [name method spec]}
+                     (filter-paths all-paths #(do true))]
+                 ^{:key (str name method)}
+                 [path name method spec]))])
+
+
+     ]))
 
 

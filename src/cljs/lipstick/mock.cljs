@@ -1,4 +1,6 @@
-(ns lipstick.mock)
+(ns lipstick.mock
+  (:require [lipstick.routes :refer [url-for]]
+            [lipstick.components.schema :refer [schema]]))
 
 ;; Schema = Definition - named set of requirements (definition?)
 ;; Type - type of field
@@ -46,3 +48,21 @@
                           "age" {:schema "int64"}
                           "home" {:schema Address}
                           "sibs" {:schema {:type :array :item-schema Sibling}}}})
+
+(defn example [schemas]
+  [:div
+   [:h1 "This is an example of collapsible schemas"]
+
+   [:h2 "Definitions from /swagger.yaml"]
+   (doall (for [data schemas] ^{:key (:name data)} [schema data]))
+
+   [:h2 "Examples"]
+
+   [:h3 "Object Example"]
+   [schema Person]
+
+   [:h3 "Array Example"]
+   [schema {:name "Siblings" :type :array :item-schema Sibling}]
+
+   [:h3 "Enum Example"]
+   [schema Gender]])

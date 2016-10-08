@@ -11,7 +11,7 @@
   (let [collapsed (r/atom collapsed)]
     (fn [_ open-label children]
       ; todo: consider using .no-arrow
-      [:div.collapsible-view
+      [:div.collapsible
        {:class class}
        [:div.collapsible-view_item
         {:on-click #(swap! collapsed not)}

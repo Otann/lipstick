@@ -1,9 +1,6 @@
 /* the tree node's style */
-.collapsible-view {
+.collapsible {
   overflow-y: hidden;
-  font-size: 14px;
-  font-family: 'Fira Mono', monospace;
-  color: #444;
 }
 
 .collapsible-view_item {
@@ -30,9 +27,6 @@
   -ms-user-select: none;
   user-select: none;
 }
-.collapsible-view.no-arrow > .collapsible-view_item > .collapsible-view_arrow {
-  //display: none;
-}
 
 .collapsible-view_arrow:after {
   content: '-';
@@ -42,29 +36,6 @@
   content: '+';
 }
 
-.field-label {
-  //TODO: pick and apply color-scheme
-  &.optional, &.optional .field-name {
-    color: #5f7892;
-  }
-
-  .field-name {
-    color: #3e3ee2;
-  }
-
-  &.unknown {
-    color: red;
-    font-weight: bold;
-  }
-}
-
-.schema-name {
-  color: #733595;
-  font-weight: bold;
-}
-
-.field {
-  .description {
-    color: #96cb8d;
-  }
+.collapsible.no-arrow > .collapsible-view_item > .collapsible-view_arrow {
+  display: none;
 }

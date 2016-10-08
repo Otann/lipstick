@@ -1,0 +1,32 @@
+.schema {
+  font-size: 14px;
+  font-family: 'Fira Mono', monospace;
+  color: #444;
+}
+
+.field-label {
+  //TODO: pick and apply color-scheme
+  &.optional, &.optional .field-name {
+    color: #5f7892;
+  }
+
+  .field-name {
+    color: #3e3ee2;
+  }
+
+  &.unknown {
+    color: red;
+    font-weight: bold;
+  }
+}
+
+.schema-name {
+  color: #733595;
+  font-weight: bold;
+}
+
+.field {
+  .description {
+    color: #96cb8d;
+  }
+}

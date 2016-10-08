@@ -91,7 +91,8 @@
 (defn schema [schema]
   (let [schema-name (:name schema)]
     (case (:type schema)
-      :object [collapsible {:collapsed false
+      :object [collapsible {:class "schema"
+                            :collapsed false
                             :ellipsis ellipsis
                             :tail [:span "}"]}
                [:span [:span.schema-name schema-name] " {"]

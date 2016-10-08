@@ -1,41 +1,25 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
             [lipstick.routes :refer [url-for]]
-            [lipstick.components.schema :refer [schema field]]
             [lipstick.utils :refer [with-keys]]
             [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.mock :as m]))
 
 (defn home-page []
-  (let [spec-data (rf/subscribe [:spec])
-        schemas (rf/subscribe [:schemas])]
+  (let [spec-data (rf/subscribe [:spec])]
     (fn []
-      [:div
-       [swagger-spec @spec-data]
-       [:h1 "This is an example of collapsible schemas"]
+      [:div.container
        [:p [:a {:href (url-for :about-page)} "About Page"]]
-
-       [:h2 "Definitions from /swagger.yaml"]
-       (doall (for [data @schemas] ^{:key (:name data)} [schema data]))
-
-       [:h2 "Examples"]
-
-       [:h3 "Object Example"]
-       [schema m/Person]
-
-       [:h3 "Array Example"]
-       [schema {:name "Siblings" :type :array :item-schema m/Sibling}]
-
-       [:h3 "Enum Example"]
-       [schema m/Gender]])))
+       [swagger-spec @spec-data]])))
 
 
 (defn about-page []
-  (fn []
-    [:div "This is the About Page."
-     [:div [:a {:href (url-for :home-page)}
-            "go to Home Page"]]]))
-
+  (let [schemas (rf/subscribe [:schemas])]
+    (fn []
+      [:div
+       [:p [:a {:href (url-for :home-page)} "go to Home Page"]]
+       [:h1 "This is the About Page."]
+       [m/example @schemas]])))
 
 (defn show-page
   [page-name]

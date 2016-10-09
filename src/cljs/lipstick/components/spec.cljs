@@ -47,7 +47,7 @@
      [:div.content
       [:div.summary (get spec "summary")]
       [:div.description (get spec "description")]
-      (when params
+      (when (not-empty params)
         [parameters params])]]))
 
 (defn array-contains? [arr val]

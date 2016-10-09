@@ -17,7 +17,7 @@
 (defn in-icons [value]
   [:span.label.tooltipped
    (or (location-icons value) value)
-   [:span.tip "location: " value]])
+   [:span.tip "in: " value]])
 
 (defn parameters [parameters]
   [:div.parameters
@@ -28,9 +28,9 @@
        ^{:key name}
        [:tr.parameter
         [:td.location (in-icons in)]
-        [:td.name name]
         [:td.required
-         (when required "required")]
+         (when required [:span.tooltipped "*" [:span.tip "required"]])]
+        [:td.name name]
         [:td.format
          (when-let [schema-data (parameter "schema")]
            (str schema-data))

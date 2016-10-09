@@ -110,16 +110,35 @@
         font-weight: bold;
 
         .tip {
-          width: 7em;
+          //background-color: #6cc644;
+          color: #666;
+          text-align: right;
+          width: 5rem;
           font-weight: normal;
+          font-size: .8rem;
+          top: .05em;
+          right: 2.5rem;
         }
       }
     }
 
     .required {
       font-weight: bold;
-      font-size: .8em;
+      position: relative;
+      top: .3em;
+      font-size: 1.1em;
       color: @gh-red;
+
+      .tip {
+        //background-color: #6cc644;
+        color: #666;
+        text-align: right;
+        width: 3.5rem;
+        font-weight: normal;
+        font-size: .8rem;
+        top: 0;
+        right: 4.2rem;
+      }
     }
 
 

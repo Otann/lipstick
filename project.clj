@@ -46,7 +46,7 @@
     {:id           "min"
      :source-paths ["src/cljs"]
      :compiler     {:main            lipstick.core
-                    :output-to       "resources/public/js/app.js"
+                    :output-to       "target/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}
                     :pretty-print    false}}]})

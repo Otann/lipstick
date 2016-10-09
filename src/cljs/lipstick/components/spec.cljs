@@ -12,12 +12,12 @@
 (def location-icons {"path"     "/../"
                      "formData" "form"
                      "query"    "?&="
-                     "body"     "{...}"})
+                     "body"     "{..}"})
 
-(defn in-icons [value]
-  [:span.label.tooltipped
-   (or (location-icons value) value)
-   [:span.tip "in: " value]])
+(defn location-row [value]
+  [:td.location.tooltipped
+   [:span.tip "located in: " value]
+   [:span.label (or (location-icons value) value)]])
 
 (defn parameters [parameters]
   [:div.parameters
@@ -27,9 +27,9 @@
      (for [{:strs [name in required] :as parameter} parameters]
        ^{:key name}
        [:tr.parameter
-        [:td.location (in-icons in)]
-        [:td.required
-         (when required [:span.tooltipped "*" [:span.tip "required"]])]
+        (location-row in)
+        [:td.required.tooltipped
+         (when required [:span "*" [:span.tip "required"]])]
         [:td.name name]
         [:td.format
          (when-let [schema-data (parameter "schema")]
@@ -39,7 +39,7 @@
 
 (defn path [name method spec]
   (let [params (get spec "parameters")]
-    [collapsible {:collapsed true
+    [collapsible {:collapsed false
                   :class "path"}
      [:span.path-title
       [:code.method {:class method} method] " "
@@ -65,11 +65,17 @@
        (filter #(not= nil %))))
 
 
+(defn paths [paths-data]
+  [:div.paths
+   (doall (for [{:keys [name method spec]} paths-data]
+            ^{:key (str name method)}
+            [path name method spec]))])
+
 (defn tag [tag-data all-paths]
   (let [tag-name (get tag-data "name")
         description (get tag-data "description")
         by-tag-name #(array-contains? (get % "tags") tag-name)
-        paths (filter-paths all-paths by-tag-name)]
+        paths-data (filter-paths all-paths by-tag-name)]
     [collapsible {:ellipsis nil
                   :collapsed false
                   :class "tag"}
@@ -77,10 +83,7 @@
       [:span.name tag-name]
       (when description
         [:span.description " : " description])]
-     [:div.paths
-      (doall (for [{:keys [name method spec]} paths]
-               ^{:key (str name method)}
-               [path name method spec]))]]))
+     [paths paths-data]]))
 
 (defn swagger-spec [spec-data]
   (let [title (get-in spec-data ["info" "title"])
@@ -95,20 +98,16 @@
 
      (if (not-empty tags)
        [:div.tags
-        #_[:h2 "By tags:"]
         (doall (for [tag-data tags]
                  ^{:key (get tag-data "name")}
                  [tag tag-data all-paths]))
         ; Append paths that has no tags assigned
-        (let [paths (filter-paths all-paths
-                                  #(empty? (get % "tags")))]
-          (if (not-empty paths)
-            [:h2 "No tags:" [tag {"name" "Without tags"} paths]]))]
+        (let [paths-data (filter-paths all-paths
+                                       #(empty? (get % "tags")))]
+          (if (not-empty paths-data)
+            [:h2 "No tags:" [tag {"name" "Without tags"} paths-data]]))]
        [:div.no-tags
-        (doall (for [{:keys [name method spec]}
-                     (filter-paths all-paths #(do true))]
-                 ^{:key (str name method)}
-                 [path name method spec]))])
+        [paths (filter-paths all-paths #(do true))]])
 
      [:div.definitions
       [:h2.title "Definitions"]

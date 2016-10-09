@@ -1,7 +1,7 @@
 @import "common";
 
 .tags {
-  margin-bottom: .5em;
+  padding-bottom: .5em;
 }
 .tag {
   @tag-font-size: 1.35em;
@@ -10,7 +10,7 @@
     font-size: @tag-font-size;
 
     display: inline-block;
-    margin-bottom: .3em;
+    padding-bottom: .3em;
 
     .name {
       font-weight: bold;
@@ -32,37 +32,41 @@
 .path {
   @method-width: 4.5em;
 
-  margin-bottom: .5em;
+  padding-bottom: .5em;
 
-  .method {
-    color: white;
-    font-size: .8em;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
-    display: inline-block;
-    width: @method-width;
-    margin: .2em;
-    padding: .2em;
-    border-radius: .3em;
+  .path-title {
 
-    &.put {  background-color: @gh-orange;  }
-    &.get {  background-color: @gh-blue;  }
-    &.post {  background-color: @gh-green;  }
-    &.head {  background-color: @gh-purple;  }
-    &.delete {  background-color: @gh-red;  }
+    .method {
+      color: white;
+      font-size: .8em;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      display: inline-block;
+      width: @method-width;
+      padding: .4em;
+      border-radius: .3em;
+
+      &.put {  background-color: @gh-orange;  }
+      &.get {  background-color: @gh-blue;  }
+      &.post {  background-color: @gh-green;  }
+      &.head {  background-color: @gh-purple;  }
+      &.delete {  background-color: @gh-red;  }
+    }
+
+    .path-name {
+      font-family: @monospaced;
+      //font-weight: bold;
+      //color: #444;
+      //background-color: #6cc644;
+    }
   }
 
-  .path-name {
-    font-family: @monospaced;
-    //font-weight: bold;
-    //color: #444;
-  }
 
   .content {
-    margin-left: @method-width;
-    margin-bottom: 1.5em;
-    margin-top: .5em;
+    padding-left: @method-width;
+    padding-bottom: 1.5em;
+    padding-top: .5em;
 
     .description {
       font-size: .9em;
@@ -80,21 +84,35 @@
       //font-weight: bold;
     }
     td {
-      padding-right: 1em;
+      padding-right: 1rem;
     }
 
     .title {
       color: #666;
       font-weight: 600;
-      margin-top: .5em;
+      padding-top: .5em;
       border-bottom: 1px solid @gh-gray;
     }
 
     .location {
+      display: inline-block;
       text-align: center;
+      font-family: @monospaced;
+      width: 3rem;
 
-      .octicon {
-        font-size: 1.3em;
+      .tip {
+        //background-color: #6cc644;
+        font-family: @basic-font;
+        color: #666;
+        text-align: right;
+        font-weight: normal;
+        font-size: .8rem;
+
+        width: 4rem;
+        left: -5rem;
+        padding: 0 .5rem;
+
+        top: .3rem;
       }
 
       .label {
@@ -103,22 +121,11 @@
         background-color: #eee;
 
         padding: 1px 5px;
-        //line-height: 1;
 
         border-radius: .2em;
         font-size: .7em;
         font-weight: bold;
 
-        .tip {
-          //background-color: #6cc644;
-          color: #666;
-          text-align: right;
-          width: 5rem;
-          font-weight: normal;
-          font-size: .8rem;
-          top: .05em;
-          right: 2.5rem;
-        }
       }
     }
 
@@ -131,13 +138,15 @@
 
       .tip {
         //background-color: #6cc644;
+        font-family: @basic-font;
         color: #666;
         text-align: right;
-        width: 3.5rem;
         font-weight: normal;
         font-size: .8rem;
         top: 0;
-        right: 4.2rem;
+
+        width: 5rem;
+        left: -9.3rem;
       }
     }
 

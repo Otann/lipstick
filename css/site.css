@@ -38,22 +38,40 @@
   font-family: 'Fira Mono', monospace;
   color: #444;
 }
-.field-label.optional,
-.field-label.optional .field-name {
+.schema .optional {
   color: #5f7892;
 }
-.field-label .field-name {
+.schema .required .star {
+  position: relative;
+  top: .1rem;
+  line-height: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #bd2c00;
+}
+.schema .required .star .tip {
+  color: #666;
+  background-color: #fff;
+  display: inline-block;
+  line-height: 1rem;
+  font-size: .8rem;
+  font-weight: normal;
+  top: 0;
+  width: 4rem;
+  left: -4rem;
+}
+.schema .field-label .field-name {
   color: #3e3ee2;
 }
-.field-label.unknown {
+.schema .field-label.unknown {
   color: red;
   font-weight: bold;
 }
-.schema-name {
+.schema .schema-name {
   color: #733595;
   font-weight: bold;
 }
-.field .description {
+.schema .field .description {
   color: #96cb8d;
 }
 .tags {
@@ -67,7 +85,7 @@
 .tag .tag-label .name {
   font-weight: bold;
 }
-.tag .tag-label .description {
+.tag .tag-label > .description {
   color: #555;
 }
 .tag .collapsible-view_arrow {
@@ -104,7 +122,7 @@
   background-color: #6e5494;
 }
 .path .path-title .method.delete {
-  background-color: #c9510c;
+  background-color: #bd2c00;
 }
 .path .path-title .path-name {
   font-family: 'Fira Mono', monospace;
@@ -118,26 +136,32 @@
   font-size: .9em;
   color: #333333;
 }
-.path .parameters thead {
+.path .parameters thead,
+.path .responses thead {
   color: #666;
   font-size: .9em;
 }
-.path .parameters td {
+.path .parameters td,
+.path .responses td {
+  vertical-align: top;
   padding-right: 1rem;
 }
-.path .parameters .title {
+.path .parameters .title,
+.path .responses .title {
   color: #666;
   font-weight: 600;
   padding-top: .5em;
   border-bottom: 1px solid #f5f5f5;
 }
-.path .parameters .location {
+.path .parameters .tag,
+.path .responses .tag {
   display: inline-block;
   text-align: center;
   font-family: 'Fira Mono', monospace;
   width: 3rem;
 }
-.path .parameters .location .tip {
+.path .parameters .tag .tip,
+.path .responses .tag .tip {
   font-family: 'Fira Sans', sans-serif;
   color: #666;
   text-align: right;
@@ -148,7 +172,8 @@
   padding: 0 .5rem;
   top: .3rem;
 }
-.path .parameters .location .label {
+.path .parameters .tag .label,
+.path .responses .tag .label {
   display: inline-block;
   color: #444;
   background-color: #eee;
@@ -157,14 +182,29 @@
   font-size: .7em;
   font-weight: bold;
 }
-.path .parameters .required {
+.path .parameters .tag .label.xx2,
+.path .responses .tag .label.xx2 {
+  color: white;
+  background-color: #6cc644;
+}
+.path .parameters .tag .label.xx4,
+.path .responses .tag .label.xx4 {
+  color: white;
+  background-color: #6e5494;
+}
+.path .parameters .tag .label.xx5,
+.path .responses .tag .label.xx5 {
+  color: white;
+  background-color: #bd2c00;
+}
+.path .parameter > .required {
   font-weight: bold;
   position: relative;
   top: .3em;
   font-size: 1.1em;
-  color: #c9510c;
+  color: #bd2c00;
 }
-.path .parameters .required .tip {
+.path .parameter > .required .tip {
   font-family: 'Fira Sans', sans-serif;
   color: #666;
   text-align: right;
@@ -199,7 +239,7 @@
 }
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltipped:hover .tip {
-  transition: opacity 1s ease;
+  transition: opacity .2s ease;
   opacity: 100;
 }
 body {

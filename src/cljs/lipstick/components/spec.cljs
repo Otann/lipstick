@@ -6,7 +6,9 @@
             [lipstick.components.schema :refer [schema]]
             [taoensso.timbre :as log]))
 
-(defn markdown->div [data]
+(defn markdown->div
+  "Renders markdown string as reagent-compatible text"
+  [data]
   [:div {:dangerouslySetInnerHTML
          {:__html (-> data md->html)}}])
 

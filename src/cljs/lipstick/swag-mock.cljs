@@ -1,9 +1,24 @@
-(ns lipstick.mock
+(ns lipstick.swag-mock
   (:require [lipstick.routes :refer [url-for]]
             [lipstick.components.schema :refer [schema]]))
 
 ;; Schema = Definition - named set of requirements (definition?)
 ;; Type - type of field
+
+(def ArticleDetailResponse {:type "object"
+                            :description "Response object of the article detail (PDS) request"
+                            :required [:tags]
+                            :properties {:tags {:type "array"
+                                                :items {:type "string"}}
+                                         :brandDetail {:$ref "#/definitions/BrandDetail"}}})
+
+; schema => swag
+; schema {:name name ...} => [name {...}]
+; property {:schema {...}} => {...}
+; :item-schema => :items
+; {:type :enum :item-type "string" :values [a, b, c]} => {:type "string" :enum [a, b, c]}
+;
+
 
 (def Gender {:name "Gender"
              :type :enum

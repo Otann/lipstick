@@ -35,7 +35,7 @@
 (defn init-spec []
   (go (let [response (<! (http/get "swagger.yaml"))
             spec (-> response
-                        :body
-                        parse-yaml
-                        js->clj)]
+                     :body
+                     parse-yaml
+                     (js->clj :keywordize-keys true))]
         (rf/dispatch [:set-swager-spec spec]))))

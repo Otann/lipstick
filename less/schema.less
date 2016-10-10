@@ -1,32 +1,55 @@
+@import "common";
+
 .schema {
   font-size: 14px;
-  font-family: 'Fira Mono', monospace;
+  font-family: @monospaced;
   color: #444;
-}
 
-.field-label {
-  //TODO: pick and apply color-scheme
-  &.optional, &.optional .field-name {
+  .optional {
     color: #5f7892;
   }
 
-  .field-name {
-    color: #3e3ee2;
+  .required .star {
+    position: relative;
+    top: .1rem;
+    line-height: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: @gh-red;
+
+    .tip {
+      color: #666;
+      background-color: #fff;
+      display: inline-block;
+      //vertical-align: bottom;
+      line-height: 1rem;
+      font-size: .8rem;
+      font-weight: normal;
+      top: 0;
+      width: 4rem;
+      left: -4rem;
+    }
   }
 
-  &.unknown {
-    color: red;
+  .field-label {
+    .field-name {
+      color: #3e3ee2;
+    }
+
+    &.unknown {
+      color: red;
+      font-weight: bold;
+    }
+  }
+
+  .schema-name {
+    color: #733595;
     font-weight: bold;
   }
-}
 
-.schema-name {
-  color: #733595;
-  font-weight: bold;
-}
-
-.field {
-  .description {
-    color: #96cb8d;
+  .field {
+    .description {
+      color: #96cb8d;
+    }
   }
 }

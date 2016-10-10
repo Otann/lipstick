@@ -1,5 +1,10 @@
 (ns lipstick.utils)
 
+
+(defn containsv? [arr val]
+  (some #(= val %) arr))
+
+
 (defn with-keys
   "Adds :key metadata to each child in the list"
   [children]

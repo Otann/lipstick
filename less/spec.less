@@ -15,7 +15,7 @@
     .name {
       font-weight: bold;
     }
-    .description {
+    & > .description {
       color: #555;
     }
   }
@@ -74,7 +74,7 @@
     }
   }
 
-  .parameters {
+  .parameters, .responses {
     table {
       //border-spacing: .6em;
     }
@@ -84,6 +84,8 @@
       //font-weight: bold;
     }
     td {
+      //display: table-cell;
+      vertical-align: top;
       padding-right: 1rem;
     }
 
@@ -94,7 +96,7 @@
       border-bottom: 1px solid @gh-gray;
     }
 
-    .location {
+    .tag {
       display: inline-block;
       text-align: center;
       font-family: @monospaced;
@@ -120,6 +122,19 @@
         color: #444;
         background-color: #eee;
 
+        &.xx2 {
+          color: white;
+          background-color: @gh-green;
+        }
+        &.xx4 {
+          color: white;
+          background-color: @gh-purple;
+        }
+        &.xx5 {
+          color: white;
+          background-color: @gh-red;
+        }
+
         padding: 1px 5px;
 
         border-radius: .2em;
@@ -129,28 +144,27 @@
       }
     }
 
-    .required {
-      font-weight: bold;
-      position: relative;
-      top: .3em;
-      font-size: 1.1em;
-      color: @gh-red;
+  }
 
-      .tip {
-        //background-color: #6cc644;
-        font-family: @basic-font;
-        color: #666;
-        text-align: right;
-        font-weight: normal;
-        font-size: .8rem;
-        top: 0;
+  .parameter > .required{
+    font-weight: bold;
+    position: relative;
+    top: .3em;
+    font-size: 1.1em;
+    color: @gh-red;
 
-        width: 5rem;
-        left: -9.3rem;
-      }
+    .tip {
+      //background-color: #6cc644;
+      font-family: @basic-font;
+      color: #666;
+      text-align: right;
+      font-weight: normal;
+      font-size: .8rem;
+      top: 0;
+
+      width: 5rem;
+      left: -9.3rem;
     }
-
-
   }
 }
 

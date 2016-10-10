@@ -11,27 +11,25 @@
 (defn parse-yaml [string]
   (.safeLoad js/jsyaml string))
 
+(defn swag->schema [name swag-def]
+  (log/debug "swag->schema" name swag-def)
+  (if-let [reference (swag-def "$ref")]
+    {:type :reference :name (second (re-find #"#/definitions/(.*)" reference))}
 
-(defn type->schema [type] type)
+    (let [required-set (-> swag-def
+                           (get "required")
+                           (set))
+          swag->property (fn [name data required-set]
+                           (merge (keywordize-keys data)
+                                  {:required (contains? required-set name)
+                                   :schema (swag->schema nil data)}))
 
-
-(defn swag->property [name data required-set]
-  (merge (keywordize-keys data)
-         {:required (contains? required-set name)
-          :schema (type->schema (get data "type"))}))
-
-(defn definition->schema [[name swag-def]]
-  (let [required-set (-> swag-def
-                         (get "required")
-                         (set))
-        properties (doall (for [[name data] (get swag-def "properties")]
-                            [name (swag->property name data required-set)]))]
-    {:name name
-     :meta {:allOf (get swag-def "allOf")}
-     :properties properties
-     ; todo: make sure default is object
-     :type (or (-> swag-def (get "type") keyword)
-               :object)}))
+          properties (for [[name data] (get swag-def "properties")]
+                       [name (swag->property name data required-set)])]
+      {:name name
+       :meta {:allOf (get swag-def "allOf")}
+       :properties properties
+       :type (-> swag-def (get "type") keyword)})))
 
 
 (defn init-spec []
@@ -39,6 +37,5 @@
             spec (-> response
                         :body
                         parse-yaml
-                        js->clj)
-            definitions (get spec "definitions")]
+                        js->clj)]
         (rf/dispatch [:set-swager-spec spec]))))

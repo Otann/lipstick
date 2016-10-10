@@ -25,9 +25,9 @@
               :properties {"city" {:schema "string"}
                            "street" {:schema "string"}
                            "zip" {:schema "string"}
-                           "location" {:schema {:name "Point"
-                                                :type :array
+                           "location" {:schema {:type :array
                                                 :item-schema {:type :array
+                                                              :name "Point"
                                                               :item-schema {:type "int"}}}}}})
 
 (def Sibling {:name "Sibling"
@@ -43,7 +43,10 @@
              :type :object
              :properties {"first_name" {:schema "string"}
                           "last_name" {:schema "string"}
-                          "groups" {:schema {:type :array :item-schema Trait}}
+                          "parents" {:schema {:type :array
+                                              :item-schema {:type :reference
+                                                            :name "Person"}}}
+                          "groups" {:schema {:type :array :item-schema {:type "string"}}}
                           "gender" {:schema Gender :optional true}
                           "age" {:schema "int64"}
                           "home" {:schema Address}
@@ -61,7 +64,7 @@
    [:h2 "Examples"]
 
    [:h3 "Object Example"]
-   [schema Person]
+   [schema Person {"Person" Person}]
 
    [:h3 "Array Example"]
    [schema {:name "Siblings" :type :array :item-schema Sibling}]

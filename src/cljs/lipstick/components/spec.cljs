@@ -3,7 +3,8 @@
             [lipstick.components.collapsible :refer [collapsible]]
             [lipstick.utils :refer [with-keys]]
             [lipstick.swagger :as swag]
-            [lipstick.components.schema :refer [schema]]))
+            [lipstick.components.schema :refer [schema]]
+            [taoensso.timbre :as log]))
 
 (defn markdown->div [data]
   [:div {:dangerouslySetInnerHTML
@@ -19,6 +20,12 @@
    [:span.tip "located in: " value]
    [:span.label (or (location-icons value) value)]])
 
+(defn schema-element [data]
+  (if-let [ref (data "$ref")]
+    (let []
+      [:span (str "This is reference to " ref)])
+    [:span "This is root"]))
+
 (defn parameters [parameters]
   [:div.parameters
    [:div.title "Parameters"]
@@ -33,7 +40,7 @@
         [:td.name name]
         [:td.format
          (when-let [schema-data (parameter "schema")]
-           (str schema-data))
+           [schema-element schema-data])
          (when-let [type (parameter "type")]
            [:code type])]])]]])
 
@@ -71,7 +78,7 @@
             ^{:key (str name method)}
             [path name method spec]))])
 
-(defn tag [tag-data all-paths]
+(defn tag [tag-data all-paths all-schemas]
   (let [tag-name (get tag-data "name")
         description (get tag-data "description")
         by-tag-name #(array-contains? (get % "tags") tag-name)
@@ -91,7 +98,10 @@
         tags (get spec-data "tags")
         all-paths (get spec-data "paths")
         definitions (get spec-data "definitions")
-        schemas (map swag/definition->schema definitions)]
+        all-schemas (->> definitions
+                         (map #(apply swag/swag->schema %))
+                         (map #(vector (:name %) %))
+                         (into {}))]
     [:div.spec
      [:h1 "\uD83D\uDC84 " title]
      [:div (markdown->div description)]
@@ -100,19 +110,20 @@
        [:div.tags
         (doall (for [tag-data tags]
                  ^{:key (get tag-data "name")}
-                 [tag tag-data all-paths]))
+                 [tag tag-data all-paths all-schemas]))
         ; Append paths that has no tags assigned
         (let [paths-data (filter-paths all-paths
                                        #(empty? (get % "tags")))]
           (if (not-empty paths-data)
-            [:h2 "No tags:" [tag {"name" "Without tags"} paths-data]]))]
+            [tag {"name" "Without tags"} paths-data all-schemas]))]
        [:div.no-tags
         [paths (filter-paths all-paths #(do true))]])
 
      [:div.definitions
       [:h2.title "Definitions"]
-      (doall (for [schema-data schemas]
+      (log/debug all-schemas)
+      (doall (for [[_ schema-data] all-schemas]
                ^{:key (:name schema-data)}
-               [schema schema-data]))]]))
+               [schema schema-data all-schemas]))]]))
 
 

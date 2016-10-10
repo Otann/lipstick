@@ -17,7 +17,7 @@
 
 (defn about-page []
   (let [spec-data (rf/subscribe [:spec])
-        schemas (r/reaction (map swag/definition->schema
+        schemas (r/reaction (map #(apply swag/swag->schema %)
                                  (get @spec-data "definitions")))]
     (fn []
       [:div

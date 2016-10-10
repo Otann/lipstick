@@ -29,37 +29,42 @@
     (or (schema-type schema)
         (str schema))))
 
+(defn deref-schema [schema all-schemas]
+  (if (= :reference (:type schema))
+    (get all-schemas (:name schema))
+    schema))
 
-(defn open-brackets [{type :type :as schema}]
+(defn open-brackets [{type :type :as schema} all-schemas]
   (if-not (= type :array)
     (open-bracket type)
-    [:span (open-bracket type)
-     (schema-name (:item-schema schema))
-     (open-brackets (-> schema :item-schema))]))
+    (let [derefed (deref-schema (:item-schema schema) all-schemas)]
+      [:span
+       (open-bracket type)
+       (schema-name derefed)
+       (open-brackets derefed all-schemas)])))
 
 
-(defn close-brackets [{type :type :as schema}]
+(defn close-brackets [{type :type :as schema} all-schemas]
   (if-not (= type :array)
     (close-bracket type)
-    [:span
-     (close-brackets (-> schema :item-schema))
-     (close-bracket type)]))
+    (let [derefed (deref-schema (:item-schema schema) all-schemas)]
+      [:span
+       (close-brackets derefed all-schemas)
+       (close-bracket type)])))
 
 
-(defn field-labels [field-name properties]
-  (if-not properties
+(defn field-labels [field-name optional schema all-schemas]
+  (if-not schema
     [[:span.field-name field-name] nil]
-    (let [schema (:schema properties)
-          optional (:optional properties)]
-      [[:span.field-label {:class (when optional "optional")}
-        [:span.field-name field-name] ": "
-        (when optional "(Optional) ")
-        (schema-name schema)
-        (open-brackets schema)]
-       (close-brackets schema)])))
+    [[:span.field-label {:class (when optional "optional")}
+      [:span.field-name field-name] ": "
+      (when optional "(Optional) ")
+      (schema-name schema)
+      (open-brackets schema all-schemas)]
+     (close-brackets schema all-schemas)]))
 
 
-(defn field-children [schema]
+(defn field-children [schema all-schemas]
   (case (:type schema)
     :object (->> schema
                  :properties
@@ -69,26 +74,31 @@
                :values
                (map #(do [% nil])))
 
-    :array (field-children (-> schema :item-schema))
+    :array (field-children (-> schema :item-schema) all-schemas)
+
+    :reference (field-children (get all-schemas (:name schema)) all-schemas)
 
     nil))
 
-(defn field [field-name properties]
-  (let [[main-label tail-label] (field-labels field-name properties)
-        schema (:schema properties)
-        children (field-children schema)]
+(defn field [field-name properties all-schemas]
+  (let [schema (deref-schema (:schema properties) all-schemas)
+        [main-label tail-label] (field-labels field-name
+                                              (:optional properties)
+                                              schema
+                                              all-schemas)
+        children (field-children schema all-schemas)]
     (if (seq children)
       [collapsible {:collapsed true
                     :ellipsis ellipsis
                     :tail tail-label}
        main-label
        (->> children
-            (map (fn [[k v]] [field k v]))
+            (map (fn [[k v]] [field k v all-schemas]))
             (with-keys))]
 
-      [:div.field main-label])))
+      [:div.field main-label tail-label])))
 
-(defn schema [schema]
+(defn schema [schema all-schemas]
   (let [schema-name (:name schema)]
     (case (:type schema)
       :object [collapsible {:class "schema"
@@ -96,13 +106,15 @@
                             :ellipsis ellipsis
                             :tail [:span "}"]}
                [:span [:span.schema-name schema-name] " {"]
-               (->> schema :properties (map (fn [[k v]] [field k v])) with-keys)]
+               (->> schema
+                    :properties
+                    (map (fn [[k v]] [field k v all-schemas])) with-keys)]
 
       :array [collapsible {:collapsed false
                            :ellipsis ellipsis
                            :tail [:span "}]"]}
               [:span [:span.schema-name schema-name] " [" [:span.schema-name (-> schema :item-schema :name)] "{"]
-              (->> schema :item-schema :properties (map (fn [[k v]] [field k v])) with-keys)]
+              (->> schema :item-schema :properties (map (fn [[k v]] [field k v all-schemas])) with-keys)]
 
       :enum [collapsible {:collapsed false
                           :ellipsis ellipsis

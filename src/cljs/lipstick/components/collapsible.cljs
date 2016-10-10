@@ -22,8 +22,12 @@
         (when @collapsed [:span.close-label ellipsis tail])]
        [:div.collapsible-view_children
         {:class (when @collapsed "collapsible-view_children-collapsed")}
-        [:div.collapsible-view_children-content
-         (if (-> children first seq?)
-           (with-keys children)
-           children)]
+        ; Important!
+        ; Do not remove condition to cover
+        ; circular dependencies!
+        (when-not @collapsed
+          [:div.collapsible-view_children-content
+           (if (-> children first seq?)
+             (with-keys children)
+             children)])
         [:div tail]]])))

@@ -7,8 +7,9 @@
 (defn markdown->div
   "Renders markdown string as reagent-compatible text"
   [data]
-  [:div {:dangerouslySetInnerHTML
-         {:__html (-> data md->html)}}])
+  [:div.markdown-body
+   {:dangerouslySetInnerHTML
+    {:__html (-> data md->html)}}])
 
 
 (def location-icons
@@ -22,9 +23,10 @@
 (defn location-row
   "Location parameter for parameters table"
   [value]
-  [:td.location.tag.tooltipped
-   [:span.tip "located in: " value]
-   [:span.label (or (location-icons value) value)]])
+  [:td.location.tag
+   [:span.label.tooltipped.tooltipped-n
+    {:aria-label (str "located in: " value)}
+    (or (location-icons value) value)]])
 
 
 (defn responses
@@ -46,8 +48,9 @@
 (defn parameter [{:keys [name in required] :as parameter} full-spec]
   [:tr.parameter
    (location-row in)
-   [:td.required.tooltipped
-    (when required [:span "*" [:span.tip "required"]])]
+   [:td.required
+    (when required [:span.tooltipped.tooltipped-n
+                    {:aria-label "required"}  "*"])]
    [:td.name name]
    [:td.format
     (when-let [schema-data (:schema parameter)]
@@ -81,7 +84,8 @@
     [:div.summary (:summary spec)]
     [:div.description (:description spec)]
     (when-let [params (:parameters spec)]
-      [parameters params full-spec])
+      (if (not-empty params)
+        [parameters params full-spec]))
     (when-let [resps (:responses spec)]
       [responses resps full-spec])]])
 
@@ -135,8 +139,8 @@
         tags (:tags spec-data)
         all-paths (:paths spec-data)]
     [:div.spec
-     [:h1 "\uD83D\uDC84 " title]
-     [:div (markdown->div description)]
+     [:h1.title "\uD83D\uDC84 " title]
+     [:div.description (markdown->div description)]
 
      (if (not-empty tags)
        [:div.tags

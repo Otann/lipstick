@@ -1,11 +1,11 @@
 (ns lipstick.components.collapsible
   (:require [reagent.core :as r]
-            [lipstick.utils :refer [with-keys]]))
+            [lipstick.utils :refer [with-keys join-classes]]))
 
 (defn collapsible
   "Type2 Reagent component that can collapse
   it's content between two labels"
-  [{:keys [collapsed class ellipsis tail]
+  [{:keys [collapsed class ellipsis tail arrow-class]
     :or {collapsed true}}
    _ _ _]
   (let [collapsed (r/atom collapsed)]
@@ -17,7 +17,9 @@
         {:on-click #(swap! collapsed not)}
         (when (not-empty children)
           [:div.collapsible-view_arrow
-           {:class (when @collapsed "collapsible-view_arrow-collapsed")}])
+           {:class (join-classes
+                     arrow-class
+                     (when @collapsed "collapsible-view_arrow-collapsed"))}])
         [:span.open-label open-label]
         (when @collapsed [:span.close-label ellipsis tail])]
        [:div.collapsible-view_children

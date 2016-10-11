@@ -32,10 +32,11 @@
        :type (-> swag-def (get "type") keyword)})))
 
 
-(defn init-spec []
-  (go (let [response (<! (http/get "swagger.yaml"))
+(defn fetch-spec [url]
+  (go (let [response (<! (http/get url))
             spec (-> response
                      :body
                      parse-yaml
                      (js->clj :keywordize-keys true))]
+        (log/debug "Received spec from" url ", dispatching event")
         (rf/dispatch [:set-swager-spec spec]))))

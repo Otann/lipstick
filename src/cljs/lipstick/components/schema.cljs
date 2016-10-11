@@ -77,7 +77,7 @@
     (let [[open close] (brackets schema swag-root)]
       [[:span.field-label {:class (if is-required "required" "optional")}
         [:span.field-name field-name] ": "
-        (when is-required [:span.star.tooltipped " * " [:span.tip "required"]])
+        (when is-required [:span.star.tooltipped.tooltipped-n {:aria-label "required"} "*"])
         (when schema-name [:span [:span.schema-name schema-name] " "])
         [:span (:type schema)]
         open]

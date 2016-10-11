@@ -1,5 +1,10 @@
 @import "common";
 
+.spec > .description {
+  padding: .5em 0 1em 0;
+}
+
+
 .tags {
   padding-bottom: .5em;
 }
@@ -60,6 +65,7 @@
       //color: #444;
       //background-color: #6cc644;
     }
+
   }
 
 
@@ -70,21 +76,13 @@
 
     .description {
       font-size: .9em;
+      font-style: italic;
       color: @gh-gray-dark;
     }
   }
 
   .parameters, .responses {
-    table {
-      //border-spacing: .6em;
-    }
-    thead {
-      color: #666;
-      font-size: .9em;
-      //font-weight: bold;
-    }
     td {
-      //display: table-cell;
       vertical-align: top;
       padding-right: 1rem;
     }
@@ -97,25 +95,10 @@
     }
 
     .tag {
-      display: inline-block;
+      //display: inline-block;
       text-align: center;
       font-family: @monospaced;
       width: 3rem;
-
-      .tip {
-        //background-color: #6cc644;
-        font-family: @basic-font;
-        color: #666;
-        text-align: right;
-        font-weight: normal;
-        font-size: .8rem;
-
-        width: 4rem;
-        left: -5rem;
-        padding: 0 .5rem;
-
-        top: .3rem;
-      }
 
       .label {
         display: inline-block;
@@ -152,19 +135,6 @@
     top: .3em;
     font-size: 1.1em;
     color: @gh-red;
-
-    .tip {
-      //background-color: #6cc644;
-      font-family: @basic-font;
-      color: #666;
-      text-align: right;
-      font-weight: normal;
-      font-size: .8rem;
-      top: 0;
-
-      width: 5rem;
-      left: -9.3rem;
-    }
   }
 }
 

@@ -1,6 +1,12 @@
 (ns lipstick.utils)
 
 
+(defn join-classes [& classes]
+  (-> classes
+      (filter #(not (nil? %)))
+      (clojure.string/join " ")))
+
+
 (defn containsv? [arr val]
   (some #(= val %) arr))
 

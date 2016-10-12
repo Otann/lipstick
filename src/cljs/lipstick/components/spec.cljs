@@ -98,8 +98,8 @@
   ([all-paths predicate]
    (->> (for [[path-name methods] all-paths]
           (for [[method-name path-spec] methods]
-            (if (and predicate
-                     (predicate path-spec))
+            (if (or (not predicate)
+                    (predicate path-spec))
               {:method method-name
                :name path-name
                :spec path-spec})))
@@ -139,7 +139,7 @@
         tags (:tags spec-data)
         all-paths (:paths spec-data)]
     [:div.spec
-     [:h1.title "\uD83D\uDC84 " title]
+     [:h1.title [:a.lipstick-logo {:href "https://github.com/Otann/lipstick"} "\uD83D\uDC84 "] title]
      [:div.description (markdown->div description)]
 
      (if (not-empty tags)
@@ -151,6 +151,7 @@
         (let [paths-data (flatten-paths all-paths #(empty? (:tags %)))]
           (if (not-empty paths-data)
             [path-tag {:name "Without tags"} paths-data spec-data]))]
+
        [:div.no-tags
         [paths (flatten-paths all-paths)]])
 

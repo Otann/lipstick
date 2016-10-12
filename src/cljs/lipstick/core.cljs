@@ -25,6 +25,6 @@
 (defn ^:export init []
   (re-frame/dispatch-sync [:initialize-db])
   (routes/init-routes)
-  (swagger/fetch-spec "swagger.yaml")
+  (swagger/init-spec-async)
   (dev-setup)
   (mount-root))

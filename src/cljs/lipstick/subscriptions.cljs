@@ -14,3 +14,7 @@
 (rf/reg-sub :active-page
   (fn [db _]
     (:active-page db)))
+
+(rf/reg-sub :config
+  (fn [db _]
+    (:config db)))

@@ -28,3 +28,7 @@
 (rf/reg-event-db :set-schemas
   (fn [db [_ spec]]
     (assoc db :schemas spec)))
+
+(rf/reg-event-db :set-config
+  (fn [db [_ spec]]
+    (assoc db :config spec)))

@@ -11,32 +11,32 @@
 (defn parse-yaml [string]
   (.safeLoad js/jsyaml string))
 
-(defn swag->schema [name swag-def]
-  (log/debug "swag->schema" name swag-def)
-  (if-let [reference (swag-def "$ref")]
-    {:type :reference :name (second (re-find #"#/definitions/(.*)" reference))}
 
-    (let [required-set (-> swag-def
-                           (get "required")
-                           (set))
-          swag->property (fn [name data required-set]
-                           (merge (keywordize-keys data)
-                                  {:required (contains? required-set name)
-                                   :schema (swag->schema nil data)}))
-
-          properties (for [[name data] (get swag-def "properties")]
-                       [name (swag->property name data required-set)])]
-      {:name name
-       :meta {:allOf (get swag-def "allOf")}
-       :properties properties
-       :type (-> swag-def (get "type") keyword)})))
-
+(defn get-file
+  "Important! Must be run inside go-block"
+  [url]
+  ; TODO: handle error and return null
+  (go (-> url
+          (http/get)
+          (<!)
+          (:body)
+          (parse-yaml)
+          (js->clj :keywordize-keys true))))
 
 (defn fetch-spec [url]
-  (go (let [response (<! (http/get url))
-            spec (-> response
-                     :body
-                     parse-yaml
-                     (js->clj :keywordize-keys true))]
-        (log/debug "Received spec from" url ", dispatching event")
+  (go (let [spec (<! (get-file url))]
+        (log/debug "Received spec from" url ", dispatching event" spec)
         (rf/dispatch [:set-swager-spec spec]))))
+
+(defn init-spec-async []
+  (go (try
+        (let [config (<! (get-file "lipstick.yaml"))
+              _ (log/debug "Loaded config: " config)
+              {:keys [name src]} (-> config :files first)]
+          (rf/dispatch [:set-config (assoc config :selected name)])
+          (fetch-spec src))
+
+        (catch js/Error e
+          (log/info "No configuration lipstick.yaml was loaded, fallback to swagger.yaml source" e)
+          (fetch-spec "swagger.yaml")))))
+

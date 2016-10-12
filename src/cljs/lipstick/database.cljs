@@ -3,4 +3,5 @@
 
 (def default-db
   {:name "re-frame"
+   :spec-options nil
    :swagger nil})

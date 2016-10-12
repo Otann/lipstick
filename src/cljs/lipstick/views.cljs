@@ -6,14 +6,13 @@
             [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.components.schema :refer [schema]]
             [taoensso.timbre :as log]
-            [lipstick.components.source :refer [source]]))
+            [lipstick.components.source :refer [config]]))
 
 (defn home-page []
   (let [spec-data (rf/subscribe [:spec])]
     (fn []
       [:div.container
-       [source]
-       [:p [:a {:href (url-for :about-page)} "More mocked examples"]]
+       [config]
        [swagger-spec @spec-data]])))
 
 

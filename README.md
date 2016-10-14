@@ -1,4 +1,4 @@
-# lipstick :lipstick:
+# lipstick :lipstick: 💄
 
 This projects aims to build basic and clean visualization of
 swagger definitions.

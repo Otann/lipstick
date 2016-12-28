@@ -1,30 +1,18 @@
-# lipstick :lipstick: 💄
+# lipstick :lipstick:
 
-This projects aims to build basic and clean visualization of
-swagger definitions.
+Lipstick is a UI for your [Swagger][swagger] API definitions
+ 
+![Screenshot](https://otann.github.io/lipstick/lipstick_demo.png)
+ 
 
-Current progress is shown at [http://otann.github.com/lipstick/progress](http://otann.github.com/lipstick/progress)
+Check demo at [http://otann.github.com/lipstick/progress](http://otann.github.com/lipstick/progress)
 
-Objective:
-- single js+html file
-- copy-pastable representation of data structures
-- outline with endpoints
-- "try" button with sane output (status, headers, explore body)
-- auth support (bearer module)
-- include examples for friboo, play, spring-boot
+## Main Features
 
-Inner projects:
-- Data Explorer with collapsible structure
-- Visual HTTP client
-- Bearer configuration
-
-Future scope:
-- search across document
-- API aggregator (dynamic sources, search?)
-- other auth options (declare intention to accept PR)
-
-Out of scope decisions:
-- configuration (everything should be in /swagger.yaml)
+- Provide single js+html bundle
+- Close to plain-text data presentation, ready to be copy-pasted to chat or email
+- Non-obstructive client to get live data from API
+- Optional configuration through `/lipstick.yaml` file
 
 ## Development Mode
 
@@ -52,3 +40,6 @@ To compile clojurescript to javascript:
 
     lein clean
     lein cljsbuild once min
+    
+    
+[swagger]: http://swagger.io/    

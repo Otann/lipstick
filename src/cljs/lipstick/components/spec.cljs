@@ -39,7 +39,7 @@
     [:tbody
      (-> (for [[code data] responses]
            [:tr.response
-            [:td.status.tag [:span.label {:class (str "xx" (-> code name first))} code]]
+            [:td.status.tag [:span.label {:class (str "code" (-> code name first) "xx")} code]]
             [:td.description (:description data)]
             [:td.format [schema "body" (:schema data) full-spec true]]])
          (doall)
@@ -134,32 +134,35 @@
 
 (defn swagger-spec
   "Renders full swagger spec"
-  [spec-data]
-  (let [title (get-in spec-data [:info :title])
-        description (get-in spec-data [:info :description])
-        tags (:tags spec-data)
-        all-paths (:paths spec-data)]
-    [:div.spec
-     [:h1.title [:a.lipstick-logo {:href "https://github.com/Otann/lipstick"} "\uD83D\uDC84 "] title]
-     [:div.description (markdown->div description)]
+  [{:keys [info tags paths] :as spec-data}]
+  [:div.spec
+   [:h1.title
+    [:a.lipstick-logo {:href "https://github.com/Otann/lipstick"} "\uD83D\uDC84 "]
+    (:title info)]
+   [:div.description (markdown->div (:description info))]
+   [:div.meta
+    [:ul
+     (when-let [version (:version info)]
+       [:li [:span.label "Version: "] [:code version]])
+     (when-let [contact (:contact info)]
+       [:li [:span.label "Contact: "] [:a {:href (str "mailto:" (:email contact))} (:email contact)]])
+     (when-let [license (:license info)]
+       [:li [:span.label "License: "] [:a {:href (:url license)} (:name license)]])
+     (when-let [tos (:termsOfService info)]
+       [:li [:span.label [:a {:href tos} "Terms of Service"]]])]]
 
-     (if (not-empty tags)
-       [:div.tags
-        (doall (for [tag-data tags]
-                 ^{:key (:name tag-data)}
-                 [path-tag tag-data all-paths spec-data]))
-        ; Append paths that has no tags assigned
-        (let [paths-data (flatten-paths all-paths #(empty? (:tags %)))]
-          (if (not-empty paths-data)
-            [path-tag {:name "Without tags"} paths-data spec-data]))]
 
-       [:div.no-tags
-        [paths (flatten-paths all-paths) spec-data]])
+   (if (not-empty tags)
+     [:div.tags
+      (doall (for [tag-data tags]
+               ^{:key (:name tag-data)}
+               [path-tag tag-data paths spec-data]))
+      ; Append paths that has no tags assigned
+      (let [paths-data (flatten-paths paths #(empty? (:tags %)))]
+        (if (not-empty paths-data)
+          [path-tag {:name "Without tags"} paths-data spec-data]))]
 
-     [:div.definitions
-      [:h2.title "Definitions"]
-      (doall (for [[schema-name schema-data] (:definitions spec-data)]
-               ^{:key schema-name}
-               [schema schema-name schema-data spec-data]))]]))
+     [:div.no-tags
+      [paths (flatten-paths paths) spec-data]])])
 
 

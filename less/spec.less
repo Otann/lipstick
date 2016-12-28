@@ -1,7 +1,23 @@
 @import "common";
 
-.spec > .description {
-  padding: .5em 0 1em 0;
+.spec {
+  & > .description {
+    padding: .5em 0 1em 0;
+  }
+  & > .meta {
+    font-size: .85em;
+    margin-bottom: 1em;
+    code {
+      font-size: 1em;
+    }
+    ul {
+      list-style-type: none;
+    }
+
+    span.label {
+      font-weight: bold;
+    }
+  }
 }
 
 
@@ -10,9 +26,11 @@
 }
 .tag {
   @tag-font-size: 1.35em;
+  margin-bottom: .75em;
 
   .tag-label {
     font-size: @tag-font-size;
+    font-style: italic;
 
     display: inline-block;
     padding-bottom: .3em;
@@ -42,7 +60,10 @@
   .path-title {
 
     .method {
-      color: white;
+      //color: white;
+      border: solid 1px #ddd;
+      background-color: @gh-gray-light;
+
       font-size: .8em;
       font-weight: bold;
       text-transform: uppercase;
@@ -52,17 +73,23 @@
       padding: .4em;
       border-radius: .3em;
 
-      &.put {  background-color: @gh-orange;  }
-      &.get {  background-color: @gh-blue;  }
-      &.post {  background-color: @gh-green;  }
-      &.head {  background-color: @gh-purple;  }
-      &.delete {  background-color: @gh-red;  }
+      &.put {  color: @gh-orange;  }
+      &.get {  color: @gh-blue;  }
+      &.post {  color: @gh-green;  }
+      &.head {  color: @gh-purple;  }
+      &.delete {  color: @gh-red;  }
+
+      //&.put {  background-color: @gh-orange;  }
+      //&.get {  background-color: @gh-blue;  }
+      //&.post {  background-color: @gh-green;  }
+      //&.head {  background-color: @gh-purple;  }
+      //&.delete {  background-color: @gh-red;  }
     }
 
     .path-name {
       font-family: @monospaced;
-      //font-weight: bold;
-      //color: #444;
+      font-weight: bold;
+      color: #333;
       //background-color: #6cc644;
     }
 
@@ -105,15 +132,15 @@
         color: #444;
         background-color: #eee;
 
-        &.xx2 {
+        &.code2xx {
           color: white;
           background-color: @gh-green;
         }
-        &.xx4 {
+        &.code4xx {
           color: white;
           background-color: @gh-purple;
         }
-        &.xx5 {
+        &.code5xx {
           color: white;
           background-color: @gh-red;
         }
@@ -129,11 +156,11 @@
 
   }
 
-  .parameter > .required{
+  .parameter > .required {
     font-weight: bold;
     position: relative;
-    top: .3em;
-    font-size: 1.1em;
+    top: .05em;
+    font-size: 1.3em;
     color: @gh-red;
   }
 }

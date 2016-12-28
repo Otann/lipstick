@@ -5,9 +5,11 @@
 (defn collapsible
   "Type2 Reagent component that can collapse
   it's content between two labels"
-  [{:keys [collapsed class ellipsis tail arrow-class]
-    :or {collapsed true}}
-   _ _ _]
+  [{:keys [collapsed class ellipsis tail arrow-class arrow-open arrow-collapsed]
+    :or {collapsed true
+         arrow-open "-"
+         arrow-collapsed "+"}}
+   _ _]
   (let [collapsed (r/atom collapsed)]
     (fn [_ open-label children]
       ; todo: consider using .no-arrow
@@ -17,9 +19,8 @@
         {:on-click #(swap! collapsed not)}
         (when (not-empty children)
           [:div.collapsible-view_arrow
-           {:class (join-classes
-                     arrow-class
-                     (when @collapsed "collapsible-view_arrow-collapsed"))}])
+           {:class arrow-class}
+           (str (if @collapsed arrow-collapsed arrow-open) " ")])
         [:span.open-label open-label]
         (when @collapsed [:span.close-label ellipsis tail])]
        [:div.collapsible-view_children
@@ -33,7 +34,6 @@
              (with-keys children)
              children)])
         [:div tail]]])))
-
 
 (comment
 

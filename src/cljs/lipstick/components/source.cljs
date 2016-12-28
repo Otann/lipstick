@@ -16,23 +16,24 @@
         on-click #(do (rf/dispatch [:load-swagger-spec @url])
                       (.preventDefault %))]
     (fn []
-      (if @files
-        [:form.config
-         #_[:label "Spec options:"]
-         [:div.input-group.input-block
-          [:select.form-select
-           {:on-change #(let [src (-> % .-target .-value)]
-                         (log/debug "changed" src "url")
-                         (rf/dispatch [:load-swagger-spec src])
-                         )}
-           (doall (for [{:keys [name src]} @files]
-                    ^{:key name}
-                    [:option {:value src} name]))]]]
-        [:form
-         [:div.input-group
-          [atom-input url {:class "form-control"
-                           :type "text"
-                           :id "source"}]
-          [:div.input-group-button
-           [:button.btn {:type "submit"
-                         :on-click on-click} "Load Spec"]]]]))))
+      [:div.source
+       (if @files
+         [:form
+          [:div.input-group.input-block
+           [:select.form-select
+            {:on-change #(let [src (-> % .-target .-value)]
+                          (log/debug "changed" src "url")
+                          (rf/dispatch [:load-swagger-spec src])
+                          )}
+            (doall (for [{:keys [name src]} @files]
+                     ^{:key name}
+                     [:option {:value src} name]))]]]
+         [:form.source
+          [:div.input-group.small
+           [atom-input url {:class "form-control input-sm"
+                            :type "text"
+                            :id "source"}]
+           [:div.input-group-button
+            [:button.btn {:type "submit"
+                          :class "btn-sm"
+                          :on-click on-click} "Reload Spec"]]]])])))

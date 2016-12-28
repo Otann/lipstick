@@ -16,27 +16,25 @@
   "Important! Must be run inside go-block"
   [url]
   ; TODO: handle error and return null
-  (go (-> url
-          (http/get)
-          (<!)
-          (:body)
-          (parse-yaml)
-          (js->clj :keywordize-keys true))))
+  (go (let [{:keys [status body]} (<! (http/get url))]
+        (if (< status 300)
+          (-> body
+              (parse-yaml)
+              (js->clj :keywordize-keys true))))))
 
 (defn fetch-spec [url]
-  (go (let [spec (<! (get-file url))]
+  (go (when-let [spec (<! (get-file url))]
         (log/debug "Received spec from" url ", dispatching event" spec)
         (rf/dispatch [:set-swager-spec spec]))))
 
 (defn init-spec-async []
-  (go (try
-        (let [config (<! (get-file "lipstick.yaml"))
-              _ (log/debug "Loaded config: " config)
-              {:keys [name src]} (-> config :files first)]
+  (go (if-let [config (<! (get-file "lipstick.yaml"))]
+
+        (let [{:keys [name src]} (-> config :files first)]
+          (log/debug "Loaded config: " (js->clj config))
           (rf/dispatch [:set-config (assoc config :selected name)])
           (fetch-spec src))
-
-        (catch js/Error e
-          (log/info "No configuration lipstick.yaml was loaded, fallback to swagger.yaml source" e)
+        (do
+          (log/info "No configuration lipstick.yaml was loaded, fallback to swagger.yaml source")
           (fetch-spec "swagger.yaml")))))
 

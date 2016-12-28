@@ -2,7 +2,7 @@
 
 Lipstick is a UI for your [Swagger][swagger] API definitions
  
-![Screenshot](https://otann.github.io/lipstick/lipstick_demo.png)
+[![Screenshot](https://otann.github.io/lipstick/lipstick_demo.png)](http://otann.github.com/lipstick/progress)
  
 
 Check demo at [http://otann.github.com/lipstick/progress](http://otann.github.com/lipstick/progress)

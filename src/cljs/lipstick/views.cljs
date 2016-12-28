@@ -12,8 +12,10 @@
   (let [spec-data (rf/subscribe [:spec])]
     (fn []
       [:div.container
-       [source]
-       [swagger-spec @spec-data]])))
+       (if-let [spec @spec-data]
+         [swagger-spec spec]
+         [:p "loading spec..."])
+       [source]])))
 
 
 (defn about-page []

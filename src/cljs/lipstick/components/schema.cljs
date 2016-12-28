@@ -121,17 +121,15 @@
       [:div.field main-label tail-label])))
 
 (defn schema
-  "Renders schema definition (no $ref here)"
-  [schema-name-opt schema-raw root & collapsed]
+  "Renders schema definition"
+  [schema-name schema-raw full-spec & collapsed]
   (if schema-raw
-    (let [[deref-name schema-data] (deref-json schema-raw root)
-          children (schema-children schema-data root)]
+    (let [[deref-name schema-data] (deref-json schema-raw full-spec)
+          children (schema-children schema-data full-spec)]
       (if (not-empty children)
-        (let [
-              schema-name (or schema-name-opt deref-name)
+        (let [schema-name (or schema-name deref-name)
               is-required (->> schema-data :required (map keyword) set)
-              [open close] (brackets schema-data root)
-              ]
+              [open close] (brackets schema-data full-spec)]
           [collapsible {:class "schema"
                         :collapsed (or collapsed false)
                         :ellipsis ellipsis
@@ -139,5 +137,5 @@
            [:span [:span.schema-name schema-name] " " (:type schema-data) open]
            (doall (for [[field-name data] children]
                     ^{:key field-name}
-                    [field field-name (is-required field-name) data root]))])
+                    [field field-name (is-required field-name) data full-spec]))])
         [:span.schema (:type schema-raw)]))))

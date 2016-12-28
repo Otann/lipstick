@@ -2,7 +2,8 @@
   (:require [markdown.core :refer [md->html]]
             [lipstick.components.collapsible :refer [collapsible]]
             [lipstick.utils :refer [with-keys containsv?]]
-            [lipstick.components.schema :refer [schema deref-json]]))
+            [lipstick.components.schema :refer [schema deref-json]]
+            [taoensso.timbre :as log]))
 
 (defn markdown->div
   "Renders markdown string as reagent-compatible text"
@@ -153,7 +154,7 @@
             [path-tag {:name "Without tags"} paths-data spec-data]))]
 
        [:div.no-tags
-        [paths (flatten-paths all-paths)]])
+        [paths (flatten-paths all-paths) spec-data]])
 
      [:div.definitions
       [:h2.title "Definitions"]

@@ -13,6 +13,7 @@
    :debug js/console.debug,
    :trace js/console.trace})
 
+
 (def devtools-appender
   "Simple js/console appender which avoids pr-str
   and uses cljs-devtools to format output"
@@ -27,6 +28,7 @@
            vargs (list* (str ?ns-str ":") (force vargs_))
            f (devtools-level-to-fn level js/console.log)]
        (.apply f js/console (to-array vargs))))})
+
 
 (when (= "Google Inc." js/navigator.vendor)
   (log/merge-config! {:appenders {:console devtools-appender}}))

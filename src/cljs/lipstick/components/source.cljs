@@ -9,7 +9,7 @@
                  :value @atom
                  :on-change #(reset! atom (-> % .-target .-value))})])
 
-(defn config []
+(defn source []
   (let [url (r/atom "swagger.yaml")
         config (rf/subscribe [:config])
         files (r/reaction (:files @config))

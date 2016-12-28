@@ -33,3 +33,16 @@
              (with-keys children)
              children)])
         [:div tail]]])))
+
+
+(comment
+
+  [collapsible {:collapsed false
+                :class "schema"
+                :ellipsis "..."
+                :tail "}"
+                :arrow-class "arrow"}
+   "{"
+   [:p "This paragraph is enclosed in {}"]]
+
+  )

@@ -5,14 +5,14 @@
             [lipstick.utils :refer [with-keys]]
             [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.components.schema :refer [schema]]
-            [taoensso.timbre :as log]
-            [lipstick.components.source :refer [config]]))
+            [lipstick.components.source :refer [source]]))
+
 
 (defn home-page []
   (let [spec-data (rf/subscribe [:spec])]
     (fn []
       [:div.container
-       [config]
+       [source]
        [swagger-spec @spec-data]])))
 
 
@@ -27,6 +27,7 @@
         (doall (for [[schema-name schema-data] (:definitions @spec-data)]
                  ^{:key schema-name}
                  [schema schema-name schema-data @spec-data]))]])))
+
 
 (defn show-page
   [page-name]

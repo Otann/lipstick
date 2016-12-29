@@ -1,5 +1,6 @@
-(ns lipstick.config
-  (:require [taoensso.timbre :as log]))
+(ns lipstick.impl.dev
+  (:require [taoensso.timbre :as log]
+            [devtools.core :as devtools]))
 
 
 (def debug? ^boolean js/goog.DEBUG)
@@ -29,8 +30,14 @@
            f (devtools-level-to-fn level js/console.log)]
        (.apply f js/console (to-array vargs))))})
 
+(defn init []
+  (when debug?
+    (enable-console-print!)
+    (println "dev mode")
+    (devtools/install! [:formatters :hints])
+    (when (= "Google Inc." js/navigator.vendor)
+      (log/merge-config! {:appenders {:console devtools-appender}}))))
 
-(when (= "Google Inc." js/navigator.vendor)
-  (log/merge-config! {:appenders {:console devtools-appender}}))
+
 
 

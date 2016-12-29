@@ -25,7 +25,7 @@
   (:require [goog.string :as gstring]
             [clojure.string :as str]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.utils :refer [with-keys]]))
+            [lipstick.impl.utils :refer [with-keys]]))
 
 (def ellipsis
   "A constant to use to indicate collapsed state"

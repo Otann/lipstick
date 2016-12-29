@@ -2,15 +2,17 @@
   (:require [re-frame.core :as rf]
             [reagent.ratom :as r]
             [lipstick.routes :refer [url-for]]
-            [lipstick.utils :refer [with-keys]]
+            [lipstick.impl.utils :refer [with-keys]]
             [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.components.schema :refer [schema]]
-            [lipstick.components.source :refer [source]]))
+            [lipstick.components.source :refer [source]]
+            [taoensso.timbre :as log]))
 
 
 (defn home-page []
   (let [spec-data (rf/subscribe [:spec])]
     (fn []
+      (log/debug "Rendering home page")
       [:div.container
        (if-let [spec @spec-data]
          [swagger-spec spec]
@@ -42,4 +44,6 @@
 
 (defn main-panel []
   (let [active-page (rf/subscribe [:active-page])]
-    (fn [] [show-page @active-page])))
+    (fn []
+      (log/debug "Returning vdom for main panel")
+      [show-page @active-page])))

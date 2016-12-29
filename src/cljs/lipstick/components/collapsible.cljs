@@ -1,6 +1,6 @@
 (ns lipstick.components.collapsible
   (:require [reagent.core :as r]
-            [lipstick.utils :refer [with-keys join-classes]]))
+            [lipstick.impl.utils :refer [with-keys join-classes]]))
 
 (defn collapsible
   "Type2 Reagent component that can collapse

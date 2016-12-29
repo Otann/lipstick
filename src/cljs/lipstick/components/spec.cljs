@@ -1,9 +1,8 @@
 (ns lipstick.components.spec
   (:require [markdown.core :refer [md->html]]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.utils :refer [with-keys containsv?]]
-            [lipstick.components.schema :refer [schema deref-json]]
-            [taoensso.timbre :as log]))
+            [lipstick.impl.utils :refer [with-keys containsv?]]
+            [lipstick.components.schema :refer [schema deref-json]]))
 
 (defn markdown->div
   "Renders markdown string as reagent-compatible text"
@@ -91,16 +90,14 @@
       [responses resps full-spec])]])
 
 
-
-
 (defn flatten-paths
-  "Turns nested path-method structure to plain vector"
-  ([all-paths] (flatten-paths all-paths nil))
+  "Turns nested path-method structure to plain vector.
+  Allows to pass predicate to filter certain paths"
+  ([all-paths] (flatten-paths all-paths (constantly true)))
   ([all-paths predicate]
    (->> (for [[path-name methods] all-paths]
           (for [[method-name path-spec] methods]
-            (if (or (not predicate)
-                    (predicate path-spec))
+            (if (predicate path-spec)
               {:method method-name
                :name path-name
                :spec path-spec})))
@@ -150,9 +147,9 @@
        [:li [:span.label "License: "] [:a {:href (:url license)} (:name license)]])
      (when-let [tos (:termsOfService info)]
        [:li [:span.label [:a {:href tos} "Terms of Service"]]])]]
-
-
-   (if (not-empty tags)
+   (if (empty? tags)
+     [:div.no-tags
+      [paths (flatten-paths paths) spec-data]]
      [:div.tags
       (doall (for [tag-data tags]
                ^{:key (:name tag-data)}
@@ -160,9 +157,6 @@
       ; Append paths that has no tags assigned
       (let [paths-data (flatten-paths paths #(empty? (:tags %)))]
         (if (not-empty paths-data)
-          [path-tag {:name "Without tags"} paths-data spec-data]))]
-
-     [:div.no-tags
-      [paths (flatten-paths paths) spec-data]])])
+          [path-tag {:name "Without tags"} paths-data spec-data]))])])
 
 

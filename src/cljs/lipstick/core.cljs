@@ -1,30 +1,23 @@
 (ns lipstick.core
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
-            [devtools.core :as devtools]
             [lipstick.routes :as routes]
             [lipstick.views :as views]
-            [lipstick.config :as config]
-            [lipstick.swagger :as swagger]
             [lipstick.handlers]
-            [lipstick.subscriptions]))
-
-
-(defn dev-setup []
-  (when config/debug?
-    (enable-console-print!)
-    (println "dev mode")
-    (devtools/install! [:formatters :hints])))
+            [lipstick.subscriptions]
+            [lipstick.impl.dev :as dev]
+            [taoensso.timbre :as log]))
 
 
 (defn mount-root []
   (reagent/render [views/main-panel]
-                  (.getElementById js/document "app")))
+                  (.getElementById js/document "app")
+                  #(log/debug "Render callback")))
 
 
 (defn ^:export init []
+  (dev/init)
   (re-frame/dispatch-sync [:initialize-db])
   (routes/init-routes)
-  (swagger/init-spec-async)
-  (dev-setup)
+  (log/debug "Completed initialization, mounting root")
   (mount-root))

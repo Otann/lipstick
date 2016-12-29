@@ -1,4 +1,4 @@
-(ns lipstick.utils)
+(ns lipstick.impl.utils)
 
 
 (defn join-classes [& classes]

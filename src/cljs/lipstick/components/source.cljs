@@ -10,7 +10,7 @@
                  :on-change #(reset! atom (-> % .-target .-value))})])
 
 (defn source []
-  (let [url (r/atom "swagger.yaml")
+  (let [url (r/atom "swagger.yaml")                         ; get this from config
         config (rf/subscribe [:config])
         files (r/reaction (:files @config))
         on-click #(do (rf/dispatch [:load-swagger-spec @url])
@@ -23,8 +23,7 @@
            [:select.form-select
             {:on-change #(let [src (-> % .-target .-value)]
                           (log/debug "changed" src "url")
-                          (rf/dispatch [:load-swagger-spec src])
-                          )}
+                          (rf/dispatch [:load-swagger-spec src]))}
             (doall (for [{:keys [name src]} @files]
                      ^{:key name}
                      [:option {:value src} name]))]]]

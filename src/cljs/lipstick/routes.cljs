@@ -11,7 +11,7 @@
 
 
 (def routes ["#/" {""      :home-page
-                    "about" :about-page}])
+                   "about" :about-page}])
 
 
 (defn dispatch-path [dispatch-fn path]

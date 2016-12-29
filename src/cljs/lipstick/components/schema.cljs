@@ -134,7 +134,7 @@
                         :collapsed (or collapsed false)
                         :ellipsis ellipsis
                         :tail close}
-           [:span [:span.schema-name schema-name] " " (:type schema-data) open]
+           [:span (when schema-name [:span.schema-name schema-name " "]) (:type schema-data) open]
            (doall (for [[field-name data] children]
                     ^{:key field-name}
                     [field field-name (is-required field-name) data full-spec]))])

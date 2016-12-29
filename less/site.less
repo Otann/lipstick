@@ -1,5 +1,5 @@
 @import "common";
-@import 'https://code.cdn.mozilla.net/fonts/fira.css';
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,700|Fira+Sans:400,400i,700,700i');
 @import "collapsible";
 @import "schema";
 @import "spec";
@@ -16,9 +16,18 @@ body {
 }
 
 code {
-  font-family: @monospaced;
+  font-family: @mono-font;
 }
 
+a.lipstick-logo,
 a.lipstick-logo:hover {
   text-decoration: none;
+}
+
+.container {
+  position: relative;
+}
+
+h1, h2, h3, h4 {
+  font-family: @accent-font;
 }

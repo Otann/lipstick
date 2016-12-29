@@ -18,7 +18,7 @@
        [:div.collapsible-view_item
         {:on-click #(swap! collapsed not)}
         (when (not-empty children)
-          [:div.collapsible-view_arrow
+          [:span.collapsible-view_arrow
            {:class arrow-class}
            (str (if @collapsed arrow-collapsed arrow-open) " ")])
         [:span.open-label open-label]

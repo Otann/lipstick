@@ -10,14 +10,15 @@
                  :on-change #(reset! atom (-> % .-target .-value))})])
 
 (defn source []
-  (let [url (r/atom "swagger.yaml")                         ; get this from config
+  (let [url (r/atom "swagger.yaml")
         config (rf/subscribe [:config])
         files (r/reaction (:files @config))
         on-click #(do (rf/dispatch [:load-swagger-spec @url])
                       (.preventDefault %))]
     (fn []
       [:div.source
-       (if @files
+       (if (and (not-empty @files)
+                (second @files))
          [:form
           [:div.input-group.input-block
            [:select.form-select
@@ -27,7 +28,7 @@
             (doall (for [{:keys [name src]} @files]
                      ^{:key name}
                      [:option {:value src} name]))]]]
-         [:form.source
+         #_[:form.source
           [:div.input-group.small
            [atom-input url {:class "form-control input-sm"
                             :type "text"
@@ -35,4 +36,5 @@
            [:div.input-group-button
             [:button.btn {:type "submit"
                           :class "btn-sm"
-                          :on-click on-click} "Reload Spec"]]]])])))
+                          :on-click on-click}
+             "Reload Spec"]]]])])))

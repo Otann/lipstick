@@ -14,10 +14,10 @@
     (fn []
       (log/debug "Rendering home page")
       [:div.container
+       [source]
        (if-let [spec @spec-data]
          [swagger-spec spec]
-         [:p "loading spec..."])
-       [source]])))
+         [:p "loading spec..."])])))
 
 
 (defn about-page []

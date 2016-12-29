@@ -29,6 +29,7 @@
   margin-bottom: .75em;
 
   .tag-label {
+    font-family: @accent-font;
     font-size: @tag-font-size;
     font-style: italic;
 
@@ -44,7 +45,7 @@
   }
 
   & .collapsible-view_arrow {
-    font-family: @monospaced;
+    font-family: @mono-font;
   }
   & > .collapsible-view_item > .collapsible-view_arrow {
     font-size: @tag-font-size;
@@ -58,6 +59,9 @@
   padding-bottom: .5em;
 
   .path-title {
+    &, code {
+      font-family: @spec-font;
+    }
 
     .method {
       //color: white;
@@ -87,7 +91,6 @@
     }
 
     .path-name {
-      font-family: @monospaced;
       font-weight: bold;
       color: #333;
       //background-color: #6cc644;
@@ -122,9 +125,8 @@
     }
 
     .tag {
-      //display: inline-block;
       text-align: center;
-      font-family: @monospaced;
+      font-family: @mono-font;
       width: 3rem;
 
       .label {
@@ -145,23 +147,31 @@
           background-color: @gh-red;
         }
 
-        padding: 1px 5px;
+        padding: 3px 5px 0 5px;
 
         border-radius: .2em;
         font-size: .7em;
         font-weight: bold;
-
       }
     }
 
+
+  }
+  .format {
+    code, .schema {
+      font-family: @spec-font;
+      font-size: .85em;
+    }
   }
 
   .parameter > .required {
     font-weight: bold;
-    position: relative;
-    top: .05em;
-    font-size: 1.3em;
+    font-family: @spec-font;
     color: @gh-red;
+    position: relative;
+    top: .75em;
+    line-height: .1em;
+    font-size: 1.4em;
   }
 }
 

@@ -40,7 +40,7 @@
            [:tr.response
             [:td.status.tag [:span.label {:class (str "code" (-> code name first) "xx")} code]]
             [:td.description (:description data)]
-            [:td.format [schema "body" (:schema data) full-spec true]]])
+            [:td.format [schema nil (:schema data) full-spec true]]])
          (doall)
          (with-keys))]]])
 
@@ -125,13 +125,13 @@
      [:span.tag-label
       [:span.name tag-name]
       (when-let [description (:description tag-data)]
-        [:span.description " : " description])]
+        [:span.description ": " description])]
      [paths paths-data full-spec]]))
 
 
 (defn swagger-spec
   "Renders full swagger spec"
-  [{:keys [info tags paths] :as spec-data}]
+  [{:keys [info tags] paths-data :paths :as spec-data}]
   [:div.spec
    [:h1.title
     [:a.lipstick-logo {:href "https://github.com/Otann/lipstick"} "\uD83D\uDC84 "]
@@ -142,20 +142,23 @@
      (when-let [version (:version info)]
        [:li [:span.label "Version: "] [:code version]])
      (when-let [contact (:contact info)]
-       [:li [:span.label "Contact: "] [:a {:href (str "mailto:" (:email contact))} (:email contact)]])
+       (for [[name value] contact]
+         [:li [:span.label "Contact: "] (if (= name :email)
+                                          [:a {:href (str "mailto:" name)} value]
+                                          [:span value])]))
      (when-let [license (:license info)]
        [:li [:span.label "License: "] [:a {:href (:url license)} (:name license)]])
      (when-let [tos (:termsOfService info)]
        [:li [:span.label [:a {:href tos} "Terms of Service"]]])]]
    (if (empty? tags)
      [:div.no-tags
-      [paths (flatten-paths paths) spec-data]]
+      [paths (flatten-paths paths-data) spec-data]]
      [:div.tags
       (doall (for [tag-data tags]
                ^{:key (:name tag-data)}
-               [path-tag tag-data paths spec-data]))
+               [path-tag tag-data paths-data spec-data]))
       ; Append paths that has no tags assigned
-      (let [paths-data (flatten-paths paths #(empty? (:tags %)))]
+      (let [paths-data (flatten-paths paths-data #(empty? (:tags %)))]
         (if (not-empty paths-data)
           [path-tag {:name "Without tags"} paths-data spec-data]))])])
 

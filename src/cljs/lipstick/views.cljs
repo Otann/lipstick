@@ -6,6 +6,7 @@
             [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.components.schema :refer [schema]]
             [lipstick.components.source :refer [source]]
+            [lipstick.components.auth :refer [auth-control]]
             [taoensso.timbre :as log]))
 
 
@@ -14,7 +15,9 @@
     (fn []
       (log/debug "Rendering home page")
       [:div.container
-       [source]
+       [:div.controls
+        [auth-control]
+        [source]]
        (if-let [spec @spec-data]
          [swagger-spec spec]
          [:p "loading spec..."])])))

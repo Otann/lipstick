@@ -4,6 +4,7 @@
 @import "schema";
 @import "spec";
 @import "source";
+@import "auth";
 
 @import "markdown";
 @import "https://cdn.jsdelivr.net/primer/3.0.1/primer.css";
@@ -30,4 +31,14 @@ a.lipstick-logo:hover {
 
 h1, h2, h3, h4 {
   font-family: @accent-font;
+}
+
+.controls {
+  position: absolute;
+  right: .2rem;
+  top: .2rem;
+  margin-bottom: 1rem;
+  * {
+    display: inline-block;
+  }
 }

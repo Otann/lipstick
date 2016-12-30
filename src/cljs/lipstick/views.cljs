@@ -39,6 +39,7 @@
     :root       [home-page]
     :home-page  [home-page]
     :about-page [about-page]
+    :auth [:p "auth page"]
     [:div (str "404? - " page-name)]))
 
 

@@ -28,7 +28,6 @@
 
 (rf/reg-event-db :set-swager-spec
   (fn [db [_ spec]]
-    (log/debug "Setting spec")
     (assoc db :spec spec)))
 
 
@@ -40,3 +39,10 @@
             (log/debug "Dispatching spec")
             (rf/dispatch [:set-swager-spec spec])))
       (assoc db :config config))))
+
+
+(rf/reg-event-db :set-auth
+  (fn [db [_ auth]]
+    (log/debug "Setting auth to" auth)
+    (rf/dispatch [:set-active-page :home-page])
+    (assoc db :auth auth)))

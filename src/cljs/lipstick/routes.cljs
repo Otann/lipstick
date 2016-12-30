@@ -7,14 +7,26 @@
             [re-frame.core :as rf]
             [clojure.string :refer [blank? starts-with?]]
             [clojure.test :refer [function?]]
-            [bidi.bidi :as bidi]))
+            [bidi.bidi :as bidi]
+            [clojure.string :as str]))
+
+
+(defn handle-token [path]
+  (let [pairs (for [pair (str/split path #"&")]
+                (let [[k v] (str/split pair #"=")]
+                  [(keyword k) v]))
+        query (into {} pairs)]
+    (rf/dispatch [:set-auth query])))
 
 
 (def routes ["#/" {""      :home-page
                    "about" :about-page}])
 
 
-(defn dispatch-path [dispatch-fn path]
+(defn dispatch-path
+  "Dispatches active handler from routes mapping.
+  Dispatch can be rf/dispatch or rf/dispatch-sync."
+  [dispatch-fn path]
   (let [handler (->> path
                      (bidi/match-route routes)
                      (:handler))]
@@ -22,16 +34,16 @@
 
 
 (defn navigate-hook [event]
-  (let [raw-path (-> event .-token)
-        path (if (blank? raw-path)
-               "#/" (str "#" raw-path) )]
-    (dispatch-path rf/dispatch path)))
+  (let [path (-> event .-token)]
+    (cond
+      (str/includes? path "access_token=") (handle-token path)
+      (blank? path) (dispatch-path rf/dispatch "#/")
+      :else         (dispatch-path rf/dispatch path))))
 
 
 (defn navigate-sync [window]
   (let [raw-path (-> window .-location .-hash)
-        path (if (blank? raw-path)
-               "#/" raw-path)]
+        path (if (blank? raw-path) "#/" raw-path)]
     (dispatch-path rf/dispatch-sync path)))
 
 

@@ -143,6 +143,7 @@
        [:li [:span.label "Version: "] [:code version]])
      (when-let [contact (:contact info)]
        (for [[name value] contact]
+         ^{:key name}
          [:li [:span.label "Contact: "] (if (= name :email)
                                           [:a {:href (str "mailto:" name)} value]
                                           [:span value])]))

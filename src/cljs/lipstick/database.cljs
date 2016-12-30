@@ -9,4 +9,5 @@
   {:name "re-frame"
    :active-page nil
    :config nil
-   :spec nil})
+   :spec nil
+   :auth nil})

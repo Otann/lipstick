@@ -1,5 +1,7 @@
 @import "common";
 
+@hover-background: rgba(213, 211, 34, 0.1);
+
 .spec {
   & > .description {
     padding: .5em 0 1em 0;
@@ -29,7 +31,7 @@
   margin-bottom: .75em;
 
   &:hover .tag-label {
-    background-color: rgba(213, 211, 34, 0.51);
+    background-color: @hover-background;
   }
 
   .tag-label {
@@ -39,7 +41,6 @@
     font-style: italic;
 
     display: inline-block;
-    margin-bottom: .3em;
 
     .name {
       font-weight: bold;
@@ -57,7 +58,7 @@
 
 .path {
   &:hover .path-name {
-    background-color: rgba(213, 211, 34, 0.51);
+    background-color: @hover-background;
   }
 
   @method-width: 4.5em;
@@ -103,7 +104,7 @@
     padding-bottom: 1.5em;
     padding-top: .5em;
 
-    .description {
+    & > .description {
       font-size: .9em;
       font-style: italic;
       color: @gh-gray-dark;

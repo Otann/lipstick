@@ -1,13 +1,16 @@
-@indent: 14px;
+@indent: 1em;
 
 /* the tree node's style */
 .collapsible {
   overflow-y: hidden;
+  padding-left: @indent;
 }
 
 .collapsible-view_item {
+  position: relative;
   cursor: pointer;
   /* immediate child of .collapsible-view, for styling convenience */
+  //background-color: #6cc644;
 }
 
 
@@ -21,15 +24,20 @@
 }
 
 .collapsible-view_arrow {
-  cursor: pointer;
+  padding: .1em;
+  position: absolute;
+  bottom: 0;
+  left: -@indent;
   width: @indent;
+  //text-align: center;
+  cursor: pointer;
   display: inline-block;
   //-webkit-user-select: none;
   //-moz-user-select: none;
   //-ms-user-select: none;
   //user-select: none;
+  //background-color: #ed6a43;
 }
-
 
 .collapsible-view_arrow {
   font-family: @mono-font;

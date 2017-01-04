@@ -20,7 +20,7 @@
         (when (not-empty children)
           [:div.collapsible-view_arrow
            {:class arrow-class}
-           (str (if @collapsed arrow-collapsed arrow-open) " ")])
+           (str (if @collapsed arrow-collapsed arrow-open))])
         [:span.open-label open-label]
         (when @collapsed [:span.close-label ellipsis tail])]
        [:div.collapsible-view_children
@@ -43,4 +43,4 @@
                 :tail "}"
                 :arrow-class "arrow"}
    "{"
-   [:p "This paragraph is enclosed in {}"]])
+   [:p "This paragraph is enclosed"]])

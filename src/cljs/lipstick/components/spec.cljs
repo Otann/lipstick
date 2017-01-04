@@ -67,9 +67,9 @@
    [:table
     [:tbody
      (for [param-raw parameters]
-       (let [[_ param] (deref-json param-raw full-spec)]
-         ^{:key (:name param)}
-         [parameter param full-spec]))]]])
+       (let [[_ param-data] (deref-json param-raw full-spec)]
+         ^{:key (:name param-data)}
+         [parameter param-data full-spec]))]]])
 
 
 (defn path

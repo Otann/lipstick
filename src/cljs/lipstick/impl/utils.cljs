@@ -1,5 +1,10 @@
 (ns lipstick.impl.utils)
 
+(defn after-now [seconds]
+  (let [now (js/Date.)
+        sec (+ seconds (.getSeconds now))]
+    (.setSeconds now sec)))
+
 
 (defn join-classes [& classes]
   (-> classes

@@ -18,7 +18,7 @@
        [:div.collapsible-view_item
         {:on-click #(swap! collapsed not)}
         (when (not-empty children)
-          [:span.collapsible-view_arrow
+          [:div.collapsible-view_arrow
            {:class arrow-class}
            (str (if @collapsed arrow-collapsed arrow-open) " ")])
         [:span.open-label open-label]
@@ -36,13 +36,11 @@
         [:div tail]]])))
 
 (comment
-
+  ; Example of usage
   [collapsible {:collapsed false
                 :class "schema"
                 :ellipsis "..."
                 :tail "}"
                 :arrow-class "arrow"}
    "{"
-   [:p "This paragraph is enclosed in {}"]]
-
-  )
+   [:p "This paragraph is enclosed in {}"]])

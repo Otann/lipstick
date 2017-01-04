@@ -13,6 +13,7 @@
                  [cljs-http "0.1.41"]                       ; http async client
                  [markdown-clj "0.9.89"]                    ; markdown parser
                  [cljsjs/js-yaml "3.3.1-0"]                 ; yaml parser
+                 [com.cemerick/url "0.1.1"]                 ; url parsing
                  ]
 
   :plugins [[lein-cljsbuild "1.1.4"]
@@ -30,7 +31,8 @@
 
   :npm {:dependencies [[primer-css "4.2.0"]]}
 
-  :figwheel {:css-dirs ["resources/public/css"]}
+  :figwheel {:css-dirs ["resources/public/css"]
+             :server-port 8080}
 
   :cljsbuild
   {:builds

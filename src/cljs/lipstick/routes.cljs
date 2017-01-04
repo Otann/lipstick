@@ -8,15 +8,17 @@
             [clojure.string :refer [blank? starts-with?]]
             [clojure.test :refer [function?]]
             [bidi.bidi :as bidi]
-            [clojure.string :as str]))
-
+            [clojure.string :as str]
+            [lipstick.impl.utils :as u]))
 
 (defn handle-token [path]
   (let [pairs (for [pair (str/split path #"&")]
                 (let [[k v] (str/split pair #"=")]
                   [(keyword k) v]))
-        query (into {} pairs)]
-    (rf/dispatch [:set-auth query])))
+        query (into {} pairs)
+        auth (assoc query :expires-after
+                          (u/after-now (:expires-in query)))]
+    (rf/dispatch [:set-auth auth])))
 
 
 (def routes ["#/" {""      :home-page

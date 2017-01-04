@@ -1,3 +1,5 @@
+@indent: 14px;
+
 /* the tree node's style */
 .collapsible {
   overflow-y: hidden;
@@ -10,8 +12,8 @@
 
 
 /* style for the children nodes container */
-.collapsible-view_children, .field {
-  margin-left: 14px;
+.collapsible-view_children {
+  margin-left: @indent;
 }
 
 .collapsible-view_children-collapsed {
@@ -20,7 +22,7 @@
 
 .collapsible-view_arrow {
   cursor: pointer;
-  margin-right: 6px;
+  width: @indent;
   display: inline-block;
   //-webkit-user-select: none;
   //-moz-user-select: none;
@@ -29,6 +31,6 @@
 }
 
 
-.collapsible.no-arrow > .collapsible-view_item > .collapsible-view_arrow {
-  display: none;
+.collapsible-view_arrow {
+  font-family: @mono-font;
 }

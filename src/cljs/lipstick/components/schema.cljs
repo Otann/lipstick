@@ -70,13 +70,15 @@
 (defn field-labels
   "Provides open and close labes that suits for for collapsible component.
   Like `parents: Optional array[object Person{ ... }]
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^
+  Returns                          [open-label     close-label]"
   [field-name is-required schema-name schema swag-root]
   (if-not schema
     [[:span.field-name field-name] nil]
     (let [[open close] (brackets schema swag-root)]
       [[:span.field-label {:class (if is-required "required" "optional")}
         [:span.field-name field-name] ": "
+        #_(when-let [description (:description schema)] [:span.description "/*" description "*/" [:br]])
         (when is-required [:span.star.tooltipped.tooltipped-n {:aria-label "required"} "*"])
         (when schema-name [:span [:span.schema-name schema-name] " "])
         [:span (:type schema)]

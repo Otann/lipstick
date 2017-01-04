@@ -28,13 +28,18 @@
   @tag-font-size: 1.35em;
   margin-bottom: .75em;
 
+  &:hover .tag-label {
+    background-color: rgba(213, 211, 34, 0.51);
+  }
+
   .tag-label {
+
     font-family: @accent-font;
     font-size: @tag-font-size;
     font-style: italic;
 
     display: inline-block;
-    padding-bottom: .3em;
+    margin-bottom: .3em;
 
     .name {
       font-weight: bold;
@@ -44,9 +49,6 @@
     }
   }
 
-  & .collapsible-view_arrow {
-    font-family: @mono-font;
-  }
   & > .collapsible-view_item > .collapsible-view_arrow {
     font-size: @tag-font-size;
     font-weight: bold;
@@ -54,6 +56,10 @@
 }
 
 .path {
+  &:hover .path-name {
+    background-color: rgba(213, 211, 34, 0.51);
+  }
+
   @method-width: 4.5em;
 
   padding-bottom: .5em;
@@ -64,10 +70,8 @@
     }
 
     .method {
-      //color: white;
-      border: solid 1px #ddd;
-      background-color: #fafafa;
-      text-align: right;
+      border: solid 1px #e0e0e0;
+      background-color: #f3f2f2;
 
       font-size: .8em;
       font-weight: bold;
@@ -83,12 +87,6 @@
       &.post {  color: @gh-green;  }
       &.head {  color: @gh-purple;  }
       &.delete {  color: @gh-red;  }
-
-      //&.put {  background-color: @gh-orange;  }
-      //&.get {  background-color: @gh-blue;  }
-      //&.post {  background-color: @gh-green;  }
-      //&.head {  background-color: @gh-purple;  }
-      //&.delete {  background-color: @gh-red;  }
     }
 
     .path-name {

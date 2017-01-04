@@ -1,5 +1,10 @@
 @import "common";
 
+@schema-name: @gh-purple;
+@description: #cdcdcd;
+@field-optional: @gh-blue;
+@field-required: @gh-orange;
+
 .schema {
   font-family: @mono-font;
   color: #444;
@@ -9,36 +14,34 @@
   }
 
   .optional {
-    color: #5f7892;
-  }
-
-  .required .star {
-    margin-right: .2em;
-    position: relative;
-    top: .3em;
-    line-height: .1em;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: @gh-red;
-  }
-
-  .field-label {
     .field-name {
-      color: #3e3ee2;
+      color: @field-optional;
+      //font-style: italic;
     }
+  }
 
-    &.unknown {
-      color: red;
+  .required {
+    .field-name {
+      color: @field-required;
       font-weight: bold;
+    }
+    .star {
+      margin-right: .2em;
+      position: relative;
+      top: .3em;
+      line-height: .1em;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: @field-required;
     }
   }
 
   .schema-name {
-    color: #733595;
+    color: @schema-name;
     font-weight: bold;
   }
 
   .description {
-    color: #cdcdcd;
+    color: @description;
   }
 }

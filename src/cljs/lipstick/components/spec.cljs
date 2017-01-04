@@ -76,7 +76,8 @@
   "Component that renders endpoint documentation"
   [path-name method spec full-spec]
   [collapsible {:collapsed true
-                :class "path"}
+                :class "path"
+                :arrow-class "path-title"}
    [:span.path-title
     [:code.method {:class method} method] " "
     [:span.path-name (rest (str path-name))]]
@@ -121,7 +122,8 @@
         paths-data (flatten-paths all-paths
                                   #(containsv? (:tags %) tag-name))]
     [collapsible {:collapsed false
-                  :class "tag"}
+                  :class "tag"
+                  :arrow-class "tag-label-arrow"}
      [:span.tag-label
       [:span.name tag-name]
       (when-let [description (:description tag-data)]

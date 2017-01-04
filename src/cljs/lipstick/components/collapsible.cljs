@@ -15,21 +15,21 @@
       ; todo: consider using .no-arrow
       [:div.collapsible
        {:class class}
-       [:div.collapsible-view_item
+       [:div.collapsible-label
         {:on-click #(swap! collapsed not)}
         (when (not-empty children)
-          [:div.collapsible-view_arrow
+          [:span.collapsible-arrow
            {:class arrow-class}
            (str (if @collapsed arrow-collapsed arrow-open))])
         [:span.open-label open-label]
         (when @collapsed [:span.close-label ellipsis tail])]
-       [:div.collapsible-view_children
-        {:class (when @collapsed "collapsible-view_children-collapsed")}
+       [:div.collapsible-children
+        {:class (when @collapsed "collapsible-children-collapsed")}
         ; Important!
         ; Do not remove condition to cover
         ; circular dependencies!
         (when-not @collapsed
-          [:div.collapsible-view_children-content
+          [:div.collapsible-children-content
            (if (-> children first seq?)
              (with-keys children)
              children)])

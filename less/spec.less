@@ -1,16 +1,16 @@
 @import "common";
 
-@hover-background: rgba(213, 211, 34, 0.1);
+@hover-background: #fff; //rgba(213, 211, 34, 0.1);
 
 .spec {
   & > .description {
-    padding: .5em 0 1em 0;
+    padding: .5rem 0 1rem 0;
   }
   & > .meta {
-    font-size: .85em;
-    margin-bottom: 1em;
+    font-size: .85rem;
+    margin-bottom: 1rem;
     code {
-      font-size: 1em;
+      font-size: .85rem;
     }
     ul {
       list-style-type: none;
@@ -24,23 +24,25 @@
 
 
 .tags {
-  padding-bottom: .5em;
+  padding-bottom: .5rem;
 }
 .tag {
-  @tag-font-size: 1.35em;
-  margin-bottom: .75em;
+  margin-bottom: .75rem;
 
   &:hover .tag-label {
     background-color: @hover-background;
   }
 
-  .tag-label {
-
+  .tag-label-arrow {
     font-family: @accent-font;
-    font-size: @tag-font-size;
-    font-style: italic;
+    font-size: 1.4rem;
+    left: -1.2rem;
+  }
 
-    display: inline-block;
+  .tag-label {
+    font-family: @accent-font;
+    font-size: 1.4rem;
+    font-style: italic;
 
     .name {
       font-weight: bold;
@@ -49,11 +51,6 @@
       color: #555;
     }
   }
-
-  & > .collapsible-view_item > .collapsible-view_arrow {
-    font-size: @tag-font-size;
-    font-weight: bold;
-  }
 }
 
 .path {
@@ -61,9 +58,9 @@
     background-color: @hover-background;
   }
 
-  @method-width: 4.5em;
+  @method-width: 4rem;
 
-  padding-bottom: .5em;
+  padding-bottom: .3rem;
 
   .path-title {
     &, code {
@@ -71,17 +68,17 @@
     }
 
     .method {
-      border: solid 1px #e0e0e0;
-      background-color: #f3f2f2;
+      border: solid 1px #ededed;
+      background-color: #fafafa;
 
-      font-size: .8em;
+      font-size: .8rem;
       font-weight: bold;
       text-transform: uppercase;
       text-align: center;
       display: inline-block;
       width: @method-width;
-      padding: .3em .4em .1em .4em;
-      border-radius: .3em;
+      padding: .2rem 0 .1rem 0;
+      border-radius: .3rem;
 
       &.put {  color: @gh-orange;  }
       &.get {  color: @gh-blue;  }
@@ -93,7 +90,6 @@
     .path-name {
       font-weight: bold;
       color: #333;
-      //background-color: #6cc644;
     }
 
   }
@@ -101,11 +97,11 @@
 
   .content {
     padding-left: @method-width;
-    padding-bottom: 1.5em;
-    padding-top: .5em;
+    padding-bottom: 1.5rem;
+    padding-top: .5rem;
 
     & > .description {
-      font-size: .9em;
+      font-size: .9rem;
       font-style: italic;
       color: @gh-gray-dark;
     }
@@ -113,7 +109,7 @@
 
   .parameters, .responses {
     .title {
-      margin-bottom: .3em;
+      margin-bottom: .3rem;
     }
 
     td {
@@ -151,9 +147,9 @@
           background-color: @gh-red;
         }
 
-        padding: 3px 5px 0 5px;
+        padding: .1rem .3rem .05rem .3rem;
 
-        border-radius: .2em;
+        border-radius: .2rem;
         font-size: .7em;
         font-weight: bold;
       }
@@ -164,7 +160,7 @@
   .format {
     code, .schema {
       font-family: @spec-font;
-      font-size: .85em;
+      font-size: .85rem;
     }
   }
 
@@ -173,14 +169,14 @@
     font-family: @spec-font;
     color: @gh-red;
     position: relative;
-    top: .75em;
-    line-height: .1em;
-    font-size: 1.4em;
+    top: .75rem;
+    line-height: .1rem;
+    font-size: 1.4rem;
   }
 }
 
 .definitions {
   .title {
-    margin-bottom: .5em;
+    margin-bottom: .5rem;
   }
 }

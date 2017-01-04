@@ -662,7 +662,7 @@ definitions:
       id:
         type: integer
         format: int64
-      category:
+      c+ategory:
         "$ref": "#/definitions/Category"
       name:
         type: string
@@ -676,6 +676,7 @@ definitions:
           type: string
       tags:
         type: array
+        description: This is a sample server Petstore server. You can find out more about Swagger at http://swagger.io or on irc.freenode.net, swagger. For this sample, you can use the api key special-key to test the authorization filters.
         xml:
           name: tag
           wrapped: true
@@ -683,7 +684,7 @@ definitions:
           "$ref": "#/definitions/Tag"
       status:
         type: string
-        description: pet status in the store
+        description: pet status
         enum:
         - available
         - pending

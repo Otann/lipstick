@@ -88,6 +88,7 @@
     }
 
     .path-name {
+      font-feature-settings: "liga" 0;
       font-weight: bold;
       color: #333;
     }
@@ -107,7 +108,10 @@
     }
   }
 
-  .parameters, .responses {
+  .parameters,
+  .responses {
+    margin-bottom: .7rem;
+
     .title {
       margin-bottom: .3rem;
     }
@@ -173,6 +177,19 @@
     line-height: .1rem;
     font-size: 1.4rem;
   }
+
+  .parameter input {
+    border: 1px solid @gh-gray;
+  }
+
+  .try-out {
+    .explain {
+      margin-left: 1rem;
+      font-size: .8rem;
+      color: #555;
+    }
+  }
+
 }
 
 .definitions {

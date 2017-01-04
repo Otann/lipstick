@@ -23,9 +23,8 @@
   }
   "
   (:require [goog.string :as gstring]
-            [clojure.string :as str]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.impl.utils :refer [with-keys]]))
+            [lipstick.impl.utils :refer [with-keys deref-json]]))
 
 (def ellipsis
   "A constant to use to indicate collapsed state"
@@ -42,16 +41,6 @@
       "array" ["[" "]"]
       nil)))
 
-
-(defn deref-json
-  "Resoves actual content from $ref objects"
-  [schema swag-root]
-  (if-let [ref (:$ref schema)]
-    (let [parts (str/split ref "/")
-          name (last parts)
-          path (rest parts)]
-      [name (get-in swag-root (map keyword path))])
-    [nil schema]))
 
 (defn brackets
   "Provides open & close sequences for complex schemas.

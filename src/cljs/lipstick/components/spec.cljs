@@ -1,8 +1,11 @@
 (ns lipstick.components.spec
   (:require [markdown.core :refer [md->html]]
+            [reagent.ratom :as r :include-macros true]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.impl.utils :refer [with-keys containsv?]]
-            [lipstick.components.schema :refer [schema deref-json]]))
+            [lipstick.impl.utils :refer [with-keys deref-json containsv?]]
+            [lipstick.components.schema :refer [schema]]
+            [lipstick.impl.path-client :refer [make-client]]
+            [lipstick.components.forms :as forms]))
 
 (defn markdown->div
   "Renders markdown string as reagent-compatible text"
@@ -18,15 +21,6 @@
    "formData" "form"
    "query"    "?&="
    "body"     "{..}"})
-
-
-(defn location-row
-  "Location parameter for parameters table"
-  [value]
-  [:td.location.tag
-   [:span.label.tooltipped.tooltipped-n
-    {:aria-label (str "located in: " value)}
-    (or (location-icons value) value)]])
 
 
 (defn responses
@@ -45,18 +39,24 @@
          (with-keys))]]])
 
 
-(defn parameter [{:keys [name in required] :as parameter} full-spec]
+(defn parameter [{:keys [name in required state] :as parameter} full-spec]
   [:tr.parameter
-   (location-row in)
+   [:td.location.tag
+    [:span.label.tooltipped.tooltipped-n
+     {:aria-label (str "located in: " in)}
+     (or (location-icons in) in)]]
    [:td.required
     (when required [:span.tooltipped.tooltipped-n
-                    {:aria-label "required"}  "*"])]
+                    {:aria-label "required"} "*"])]
    [:td.name name]
    [:td.format
     (when-let [schema-data (:schema parameter)]
       [schema "body" schema-data full-spec true])
     (when-let [type (:type parameter)]
-      [:code type])]])
+      [:code type])]
+   (if state
+     [:td.data
+      [forms/atom-input state {}]])])
 
 
 (defn parameters
@@ -66,34 +66,40 @@
    [:div.title "Parameters"]
    [:table
     [:tbody
-     (for [param-raw parameters]
-       (let [[_ param-data] (deref-json param-raw full-spec)]
-         ^{:key (:name param-data)}
-         [parameter param-data full-spec]))]]])
+     (for [param-data parameters]
+       ^{:key (:name param-data)}
+       [parameter param-data full-spec])]]])
 
 
 (defn path
   "Component that renders endpoint documentation"
-  [path-name method spec full-spec]
-  [collapsible {:collapsed true
-                :class "path"
-                :arrow-class "path-title"}
-   [:span.path-title
-    [:code.method {:class method} method] " "
-    [:span.path-name (rest (str path-name))]]
-   [:div.content
-    [:div.summary (:summary spec)]
-    [:div.description (:description spec)]
-    (when-let [params (:parameters spec)]
-      (if (not-empty params)
-        [parameters params full-spec]))
-    (when-let [resps (:responses spec)]
-      [responses resps full-spec])]])
+  [path-name method path-spec full-spec]
+  (let [client (make-client method path-name path-spec full-spec)
+        [params resps state callback] client]
+    (fn []
+      [collapsible {:collapsed true
+                    :class "path"
+                    :arrow-class "path-title"}
+       [:span.path-title
+        [:code.method {:class method} method] " "
+        [:span.path-name (subs (str path-name) 1)]]
+       [:div.content
+        [:div.summary (:summary path-spec)]
+        [:div.description (:description path-spec)]
+        (if (not-empty params)
+          [parameters params full-spec])
+        [:div.try-out
+         [:button.btn.btn-sm {:disabled (not (= :ready @state))
+                              :on-click callback} "Call enpoint"]
+         (if (not (= :ready @state))
+           [:span.explain "Fill necessary parameters to call this endpoint"])]
+        (if @resps
+          [responses @resps full-spec])]])))
 
 
 (defn flatten-paths
   "Turns nested path-method structure to plain vector.
-  Allows to pass predicate to filter certain paths"
+  Allows to pass predicate to filter out certain paths"
   ([all-paths] (flatten-paths all-paths (constantly true)))
   ([all-paths predicate]
    (->> (for [[path-name methods] all-paths]
@@ -107,7 +113,7 @@
 
 
 (defn paths
-  "Renders paths, used in multiple places thus separate"
+  "Renders list of paths, like - GET /pet/findByStatus"
   [paths-data full-spec]
   [:div.paths
    (doall (for [{:keys [name method spec]} paths-data]

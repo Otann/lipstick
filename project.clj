@@ -29,8 +29,6 @@
   :less {:source-paths ["less"]
          :target-path  "resources/public/css"}
 
-  :npm {:dependencies [[primer-css "4.2.0"]]}
-
   :figwheel {:css-dirs ["resources/public/css"]
              :server-port 8080}
 

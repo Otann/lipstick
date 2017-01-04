@@ -662,7 +662,7 @@ definitions:
       id:
         type: integer
         format: int64
-      c+ategory:
+      category:
         "$ref": "#/definitions/Category"
       name:
         type: string

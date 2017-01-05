@@ -80,12 +80,13 @@
     (fn []
       [collapsible-stateful {:collapsed true
                              :class "path"
-                             :arrow-class "path-title"}
+                             :arrow-class "path-arrow"}
        [:span.path-title
         [:code.method {:class method} method] " "
-        [:span.path-name (subs (str path-name) 1)]]
+        [:span.path-name (subs (str path-name) 1)]
+        (when-let [summary (:summary path-spec)] [:span.summary " " summary])]
        [:div.content
-        [:div.summary (:summary path-spec)]
+        ;[:div.summary (:summary path-spec)]
         [:div.description (:description path-spec)]
         (if (not-empty params)
           [parameters params full-spec])

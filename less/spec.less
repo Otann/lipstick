@@ -63,39 +63,43 @@
 
   padding-bottom: .3rem;
 
-  .path-title {
-    &, code {
-      font-family: @spec-font;
-    }
-
-    .method {
-      border: solid 1px #ededed;
-      background-color: #fafafa;
-
-      font-size: .8rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      text-align: center;
-      display: inline-block;
-      width: @method-width;
-      padding: .2rem 0 .1rem 0;
-      border-radius: .3rem;
-
-      &.put {  color: @gh-orange;  }
-      &.get {  color: @gh-blue;  }
-      &.post {  color: @gh-green;  }
-      &.head {  color: @gh-purple;  }
-      &.delete {  color: @gh-red;  }
-    }
-
-    .path-name {
-      font-feature-settings: "liga" 0;
-      font-weight: bold;
-      color: #333;
-    }
-
+  .path-arrow,
+  .path-name,
+  code.method {
+    font-family: @spec-font;
   }
 
+  .path-title .summary {
+    margin-left: .5em;
+    text-align: right;
+    color: #ccc;
+  }
+
+  code.method {
+    border: solid 1px #ededed;
+    background-color: #fafafa;
+
+    font-size: .8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    display: inline-block;
+    width: @method-width;
+    padding: .2rem 0 .1rem 0;
+    border-radius: .3rem;
+
+    &.put {  color: @gh-orange;  }
+    &.get {  color: @gh-blue;  }
+    &.post {  color: @gh-green;  }
+    &.head {  color: @gh-purple;  }
+    &.delete {  color: @gh-red;  }
+  }
+
+  .path-name {
+    font-feature-settings: "liga" 0;
+    font-weight: bold;
+    color: #333;
+  }
 
   .content {
     padding-left: 2rem;

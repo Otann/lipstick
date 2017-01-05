@@ -1,10 +1,10 @@
 (ns lipstick.components.spec
   (:require [markdown.core :refer [md->html]]
             [reagent.ratom :as r :include-macros true]
+            [lipstick.tools.utils :refer [with-keys deref-json containsv?]]
+            [lipstick.tools.path-client :refer [make-client]]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.impl.utils :refer [with-keys deref-json containsv?]]
             [lipstick.components.schema :refer [schema]]
-            [lipstick.impl.path-client :refer [make-client]]
             [lipstick.components.forms :as forms]))
 
 (defn markdown->div

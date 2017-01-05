@@ -1,13 +1,11 @@
-(ns lipstick.impl.remote
+(ns lipstick.tools.remote
   (:require-macros [cljs.core.async.macros :refer [go]]
                    [taoensso.timbre :as log])
   (:require [clojure.walk :refer [keywordize-keys]]
             [clojure.string :as str]
             [cljs-http.client :as http]
             [cljs.core.async :refer [<!]]
-            [cljsjs.js-yaml]
-            [re-frame.core :as rf]
-            [lipstick.database :as db]))
+            [cljsjs.js-yaml]))
 
 
 (defn parse-yaml [string]

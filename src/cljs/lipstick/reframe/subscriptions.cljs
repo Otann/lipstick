@@ -1,4 +1,4 @@
-(ns lipstick.subscriptions
+(ns lipstick.reframe.subscriptions
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :as rf]
             [taoensso.timbre :as log]))

@@ -24,7 +24,7 @@
   "
   (:require [goog.string :as gstring]
             [lipstick.components.collapsible :refer [collapsible]]
-            [lipstick.impl.utils :refer [with-keys deref-json]]))
+            [lipstick.tools.utils :refer [with-keys deref-json]]))
 
 (def ellipsis
   "A constant to use to indicate collapsed state"

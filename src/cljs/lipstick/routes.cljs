@@ -9,7 +9,7 @@
             [clojure.test :refer [function?]]
             [bidi.bidi :as bidi]
             [clojure.string :as str]
-            [lipstick.impl.utils :as u]))
+            [lipstick.tools.utils :as u]))
 
 (defn handle-token [path]
   (let [pairs (for [pair (str/split path #"&")]

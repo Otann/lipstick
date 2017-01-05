@@ -1,4 +1,4 @@
-(ns lipstick.impl.dev
+(ns lipstick.tools.devenv
   (:require [taoensso.timbre :as log]
             [devtools.core :as devtools]))
 

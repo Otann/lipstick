@@ -2,7 +2,7 @@
   (:require [re-frame.core :as rf]
             [reagent.ratom :as r]
             [lipstick.routes :refer [url-for]]
-            [lipstick.impl.utils :refer [with-keys]]
+            [lipstick.tools.utils :refer [with-keys]]
             [lipstick.components.spec :refer [swagger-spec]]
             [lipstick.components.schema :refer [schema]]
             [lipstick.components.source :refer [source]]
@@ -46,7 +46,7 @@
     [:div (str "404? - " page-name)]))
 
 
-(defn main-panel []
+(defn root-view []
   (let [active-page (rf/subscribe [:active-page])]
     (fn []
       (log/debug "Returning vdom for main panel")

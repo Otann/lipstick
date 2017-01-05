@@ -1,4 +1,4 @@
-(ns lipstick.impl.utils
+(ns lipstick.tools.utils
   (:require [clojure.string :as str]))
 
 (defn after-now [seconds]

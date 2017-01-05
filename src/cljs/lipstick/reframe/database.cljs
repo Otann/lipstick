@@ -1,4 +1,4 @@
-(ns lipstick.database)
+(ns lipstick.reframe.database)
 
 
 (def default-config

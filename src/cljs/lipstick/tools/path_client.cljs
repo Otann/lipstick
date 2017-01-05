@@ -1,8 +1,8 @@
-(ns lipstick.impl.path-client
+(ns lipstick.tools.path-client
   (:require [reagent.ratom :as r :include-macros true]
             [taoensso.timbre :as log :include-macros true]
             [clojure.string :as str]
-            [lipstick.impl.utils :refer [deref-json]]))
+            [lipstick.tools.utils :refer [deref-json]]))
 
 (defn replace-path-params
   "Replaces {parameter} in path with current ratom

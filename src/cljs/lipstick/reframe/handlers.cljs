@@ -1,9 +1,9 @@
-(ns lipstick.handlers
+(ns lipstick.reframe.handlers
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs.core.async :refer [<!]]
             [re-frame.core :as rf]
-            [lipstick.database :as db]
-            [lipstick.impl.remote :as remote]
+            [lipstick.reframe.database :as db]
+            [lipstick.tools.remote :as remote]
             [taoensso.timbre :as log]))
 
 (rf/reg-event-db :initialize-db

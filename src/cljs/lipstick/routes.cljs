@@ -45,13 +45,12 @@
 
 (defn navigate-sync [window]
   (let [raw-path (-> window .-location .-hash)
-        path (if (blank? raw-path) "#/" raw-path)]
+        path     (if (blank? raw-path) "#/" raw-path)]
     (dispatch-path rf/dispatch-sync path)))
 
 
 (defn init-routes []
   (navigate-sync js/window)
-
   (log/debug "Hooking into browser navigation")
   (doto (History.)
     (events/listen EventType/NAVIGATE navigate-hook)

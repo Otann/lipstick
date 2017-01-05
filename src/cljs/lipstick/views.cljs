@@ -1,6 +1,5 @@
 (ns lipstick.views
   (:require [re-frame.core :as rf]
-            [reagent.ratom :as r]
             [lipstick.routes :refer [url-for]]
             [lipstick.tools.utils :refer [with-keys]]
             [lipstick.components.spec :refer [swagger-spec]]
@@ -11,7 +10,7 @@
 
 
 (defn home-page []
-  (let [spec-data (rf/subscribe [:spec])]
+  (let [spec-data (rf/subscribe [:selected-spec])]
     (fn []
       (log/debug "Rendering home page")
       [:div.container
@@ -36,18 +35,12 @@
                  [schema schema-name schema-data @spec-data]))]])))
 
 
-(defn show-page
-  [page-name]
-  (case page-name
-    :root       [home-page]
-    :home-page  [home-page]
-    :about-page [about-page]
-    :auth [:p "auth page"]
-    [:div (str "404? - " page-name)]))
-
-
 (defn root-view []
   (let [active-page (rf/subscribe [:active-page])]
     (fn []
-      (log/debug "Returning vdom for main panel")
-      [show-page @active-page])))
+      (case @active-page
+        :root       [home-page]
+        :home-page  [home-page]
+        :about-page [about-page]
+        :auth       [:p "auth page"]
+        [:div (str "404? - " @active-page)]))))

@@ -4,10 +4,6 @@
             [taoensso.timbre :as log]))
 
 
-(rf/reg-sub :spec
-  (fn [db]
-    (:spec db)))
-
 (rf/reg-sub :active-page
   (fn [db _]
     (:active-page db)))
@@ -19,3 +15,18 @@
 (rf/reg-sub :auth
   (fn [db _]
     (:auth db)))
+
+
+(rf/reg-sub :specs
+  (fn [db _]
+    (:specs db)))
+
+
+(rf/reg-sub :selected-spec
+  (fn [db _]
+    (let [idx (-> db :ui :selected-spec-id)]
+      (get-in db [:specs idx :data]))))
+
+
+;(rf/reg-sub :ui-state
+;  (fn [db event]))

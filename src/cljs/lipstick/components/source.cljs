@@ -4,18 +4,18 @@
             [re-frame.core :as rf]))
 
 (defn source []
-  (let [config (rf/subscribe [:config])
-        files (r/reaction (:files @config))
-        on-change #(let [src (-> % .-target .-value)]
-                    (log/debug "changed" src "url")
-                    (rf/dispatch [:load-swagger-spec src]))]
+  (let [specs (rf/subscribe [:specs])
+        ;files (r/reaction (:files @config))
+        on-change #(let [id (-> % .-target .-value js/parseInt)]
+                    (log/debug "changed" id "url")
+                    (rf/dispatch [:ui-selected-spec id]))]
     (fn []
-      (if (and (not-empty @files)
-               (second @files))
+      (if (and (not-empty @specs)
+               (second @specs))
         [:form.source
          [:div.input-group.input-block
           [:select.form-select
            {:on-change on-change}
-           (doall (for [{:keys [name src]} @files]
+           (doall (for [{:keys [name id]} @specs]
                     ^{:key name}
-                    [:option {:value src} name]))]]]))))
+                    [:option {:value id} name]))]]]))))

@@ -3,6 +3,7 @@
             [reagent.core :as reagent]
             [re-frame.core :as rf]
             [lipstick.reframe.handlers]
+            [lipstick.reframe.effects]
             [lipstick.reframe.subscriptions]
             [lipstick.routes :as routes]
             [lipstick.views :as views]
@@ -17,7 +18,7 @@
 
 (defn ^:export init []
   (dev/init)
-  (rf/dispatch-sync [:initialize-db])
+  (rf/dispatch-sync [:initialize])
   (routes/init-routes)
   (log/debug "Completed initialization, mounting root")
   (mount-root))

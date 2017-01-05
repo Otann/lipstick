@@ -1,5 +1,10 @@
 (ns lipstick.tools.utils
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [cljsjs.js-yaml]))
+
+(defn parse-yaml [string]
+  (.safeLoad js/jsyaml string))
+
 
 (defn after-now [seconds]
   (let [now (js/Date.)

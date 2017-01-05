@@ -47,7 +47,7 @@
      (or (location-icons in) in)]]
    [:td.required
     (when required [:span.tooltipped.tooltipped-n
-                    {:aria-label "required"} "*"])]
+                    {:aria-label "required"} "●"])]
    [:td.name name]
    [:td.format
     (when-let [schema-data (:schema parameter)]
@@ -141,7 +141,7 @@
   "Renders full swagger spec"
   [{:keys [info tags] paths-data :paths :as spec-data}]
   [:div.spec
-   [:h1.title
+   [:h1.spec-title
     [:a.lipstick-logo {:href "https://github.com/Otann/lipstick"} "\uD83D\uDC84 "]
     (:title info)]
    [:div.description (markdown->div (:description info))]

@@ -68,7 +68,7 @@
       [[:span.field-label {:class (if is-required "required" "optional")}
         (when-let [description (:description schema)] [:span.description "/* " description " */" [:br]])
         [:span.field-name field-name] ": "
-        (when is-required [:span.star.tooltipped.tooltipped-n {:aria-label "required"} "*"])
+        (when is-required [:span.star.tooltipped.tooltipped-s {:aria-label "required"} "●"])
         (when schema-name [:span [:span.schema-name schema-name] " "])
         [:span (:type schema)]
         open]

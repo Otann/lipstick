@@ -1,6 +1,6 @@
 @import "common";
 
-@hover-background: #fff; //rgba(213, 211, 34, 0.1);
+@hover-background: #FAFAE6;
 
 .spec {
   & > .description {
@@ -29,7 +29,7 @@
 .tag {
   margin-bottom: .75rem;
 
-  &:hover .tag-label {
+  .collapsible-label:hover {
     background-color: @hover-background;
   }
 
@@ -55,7 +55,7 @@
 
 .path {
   &:hover .path-name {
-    background-color: @hover-background;
+    //background-color: @hover-background;
   }
 
   @method-width: 4rem;
@@ -97,7 +97,7 @@
 
 
   .content {
-    padding-left: @method-width;
+    padding-left: 2rem;
     padding-bottom: 1.5rem;
     padding-top: .5rem;
 
@@ -130,7 +130,7 @@
 
     .tag {
       text-align: center;
-      font-family: @mono-font;
+      font-family: @spec-font;
       width: 3rem;
 
       .label {
@@ -164,6 +164,7 @@
   .format {
     code, .schema {
       font-family: @spec-font;
+      font-feature-settings: "liga" 0;
       font-size: .85rem;
     }
   }
@@ -172,10 +173,6 @@
     font-weight: bold;
     font-family: @spec-font;
     color: @gh-red;
-    position: relative;
-    top: .75rem;
-    line-height: .1rem;
-    font-size: 1.4rem;
   }
 
   .parameter input {

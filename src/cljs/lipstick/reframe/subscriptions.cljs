@@ -28,5 +28,6 @@
       (get-in db [:specs idx :data]))))
 
 
-;(rf/reg-sub :ui-state
-;  (fn [db event]))
+(rf/reg-sub :ui-state
+  (fn [db event]
+    (get-in db (into [:ui] (rest event)))))

@@ -44,15 +44,3 @@
           (log/debug "Failed to receive spec from" url)
           nil))))
 
-
-(defn get-config
-  "Initialises spec from remote config or defaults"
-  []
-  (go (if-let [remote-config (<! (get-yaml-file "lipstick.yaml"))]
-        (do
-          (log/debug "Loaded config: " remote-config)
-          remote-config)
-        (do
-          (log/info "No configuration lipstick.yaml was loaded, fallback to default config" db/default-config)
-          db/default-config))))
-

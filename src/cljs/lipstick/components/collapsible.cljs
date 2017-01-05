@@ -5,7 +5,7 @@
 (defn collapsible
   "Type2 Reagent component that can collapse
   it's content between two labels"
-  [{:keys [collapsed class ellipsis tail arrow-class arrow-open arrow-collapsed]
+  [{:keys [collapsed class ellipsis tail arrow-class arrow-open arrow-collapsed callback]
     :or {collapsed true
          arrow-open "-"
          arrow-collapsed "+"}}
@@ -16,7 +16,8 @@
       [:div.collapsible
        {:class class}
        [:div.collapsible-label
-        {:on-click #(swap! collapsed not)}
+        {:on-click #(do (swap! collapsed not)
+                        (if callback (callback @collapsed)))}
         (when (not-empty children)
           [:span.collapsible-arrow
            {:class arrow-class}
@@ -42,5 +43,5 @@
                 :ellipsis "..."
                 :tail "}"
                 :arrow-class "arrow"}
-   "{"
+   "Collapsed paragraph: {"
    [:p "This paragraph is enclosed"]])

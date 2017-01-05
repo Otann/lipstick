@@ -134,6 +134,7 @@
       width: 3rem;
 
       .label {
+        cursor: help;
         display: inline-block;
         color: #444;
         background-color: #eee;
@@ -169,10 +170,17 @@
     }
   }
 
-  .parameter > .required {
+  .parameter > .is-required {
+    cursor: help;
     font-weight: bold;
     font-family: @spec-font;
-    color: @gh-red;
+    .required {
+      color: @gh-red;
+    }
+    .optional {
+      color: @gh-gray-light;
+    }
+
   }
 
   .parameter input {

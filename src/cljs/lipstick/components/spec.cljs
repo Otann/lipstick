@@ -45,9 +45,10 @@
     [:span.label.tooltipped.tooltipped-n
      {:aria-label (str "located in: " in)}
      (or (location-icons in) in)]]
-   [:td.required
-    (when required [:span.tooltipped.tooltipped-n
-                    {:aria-label "required"} "●"])]
+   [:td.is-required
+    [:span.tooltipped.tooltipped-n
+     {:aria-label (if required "required" "optional")
+      :class (if required "required" "optional")} "●"]]
    [:td.name name]
    [:td.format
     (when-let [schema-data (:schema parameter)]
@@ -128,6 +129,7 @@
         paths-data (flatten-paths all-paths
                                   #(containsv? (:tags %) tag-name))]
     [collapsible {:collapsed false
+                  :arrow-open "–"
                   :class "tag"
                   :arrow-class "tag-label-arrow"}
      [:span.tag-label

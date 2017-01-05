@@ -3,7 +3,7 @@
             [reagent.ratom :as r :include-macros true]
             [lipstick.tools.utils :refer [with-keys deref-json containsv?]]
             [lipstick.tools.path-client :refer [make-client]]
-            [lipstick.components.collapsible :refer [collapsible]]
+            [lipstick.components.collapsible :refer [collapsible-stateful]]
             [lipstick.components.schema :refer [schema]]
             [lipstick.components.forms :as forms]))
 
@@ -78,9 +78,9 @@
   (let [client (make-client method path-name path-spec full-spec)
         [params resps state callback] client]
     (fn []
-      [collapsible {:collapsed true
-                    :class "path"
-                    :arrow-class "path-title"}
+      [collapsible-stateful {:collapsed true
+                             :class "path"
+                             :arrow-class "path-title"}
        [:span.path-title
         [:code.method {:class method} method] " "
         [:span.path-name (subs (str path-name) 1)]]
@@ -128,10 +128,10 @@
   (let [tag-name (:name tag-data)
         paths-data (flatten-paths all-paths
                                   #(containsv? (:tags %) tag-name))]
-    [collapsible {:collapsed false
-                  :arrow-open "–"
-                  :class "tag"
-                  :arrow-class "tag-label-arrow"}
+    [collapsible-stateful {:collapsed false
+                           :arrow-open "–"
+                           :class "tag"
+                           :arrow-class "tag-label-arrow"}
      [:span.tag-label
       [:span.name tag-name]
       (when-let [description (:description tag-data)]

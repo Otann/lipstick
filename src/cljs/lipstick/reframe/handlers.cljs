@@ -1,8 +1,8 @@
 (ns lipstick.reframe.handlers
   "Handlers that modify database
   Grouped by prefixes:
-  :ui-    actions initialized by UI elements
-  :set-   received data from network or from browser"
+  :ui-       actions initialized by UI elements
+  :receive-  received data from network or from browser"
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs.core.async :refer [<!]]
             [re-frame.core :as rf]
@@ -25,7 +25,7 @@
 
 (rf/reg-event-fx :receive-config
   ;[debug]
-  (fn [{:keys [db]} [_ config-data _]]
+  (fn [{:keys [db]} [_ config-data]]
     (let [config (if config-data
                    (-> config-data
                        (u/parse-yaml)
@@ -38,12 +38,6 @@
                (assoc :config config)
                (assoc :specs (into [] specs)))
        :dispatch [:ui-selected-spec (-> specs first :id)]})))
-
-
-(rf/reg-event-db :set-active-page
-  ; Changes pages for routing
-  (fn [db [_ active-panel]]
-    (assoc db :active-page active-panel)))
 
 
 (rf/reg-event-fx :ui-selected-spec
@@ -66,8 +60,7 @@
   (fn [db [_ spec-idx body]]
     (let [spec    (get-in db [:specs spec-idx])
           js-data (if (str/ends-with? (:src spec) ".yaml")
-                    (u/parse-yaml body)
-                    body)
+                    (u/parse-yaml body) body)
           spec-data (js->clj js-data :keywordize-keys true)]
       (-> db
           (assoc-in [:specs spec-idx :loading] false)
@@ -86,3 +79,9 @@
     (-> db
         (assoc :auth auth)
         (assoc :active-page :home-page))))
+
+
+(rf/reg-event-db :set-active-page
+  ; Changes pages for routing
+  (fn [db [_ active-panel]]
+    (assoc db :active-page active-panel)))

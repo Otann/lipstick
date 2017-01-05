@@ -3,38 +3,53 @@
             [lipstick.tools.utils :refer [with-keys join-classes]]))
 
 (defn collapsible
-  "Type2 Reagent component that can collapse
-  it's content between two labels"
-  [{:keys [collapsed class ellipsis tail arrow-class arrow-open arrow-collapsed callback]
+  [{:keys [collapsed
+           class
+           ellipsis
+           tail
+           arrow-class
+           arrow-open
+           arrow-collapsed
+           callback]
     :or {collapsed true
          arrow-open "-"
          arrow-collapsed "+"}}
+   open-label children]
+  [:div.collapsible
+   {:class class}
+   [:div.collapsible-label
+    {:on-click callback}
+    (when (not-empty children)
+      [:span.collapsible-arrow
+       {:class arrow-class}
+       (str (if collapsed arrow-collapsed arrow-open))])
+    [:span.open-label open-label]
+    (when collapsed [:span.close-label ellipsis tail])]
+   [:div.collapsible-children
+    {:class (when collapsed "collapsible-children-collapsed")}
+    ; Important!
+    ; Do not remove condition to cover
+    ; circular dependencies!
+    (when-not collapsed
+      [:div.collapsible-children-content
+       (if (-> children first seq?)
+         (with-keys children)
+         children)])
+    [:div tail]]])
+
+(defn collapsible-stateful
+  "Type2 Reagent component that can collapse
+  it's content between two labels"
+  [{:keys [collapsed] :as props}
    _ _]
-  (let [collapsed (r/atom collapsed)]
+  (let [state     (r/atom collapsed)
+        callback #(swap! state not)]
     (fn [_ open-label children]
-      ; todo: consider using .no-arrow
-      [:div.collapsible
-       {:class class}
-       [:div.collapsible-label
-        {:on-click #(do (swap! collapsed not)
-                        (if callback (callback @collapsed)))}
-        (when (not-empty children)
-          [:span.collapsible-arrow
-           {:class arrow-class}
-           (str (if @collapsed arrow-collapsed arrow-open))])
-        [:span.open-label open-label]
-        (when @collapsed [:span.close-label ellipsis tail])]
-       [:div.collapsible-children
-        {:class (when @collapsed "collapsible-children-collapsed")}
-        ; Important!
-        ; Do not remove condition to cover
-        ; circular dependencies!
-        (when-not @collapsed
-          [:div.collapsible-children-content
-           (if (-> children first seq?)
-             (with-keys children)
-             children)])
-        [:div tail]]])))
+      [collapsible
+       (assoc props :collapsed @state
+                    :callback callback)
+       open-label
+       children])))
 
 (comment
   ; Example of usage

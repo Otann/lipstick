@@ -23,7 +23,7 @@
   }
   "
   (:require [goog.string :as gstring]
-            [lipstick.components.collapsible :refer [collapsible]]
+            [lipstick.components.collapsible :refer [collapsible-stateful]]
             [lipstick.tools.utils :refer [with-keys deref-json]]))
 
 (def ellipsis
@@ -101,9 +101,9 @@
         child-required (->> schema :required (map keyword) set)
         children (schema-children schema swag-root)]
     (if (seq children)
-      [collapsible {:collapsed true
-                    :ellipsis ellipsis
-                    :tail tail-label}
+      [collapsible-stateful {:collapsed true
+                             :ellipsis ellipsis
+                             :tail tail-label}
        main-label
        (doall (for [[name child-schema] children]
                 ^{:key name}
@@ -121,10 +121,10 @@
         (let [schema-name (or schema-name deref-name)
               is-required (->> schema-data :required (map keyword) set)
               [open close] (brackets schema-data full-spec)]
-          [collapsible {:class "schema"
-                        :collapsed (or collapsed false)
-                        :ellipsis ellipsis
-                        :tail close}
+          [collapsible-stateful {:class "schema"
+                                 :collapsed (or collapsed false)
+                                 :ellipsis ellipsis
+                                 :tail close}
            [:span (when schema-name [:span.schema-name schema-name " "]) (:type schema-data) open]
            (doall (for [[field-name data] children]
                     ^{:key field-name}

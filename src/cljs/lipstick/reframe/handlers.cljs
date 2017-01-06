@@ -42,7 +42,7 @@
 
 (rf/reg-event-fx :ui-selected-spec
   ; Marks spec as selected in database and reloads data
-  ;[debug]
+  [debug]
   (fn [{:keys [db]} [_ spec-idx]]
     (let [{:keys [src data]} (get-in db [:specs spec-idx])]
       {:db (-> db
@@ -56,7 +56,7 @@
 
 (rf/reg-event-db :receive-spec-data-ok
   ; Sets spec data to the database
-  ;[debug]
+  [debug]
   (fn [db [_ spec-idx body]]
     (let [spec    (get-in db [:specs spec-idx])
           js-data (if (str/ends-with? (:src spec) ".yaml")
@@ -87,7 +87,7 @@
     (assoc db :active-page active-panel)))
 
 
-(rf/reg-event-db :toggle-tag-collapsible
+(rf/reg-event-db :ui-toggle-tag
   (fn [db [_ spec-id tag-name]]
     (update-in db [:ui
                    :spec
@@ -95,9 +95,9 @@
                    :tags
                    tag-name
                    :collapsed]
-               not)))
+               #(if (nil? %) true (not %)))))
 
-(rf/reg-event-db :toggle-path-collapsible
+(rf/reg-event-db :ui-toggle-path
   (fn [db [_ spec-id tag-name method name]]
     (update-in db [:ui
                    :spec
@@ -107,4 +107,4 @@
                    :paths
                    [method name]
                    :collapsed]
-               not)))
+               #(if (nil? %) false (not %)))))

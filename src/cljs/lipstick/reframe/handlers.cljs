@@ -85,3 +85,26 @@
   ; Changes pages for routing
   (fn [db [_ active-panel]]
     (assoc db :active-page active-panel)))
+
+
+(rf/reg-event-db :toggle-tag-collapsible
+  (fn [db [_ spec-id tag-name]]
+    (update-in db [:ui
+                   :spec
+                   spec-id
+                   :tags
+                   tag-name
+                   :collapsed]
+               not)))
+
+(rf/reg-event-db :toggle-path-collapsible
+  (fn [db [_ spec-id tag-name method name]]
+    (update-in db [:ui
+                   :spec
+                   spec-id
+                   :tags
+                   tag-name
+                   :paths
+                   [method name]
+                   :collapsed]
+               not)))

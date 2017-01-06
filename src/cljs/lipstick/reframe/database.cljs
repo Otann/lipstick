@@ -36,27 +36,26 @@
             :name "Petstore"
             :src "/swagger.yaml"
             :loading? false
-            :data {#_(...)}}
+            :data {:tags {}
+                   :paths {"/pet" {:get {:parameters [{:in "path"
+                                                       :name "id"}]
+                                         :responses {"405" {:description ""
+                                                            :schema {}}}}}}}}
            {:id 2
             #_(...)}]
 
    ; State of UI elements
    :ui {:selected-spec-id nil #_1
-        :paths []
-        :tags [{:name ""
-                :collapsed false
-                :paths [{:method "GET"
-                         :path "/pet/{id}"
-                         :summary ""
-                         :description ""
-                         :collapsed true
-                         :parameters [{:in :query
-                                       :name "petId"
-                                       :required false
-                                       :schema {#_"derefed schema"}
-                                       :value ""}]
-                         :responses [:code "200"
-                                     :description "good one"
-                                     :schema {#_"derefed schema"}]
-                         :calls [{:parameters [#_"snapshot of :parameters above"]
-                                  :response {#_"edn-parsed reponse"}}]}]}]}})
+
+        :spec
+        ;grouped around UI data
+        {1 {:tags {"name" {:collapsed false
+                           :paths {["GET" "/pet/{id}"]
+                                   {:collapsed true
+                                    :parameters {[:query "petId"] {:value "asasd"}}
+                                    :calls [{:parameters [#_"snapshot of :parameters above"]
+                                             :response {#_"edn-parsed reponse"}}]}}}
+
+                   ; paths outside tags store their state here
+                   nil {:paths {["GET" "/pet/{id}"]
+                                {:collapsed true}}}}}}}})

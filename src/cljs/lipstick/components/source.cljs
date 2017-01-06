@@ -7,7 +7,6 @@
   (let [specs (rf/subscribe [:specs])
         selected-id (rf/subscribe [:ui-state :selected-spec-id])
         on-change #(let [id (-> % .-target .-value js/parseInt)]
-                    (log/debug "changed" id "url")
                     (rf/dispatch [:ui-selected-spec id]))]
     (fn []
       (if (and (not-empty @specs)

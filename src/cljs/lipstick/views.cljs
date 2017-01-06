@@ -10,7 +10,8 @@
 
 
 (defn home-page []
-  (let [spec-data (rf/subscribe [:selected-spec])]
+  (let [spec-id   (rf/subscribe [:ui :selected-spec-id])
+        spec-data (rf/subscribe [:selected-spec-data])]
     (fn []
       (log/debug "Rendering home page")
       [:div.container

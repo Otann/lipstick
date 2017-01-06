@@ -10,15 +10,17 @@
            arrow-class
            arrow-open
            arrow-collapsed
-           callback]
+           on-toggle
+           render-collapsed]
     :or {collapsed true
+         render-collapsed true
          arrow-open "-"
          arrow-collapsed "+"}}
    open-label children]
   [:div.collapsible
    {:class class}
    [:div.collapsible-label
-    {:on-click callback}
+    {:on-click on-toggle}
     (when (not-empty children)
       [:span.collapsible-arrow
        {:class arrow-class}
@@ -30,7 +32,8 @@
     ; Important!
     ; Do not remove condition to cover
     ; circular dependencies!
-    (when-not collapsed
+    (when (or render-collapsed
+              (not collapsed))
       [:div.collapsible-children-content
        (if (-> children first seq?)
          (with-keys children)
@@ -42,12 +45,12 @@
   it's content between two labels"
   [{:keys [collapsed] :as props}
    _ _]
-  (let [state     (r/atom collapsed)
-        callback #(swap! state not)]
+  (let [state   (r/atom collapsed)
+        toggle #(swap! state not)]
     (fn [_ open-label children]
       [collapsible
        (assoc props :collapsed @state
-                    :callback callback)
+                    :on-toggle toggle)
        open-label
        children])))
 

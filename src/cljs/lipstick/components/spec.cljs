@@ -39,7 +39,7 @@
          (with-keys))]]])
 
 
-(defn parameter [{:keys [name in required state] :as parameter} full-spec]
+(defn parameter [{:keys [name in required state description] :as parameter} full-spec]
   [:tr.parameter
    [:td.location.tag
     [:span.label.tooltipped.tooltipped-n
@@ -53,11 +53,13 @@
    [:td.format
     (when-let [schema-data (:schema parameter)]
       [schema "body" schema-data full-spec true])
-    (when-let [type (:type parameter)]
+    (if-let [type (:type parameter)]
       [:code type])]
-   (if state
+   #_(if state
      [:td.data
-      [forms/atom-input state {}]])])
+      [forms/atom-input state
+       {:placeholder (if-let [type (:type parameter)] type "value")}]])
+   [:td.description description]])
 
 
 (defn parameters
@@ -83,10 +85,13 @@
                              :arrow-class "path-arrow"}
        [:span.path-title
         [:code.method {:class method} method] " "
-        [:span.path-name (subs (str path-name) 1)]
+        [:span.path-name
+         {:class (if (:deprecated path-spec) "deprecated")}
+         (subs (str path-name) 1)]
         (when-let [summary (:summary path-spec)] [:span.summary " " summary])]
        [:div.content
         ;[:div.summary (:summary path-spec)]
+        (if (:deprecated path-spec) [:p [:span.deprecated "This path is deprecated"]])
         [:div.description (:description path-spec)]
         (if (not-empty params)
           [parameters params full-spec])
@@ -144,9 +149,7 @@
   "Renders full swagger spec"
   [{:keys [info tags] paths-data :paths :as spec-data}]
   [:div.spec
-   [:h1.spec-title
-    [:a.lipstick-logo {:href "https://github.com/Otann/lipstick"} "\uD83D\uDC84 "]
-    (:title info)]
+   [:h1.spec-title (:title info)]
    [:div.description (markdown->div (:description info))]
    [:div.meta
     [:ul

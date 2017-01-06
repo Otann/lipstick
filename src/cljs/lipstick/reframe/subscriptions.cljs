@@ -22,7 +22,7 @@
     (:specs db)))
 
 
-(rf/reg-sub :selected-spec
+(rf/reg-sub :selected-spec-data
   (fn [db _]
     (let [idx (-> db :ui :selected-spec-id)]
       (get-in db [:specs idx :data]))))

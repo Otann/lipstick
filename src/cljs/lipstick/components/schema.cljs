@@ -103,7 +103,8 @@
     (if (seq children)
       [collapsible-stateful {:collapsed true
                              :ellipsis ellipsis
-                             :tail tail-label}
+                             :tail tail-label
+                             :render-collapsed false}
        main-label
        (doall (for [[name child-schema] children]
                 ^{:key name}

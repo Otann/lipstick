@@ -96,19 +96,39 @@
   }
 
   .path-name {
+    &.deprecated {
+      text-decoration: line-through;
+    }
     font-feature-settings: "liga" 0;
     font-weight: bold;
     color: #333;
   }
 
   .content {
-    padding-left: 2rem;
+    padding-left: 2.5rem;
     padding-bottom: 1.5rem;
     padding-top: .5rem;
 
-    & > .description {
-      font-size: .9rem;
-      color: @gh-gray-dark;
+    .deprecated {
+      color: white;
+      font-size: .85em;
+      font-weight: bold;
+      background-color: @gh-red;
+      padding: .1rem .3rem;
+      border-radius: .2em;
+    }
+  }
+
+  .parameters tr {
+    &:nth-child(even) {
+      //background: #FEFEFA;
+    }
+    &:hover {
+      //background-color: @hover-background;
+    }
+    border-bottom: 1px solid @gh-gray-light;
+    &:last-of-type {
+      border: none;
     }
   }
 
@@ -117,6 +137,7 @@
     margin-bottom: .7rem;
 
     .title {
+      font-size: .85rem;
       margin-bottom: .3rem;
     }
 
@@ -172,6 +193,9 @@
       font-feature-settings: "liga" 0;
       font-size: .85rem;
     }
+    .schema {
+      padding-top: .2rem;
+    }
   }
 
   .parameter > .is-required {
@@ -187,8 +211,10 @@
 
   }
 
-  .parameter input {
+  .parameter input[type="text"] {
     border: 1px solid @gh-gray;
+    font-family: @spec-font;
+    font-feature-settings: "liga" 0;
   }
 
   .try-out {

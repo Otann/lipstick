@@ -1,4 +1,4 @@
-(ns lipstick.rfnext.sources
+(ns lipstick.dataflow.sources
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :as rf :refer [debug]]
             [taoensso.timbre :as log]
@@ -6,28 +6,27 @@
             [lipstick.tools.utils :as u]))
 
 
-(def default-db {::files [{:idx 1
-                           :name "Petstore"
+(def default-db {::files [{:name "Petstore"
                            :src "swagger.yaml"
                            :loading? false
                            :content nil}]})
 
 (rf/reg-sub ::content
-  (fn [db [_ idx]]
+  ; (rf/subscribe [::sources/content] [idx])
+  ; where idx is subscription
+  (fn [db _ [idx]]
     (get-in db [::files idx :content])))
 
 (rf/reg-sub ::names
   (fn [db _]
-    (for [file (::files db)]
-      {:idx (:idx file)
-       :name (:name file)})))
-
+    (map-indexed (fn [n f] {:idx n
+                            :name (:name f)})
+                 (::files db))))
 
 (rf/reg-event-db ::set-files
   ;[debug]
   (fn [db [_ files]]
-    (assoc db ::files (map-indexed (fn [idx file] (assoc file :idx idx))
-                                   files))))
+    (assoc db ::files files)))
 
 (rf/reg-event-fx ::ensure-content
   ;[debug]

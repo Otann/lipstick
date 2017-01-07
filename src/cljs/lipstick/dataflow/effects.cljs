@@ -1,4 +1,4 @@
-(ns lipstick.reframe.effects
+(ns lipstick.dataflow.effects
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [re-frame.core :as rf :refer [reg-fx dispatch console]]
             [cljs.core.async :refer [<!]]
@@ -15,8 +15,3 @@
             (if (< status 300)
               (rf/dispatch (conj on-success body))
               (rf/dispatch (conj on-failure body))))))))
-
-(rf/reg-fx :dispatch-all
-  (fn dispatch-all [events]
-    (doseq [event events]
-      (rf/dispatch event))))

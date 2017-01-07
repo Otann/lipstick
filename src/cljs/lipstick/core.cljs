@@ -2,12 +2,10 @@
   (:require [taoensso.timbre :as log]
             [reagent.core :as reagent]
             [re-frame.core :as rf]
-            [lipstick.reframe.handlers]
-            [lipstick.reframe.effects]
-            [lipstick.reframe.subscriptions]
-            [lipstick.rfnext.handlers :as handlers]
             [lipstick.routes :as routes]
             [lipstick.views :as views]
+            [lipstick.dataflow.effects]
+            [lipstick.dataflow.dataflow :as dataflow]
             [lipstick.tools.devenv :as dev]))
 
 
@@ -19,7 +17,7 @@
 
 (defn ^:export init []
   (dev/init)
-  (rf/dispatch-sync [::handlers/init])
+  (rf/dispatch-sync [::dataflow/init])
   (routes/init-routes)
   (log/debug "Completed initialization, mounting root")
   (mount-root))

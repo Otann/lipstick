@@ -9,7 +9,8 @@
             [clojure.test :refer [function?]]
             [bidi.bidi :as bidi]
             [clojure.string :as str]
-            [lipstick.tools.utils :as u]))
+            [lipstick.tools.utils :as u]
+            [lipstick.dataflow.active-page :as active-page]))
 
 (defn handle-token [path]
   (let [pairs (for [pair (str/split path #"&")]
@@ -29,10 +30,10 @@
   "Dispatches active handler from routes mapping.
   Dispatch can be rf/dispatch or rf/dispatch-sync."
   [dispatch-fn path]
-  (let [handler (->> path
-                     (bidi/match-route routes)
-                     (:handler))]
-    (dispatch-fn [:set-active-page handler])))
+  (let [page (->> path
+                  (bidi/match-route routes)
+                  (:handler))]
+    (dispatch-fn [::active-page/set page])))
 
 
 (defn navigate-hook [event]

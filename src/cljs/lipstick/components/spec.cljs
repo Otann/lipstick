@@ -8,7 +8,7 @@
             [lipstick.components.schema :refer [schema]]
             [lipstick.components.forms :as forms]
             [re-frame.core :as rf]
-            [lipstick.rfnext.spec-ui :as spec-ui]
+            [lipstick.dataflow.spec-ui :as spec-ui]
             [taoensso.timbre :as log]))
 
 (defn markdown->div
@@ -81,14 +81,14 @@
 (defn path
   "Component that renders endpoint documentation"
   [spec-id tag-name path-name method path-spec full-spec]
-  (let [collapsed (rf/subscribe [:ui-path-collapsed spec-id tag-name method path-name])
+  (let [collapsed (rf/subscribe [::spec-ui/path-collapsed spec-id tag-name method path-name])
         client (make-client method path-name path-spec full-spec)
         [params resps state callback] client]
     (fn []
       [collapsible {:collapsed @collapsed
                     :class "path"
                     :arrow-class "path-arrow"
-                    :on-toggle #(rf/dispatch [:ui-toggle-path spec-id tag-name method path-name])}
+                    :on-toggle #(rf/dispatch [::spec-ui/toggle-path spec-id tag-name method path-name])}
        [:span.path-title
         [:code.method {:class method} method] " "
         [:span.path-name
@@ -138,14 +138,14 @@
   "Renders multiple paths groupped by a tag"
   [spec-id tag-data all-paths full-spec]
   (let [tag-name  (:name tag-data)
-        collapsed (rf/subscribe [:ui-tag-collapsed spec-id tag-name])]
+        collapsed (rf/subscribe [::spec-ui/tag-collapsed spec-id tag-name])]
     (fn []
       (let [paths-data (flatten-paths all-paths #(containsv? (:tags %) tag-name))]
         [collapsible {:collapsed @collapsed
                       :arrow-open "–"
                       :class "tag"
                       :arrow-class "tag-label-arrow"
-                      :on-toggle #(rf/dispatch [:ui-toggle-tag spec-id tag-name])}
+                      :on-toggle #(rf/dispatch [::spec-ui/toggle-tag spec-id tag-name])}
          [:span.tag-label
           [:span.name tag-name]
           (when-let [description (:description tag-data)]
@@ -195,10 +195,11 @@
 
 
 (defn spec []
-  (let [spec (rf/subscribe [::spec-ui/spec])]
+  (let [idx  (rf/subscribe [::selector/selected])
+        spec (rf/subscribe [::sources/content] [idx])]
     (fn []
       (log/debug "Spec:" @spec)
       (if @spec
-        [swagger-spec (:idx @spec) (:spec @spec)]
+        [swagger-spec @idx @spec]
         [:p "Spec is loading"]))))
 

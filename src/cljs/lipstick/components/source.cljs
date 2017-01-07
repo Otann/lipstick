@@ -1,9 +1,7 @@
 (ns lipstick.components.source
-  (:require [reagent.ratom :as r :include-macros true]
-            [taoensso.timbre :as log]
-            [re-frame.core :as rf]
-            [lipstick.rfnext.source-selector :as selector]
-            [lipstick.rfnext.sources :as sources]))
+  (:require [re-frame.core :as rf]
+            [lipstick.dataflow.source-selector :as selector]
+            [lipstick.dataflow.sources :as sources]))
 
 (defn source []
   (let [idx   (rf/subscribe [::selector/selected])

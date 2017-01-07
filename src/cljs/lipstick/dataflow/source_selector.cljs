@@ -1,7 +1,7 @@
-(ns lipstick.rfnext.source-selector
+(ns lipstick.dataflow.source-selector
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :as rf :refer [debug]]
-            [lipstick.rfnext.sources :as files]))
+            [lipstick.dataflow.sources :as files]))
 
 (def default-db {::selected 0})
 

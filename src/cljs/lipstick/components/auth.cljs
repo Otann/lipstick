@@ -6,7 +6,8 @@
             [re-frame.core :as rf]
             [cljs-http.client :as http]
             [cljs.core.async :refer [<!]]
-            [cemerick.url :refer [url-encode]]))
+            [cemerick.url :refer [url-encode]]
+            [lipstick.dataflow.auth :as auth]))
 
 (defn test-auth [config]
   (log/debug "Testing" config)
@@ -17,13 +18,13 @@
 
 
 (defn auth-control []
-  (let [config (rf/subscribe [:config])
-        auth (rf/subscribe [:auth])]
+  (let [conf (rf/subscribe [::auth/config])
+        data (rf/subscribe [::auth/data])]
     (fn []
       [:div.auth
-       (if @auth
+       (if @data
          [:span.octicon.octicon-lock]
-         (if-let [auth-config (:auth @config)]
+         (if-let [auth-config (:auth @conf)]
            (if-let [oauth (:oauth auth-config)]
              [:a.btn {:href (str (:auth_url oauth)
                                  "?client_id=" (:client_id oauth)

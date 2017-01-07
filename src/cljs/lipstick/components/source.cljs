@@ -1,24 +1,26 @@
 (ns lipstick.components.source
   (:require [reagent.ratom :as r :include-macros true]
             [taoensso.timbre :as log]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+            [lipstick.rfnext.source-selector :as selector]
+            [lipstick.rfnext.sources :as sources]))
 
 (defn source []
-  (let [specs (rf/subscribe [:specs])
-        selected-id (rf/subscribe [:ui-state :selected-spec-id])
-        on-change #(let [id (-> % .-target .-value js/parseInt)]
-                    (rf/dispatch [:ui-selected-spec id]))]
+  (let [idx   (rf/subscribe [::selector/selected])
+        names (rf/subscribe [::sources/names])
+        on-change #(let [idx (-> % .-target .-value js/parseInt)]
+                    (rf/dispatch [::selector/select idx]))]
     (fn []
-      (if (and (not-empty @specs)
-               (second @specs))
+      (if (and (not-empty @names)
+               (second @names))
         [:form.source
          [:div.input-group.input-block
           [:select.form-select
            {:on-change on-change
-            :value (or @selected-id "")}
-           (doall (for [{:keys [name id]} @specs]
-                    ^{:key name}
-                    [:option {:value id} name]))]]]))))
+            :value @idx}
+           (doall (for [{:keys [idx name]} @names]
+              ^{:key name}
+              [:option {:value idx} name]))]]]))))
 
 
 

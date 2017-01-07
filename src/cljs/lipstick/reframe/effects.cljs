@@ -9,8 +9,14 @@
 
 (rf/reg-fx :load-file
   (fn load-file [{:keys [url on-success on-failure] :as req}]
+    (log/debug "Loading file for" req)
     (if req
       (go (let [{:keys [status body]} (<! (http/get url))]
             (if (< status 300)
               (rf/dispatch (conj on-success body))
               (rf/dispatch (conj on-failure body))))))))
+
+(rf/reg-fx :dispatch-all
+  (fn dispatch-all [events]
+    (doseq [event events]
+      (rf/dispatch event))))

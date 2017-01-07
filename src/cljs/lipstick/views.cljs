@@ -2,7 +2,7 @@
   (:require [re-frame.core :as rf]
             [lipstick.routes :refer [url-for]]
             [lipstick.tools.utils :refer [with-keys]]
-            [lipstick.components.spec :refer [selected-spec]]
+            [lipstick.components.spec :refer [spec]]
             [lipstick.components.schema :refer [schema]]
             [lipstick.components.source :refer [source]]
             [lipstick.components.auth :refer [auth-control]]
@@ -14,7 +14,7 @@
    [:div.controls
     [auth-control]
     [source]]
-   [selected-spec]])
+   [spec]])
 
 
 (defn about-page []

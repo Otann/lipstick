@@ -8,6 +8,7 @@
             [lipstick.components.schema :refer [schema]]
             [lipstick.components.forms :as forms]
             [re-frame.core :as rf]
+            [lipstick.rfnext.spec-ui :as spec-ui]
             [taoensso.timbre :as log]))
 
 (defn markdown->div
@@ -193,11 +194,11 @@
           [path-tag spec-id {:name "Without tags"} paths-data spec-data]))])])
 
 
-(defn selected-spec []
-  (let [spec    (rf/subscribe [:selected-spec])
-        loading (reaction (:loading? @spec))]
+(defn spec []
+  (let [spec (rf/subscribe [::spec-ui/spec])]
     (fn []
-      (if @loading
-        [:p "Spec is loading"]
-        [swagger-spec (:id @spec) (:data @spec)]))))
+      (log/debug "Spec:" @spec)
+      (if @spec
+        [swagger-spec (:idx @spec) (:spec @spec)]
+        [:p "Spec is loading"]))))
 

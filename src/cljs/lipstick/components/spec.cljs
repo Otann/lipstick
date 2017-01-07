@@ -9,6 +9,8 @@
             [lipstick.components.forms :as forms]
             [re-frame.core :as rf]
             [lipstick.dataflow.spec-ui :as spec-ui]
+            [lipstick.dataflow.sources :as sources]
+            [lipstick.dataflow.source-selector :as selector]
             [taoensso.timbre :as log]))
 
 (defn markdown->div
@@ -43,7 +45,7 @@
          (with-keys))]]])
 
 
-(defn parameter [spec-id tag-name {:keys [name in required description] :as parameter} full-spec]
+(defn parameter [tag-name {:keys [name in required description] :as parameter} full-spec]
   [:tr.parameter
    [:td.location.tag
     [:span.label.tooltipped.tooltipped-n
@@ -68,27 +70,27 @@
 
 (defn parameters
   "Parameters table for path"
-  [spec-id tag-name params-data full-spec]
+  [tag-name params-data full-spec]
   [:div.parameters
    [:div.title "Parameters"]
    [:table
     [:tbody
      (for [param-data params-data]
        ^{:key (:name param-data)}
-       [parameter spec-id tag-name param-data full-spec])]]])
+       [parameter tag-name param-data full-spec])]]])
 
 
 (defn path
   "Component that renders endpoint documentation"
-  [spec-id tag-name path-name method path-spec full-spec]
-  (let [collapsed (rf/subscribe [::spec-ui/path-collapsed spec-id tag-name method path-name])
+  [tag-name path-name method path-spec full-spec]
+  (let [collapsed (rf/subscribe [::spec-ui/path-collapsed tag-name method path-name])
         client (make-client method path-name path-spec full-spec)
         [params resps state callback] client]
     (fn []
       [collapsible {:collapsed @collapsed
                     :class "path"
                     :arrow-class "path-arrow"
-                    :on-toggle #(rf/dispatch [::spec-ui/toggle-path spec-id tag-name method path-name])}
+                    :on-toggle #(rf/dispatch [::spec-ui/toggle-path tag-name method path-name])}
        [:span.path-title
         [:code.method {:class method} method] " "
         [:span.path-name
@@ -100,7 +102,7 @@
         (if (:deprecated path-spec) [:p [:span.deprecated "This path is deprecated"]])
         [:div.description (:description path-spec)]
         (if (not-empty params)
-          [parameters spec-id tag-name params full-spec])
+          [parameters tag-name params full-spec])
         [:div.try-out
          [:button.btn.btn-sm {:disabled (not (= :ready @state))
                               :on-click callback} "Call enpoint"]
@@ -127,30 +129,30 @@
 
 (defn paths
   "Renders list of paths, like - GET /pet/findByStatus"
-  [spec-id tag-name paths-data full-spec]
+  [tag-name paths-data full-spec]
   [:div.paths
    (doall (for [{:keys [name method spec]} paths-data]
             ^{:key (str name method)}
-            [path spec-id tag-name name method spec full-spec]))])
+            [path tag-name name method spec full-spec]))])
 
 
 (defn path-tag
   "Renders multiple paths groupped by a tag"
-  [spec-id tag-data all-paths full-spec]
+  [tag-data all-paths full-spec]
   (let [tag-name  (:name tag-data)
-        collapsed (rf/subscribe [::spec-ui/tag-collapsed spec-id tag-name])]
+        collapsed (rf/subscribe [::spec-ui/tag-collapsed tag-name])]
     (fn []
       (let [paths-data (flatten-paths all-paths #(containsv? (:tags %) tag-name))]
         [collapsible {:collapsed @collapsed
                       :arrow-open "–"
                       :class "tag"
                       :arrow-class "tag-label-arrow"
-                      :on-toggle #(rf/dispatch [::spec-ui/toggle-tag spec-id tag-name])}
+                      :on-toggle #(rf/dispatch [::spec-ui/toggle-tag tag-name])}
          [:span.tag-label
           [:span.name tag-name]
           (when-let [description (:description tag-data)]
             [:span.description ": " description])]
-         [paths spec-id tag-name paths-data full-spec]]))))
+         [paths tag-name paths-data full-spec]]))))
 
 
 (defn spec-meta
@@ -176,30 +178,29 @@
 
 (defn swagger-spec
   "Renders full swagger spec"
-  [spec-id {:keys [info tags] paths-data :paths :as spec-data}]
+  [{:keys [info tags] paths-data :paths :as spec-data}]
   [:div.spec
    [:h1.spec-title (:title info)]
    [:div.description (markdown->div (:description info))]
    [spec-meta info]
    (if (empty? tags)
      [:div.no-tags
-      [paths spec-id nil (flatten-paths paths-data) spec-data]]
+      [paths nil (flatten-paths paths-data) spec-data]]
      [:div.tags
       (doall (for [tag-data tags]
                ^{:key (:name tag-data)}
-               [path-tag spec-id tag-data paths-data spec-data]))
+               [path-tag tag-data paths-data spec-data]))
       ; Append paths that has no tags assigned
       (let [paths-data (flatten-paths paths-data #(empty? (:tags %)))]
         (if (not-empty paths-data)
-          [path-tag spec-id {:name "Without tags"} paths-data spec-data]))])])
+          [path-tag {:name "Without tags"} paths-data spec-data]))])])
 
 
 (defn spec []
   (let [idx  (rf/subscribe [::selector/selected])
         spec (rf/subscribe [::sources/content] [idx])]
     (fn []
-      (log/debug "Spec:" @spec)
       (if @spec
-        [swagger-spec @idx @spec]
+        [swagger-spec @spec]
         [:p "Spec is loading"]))))
 

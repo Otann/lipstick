@@ -5,8 +5,10 @@
 
 (def default-db {::selected 0})
 
+(defn selected [db] (::selected db))
+
 (rf/reg-sub ::selected
-  (fn [db _] (::selected db)))
+  (fn [db _] (selected db)))
 
 (rf/reg-event-fx ::select
   ;[debug]

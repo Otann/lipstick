@@ -32,7 +32,8 @@
   ;[debug]
   (fn [{:keys [db]} [_ idx]]
     (let [{:keys [content loading? src]} (get-in db [::files idx])
-          load? (or content (not loading?))]
+          load? (and (not content)
+                     (not loading?))]
       (if load?
         {:db (assoc-in db [::files idx :loading?] true)
          :load-file {:url src
@@ -47,7 +48,7 @@
     spec-data))
 
 (rf/reg-event-db ::set-content
-  [debug]
+  ;[debug]
   (fn [db [_ idx body]]
     (let [src (get-in db [::files idx :src])]
       (-> db

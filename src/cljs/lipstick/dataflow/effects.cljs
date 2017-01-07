@@ -9,7 +9,7 @@
 
 (rf/reg-fx :load-file
   (fn load-file [{:keys [url on-success on-failure] :as req}]
-    (log/debug "Loading file for" req)
+    (log/debug "Loading file from" url)
     (if req
       (go (let [{:keys [status body]} (<! (http/get url))]
             (if (< status 300)

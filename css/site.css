@@ -1,69 +1,63 @@
-@import 'https://code.cdn.mozilla.net/fonts/fira.css';
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,700|Fira+Sans:400,400i,700,700i');
 @import "https://cdn.jsdelivr.net/primer/3.0.1/primer.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css";
 /* the tree node's style */
 .collapsible {
   overflow-y: hidden;
+  padding-left: 1em;
 }
-.collapsible-view_item {
+.collapsible-label {
+  position: relative;
   cursor: pointer;
-  /* immediate child of .collapsible-view, for styling convenience */
 }
-/* style for the children nodes container */
-.collapsible-view_children,
-.field {
-  margin-left: 14px;
-}
-.collapsible-view_children-collapsed {
+.collapsible-children-collapsed {
   height: 0;
 }
-.collapsible-view_arrow {
+.collapsible-arrow {
+  position: absolute;
+  bottom: 0;
+  left: -1em;
+  width: 1em;
   cursor: pointer;
-  margin-right: 6px;
   display: inline-block;
-}
-.collapsible.no-arrow > .collapsible-view_item > .collapsible-view_arrow {
-  display: none;
+  text-align: center;
 }
 .schema {
-  font-size: 14px;
-  font-family: 'Fira Mono', monospace;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   color: #444;
 }
-.schema .optional {
-  color: #5f7892;
+.schema .field {
+  margin-left: 14px;
+}
+.schema .optional .field-name {
+  color: #4078c0;
+}
+.schema .required .field-name {
+  color: #c9510c;
+  font-weight: bold;
 }
 .schema .required .star {
   margin-right: .5em;
-  position: relative;
-  top: .1rem;
-  line-height: .1rem;
-  font-size: 1.1rem;
   font-weight: bold;
-  color: #bd2c00;
-}
-.schema .field-label .field-name {
-  color: #3e3ee2;
-}
-.schema .field-label.unknown {
-  color: red;
-  font-weight: bold;
+  color: #c9510c;
+  cursor: help;
 }
 .schema .schema-name {
-  color: #733595;
+  color: #6e5494;
   font-weight: bold;
 }
-.schema .field .description {
-  color: #96cb8d;
+.schema .description {
+  color: #cdcdcd;
 }
 .spec > .description {
-  padding: .5em 0 1em 0;
+  padding: .5rem 0 1rem 0;
 }
 .spec > .meta {
-  font-size: .85em;
-  margin-bottom: 1em;
+  font-size: .85rem;
+  margin-bottom: 1rem;
 }
 .spec > .meta code {
-  font-size: 1em;
+  font-size: .85rem;
 }
 .spec > .meta ul {
   list-style-type: none;
@@ -72,16 +66,24 @@
   font-weight: bold;
 }
 .tags {
-  padding-bottom: .5em;
+  padding-bottom: .5rem;
 }
 .tag {
-  margin-bottom: .75em;
+  margin-bottom: .75rem;
+}
+.tag .collapsible-label:hover {
+  background-color: #fbfbe7;
+  border-radius: 5px;
+}
+.tag .tag-label-arrow {
+  font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1.4rem;
+  left: -1.2rem;
 }
 .tag .tag-label {
-  font-size: 1.35em;
+  font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1.4rem;
   font-style: italic;
-  display: inline-block;
-  padding-bottom: .3em;
 }
 .tag .tag-label .name {
   font-weight: bold;
@@ -89,57 +91,80 @@
 .tag .tag-label > .description {
   color: #555;
 }
-.tag .collapsible-view_arrow {
-  font-family: 'Fira Mono', monospace;
-}
-.tag > .collapsible-view_item > .collapsible-view_arrow {
-  font-size: 1.35em;
-  font-weight: bold;
-}
 .path {
-  padding-bottom: .5em;
+  padding-bottom: .3rem;
 }
-.path .path-title .method {
-  border: solid 1px #ddd;
+.path .path-arrow,
+.path .path-name,
+.path code.method {
+  font-family: 'Fira Mono', Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.path .path-title .summary {
+  margin-left: .5em;
+  color: #ccc;
+}
+.path code.method {
+  border: solid 1px #ededed;
   background-color: #fafafa;
-  font-size: .8em;
+  font-size: .8rem;
   font-weight: bold;
   text-transform: uppercase;
   text-align: center;
   display: inline-block;
-  width: 4.5em;
-  padding: .4em;
-  border-radius: .3em;
+  width: 4rem;
+  padding: .2rem 0 .1rem 0;
+  border-radius: .3rem;
 }
-.path .path-title .method.put {
+.path code.method.put {
   color: #c9510c;
 }
-.path .path-title .method.get {
+.path code.method.get {
   color: #4078c0;
 }
-.path .path-title .method.post {
+.path code.method.post {
   color: #6cc644;
 }
-.path .path-title .method.head {
+.path code.method.head {
   color: #6e5494;
 }
-.path .path-title .method.delete {
+.path code.method.delete {
   color: #bd2c00;
 }
-.path .path-title .path-name {
-  font-family: 'Fira Mono', monospace;
+.path .path-name {
+  font-feature-settings: "liga" 0;
   font-weight: bold;
   color: #333;
 }
-.path .content {
-  padding-left: 4.5em;
-  padding-bottom: 1.5em;
-  padding-top: .5em;
+.path .path-name.deprecated {
+  text-decoration: line-through;
 }
-.path .content .description {
-  font-size: .9em;
-  font-style: italic;
-  color: #333333;
+.path .content {
+  padding-left: 2.5rem;
+  padding-bottom: 1.5rem;
+  padding-top: .5rem;
+}
+.path .content .deprecated {
+  color: white;
+  font-size: .85em;
+  font-weight: bold;
+  background-color: #bd2c00;
+  padding: .1rem .3rem;
+  border-radius: .2em;
+}
+.path .parameters tr {
+  border-bottom: 1px solid #fafafa;
+}
+.path .parameters tr:last-of-type {
+  border: none;
+}
+.path .parameters,
+.path .responses {
+  margin-bottom: .7rem;
+}
+.path .parameters .title,
+.path .responses .title {
+  font-size: .85rem;
+  margin-bottom: .3rem;
 }
 .path .parameters td,
 .path .responses td {
@@ -156,16 +181,17 @@
 .path .parameters .tag,
 .path .responses .tag {
   text-align: center;
-  font-family: 'Fira Mono', monospace;
+  font-family: 'Fira Mono', Consolas, "Liberation Mono", Menlo, Courier, monospace;
   width: 3rem;
 }
 .path .parameters .tag .label,
 .path .responses .tag .label {
+  cursor: help;
   display: inline-block;
   color: #444;
   background-color: #eee;
-  padding: 1px 5px;
-  border-radius: .2em;
+  padding: .1rem .3rem .05rem .3rem;
+  border-radius: .2rem;
   font-size: .7em;
   font-weight: bold;
 }
@@ -184,25 +210,47 @@
   color: white;
   background-color: #bd2c00;
 }
-.path .parameter > .required {
+.path .format code,
+.path .format .schema {
+  font-family: 'Fira Mono', Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-feature-settings: "liga" 0;
+  font-size: .85rem;
+}
+.path .format .schema {
+  padding-top: .2rem;
+}
+.path .parameter > .is-required {
+  cursor: help;
   font-weight: bold;
-  position: relative;
-  top: .05em;
-  font-size: 1.3em;
+  font-family: 'Fira Mono', Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.path .parameter > .is-required .required {
   color: #bd2c00;
 }
+.path .parameter > .is-required .optional {
+  color: #fafafa;
+}
+.path .parameter input[type="text"] {
+  border: 1px solid #f5f5f5;
+  font-family: 'Fira Mono', Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-feature-settings: "liga" 0;
+}
+.path .try-out .explain {
+  margin-left: 1rem;
+  font-size: .8rem;
+  color: #555;
+}
 .definitions .title {
-  margin-bottom: .5em;
+  margin-bottom: .5rem;
 }
 .source {
-  text-align: center;
-  width: 100%;
-  margin-bottom: 1rem;
+  width: 15rem;
 }
-.source form {
-  max-width: 300px;
-  width: 80%;
-  display: inline-block;
+.source select {
+  width: 100%;
+}
+.auth {
+  margin-right: .5rem;
 }
 @font-face {
   font-family: octicons-link;
@@ -211,10 +259,10 @@
 .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
   color: #333;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
-  line-height: 1.5;
   word-wrap: break-word;
 }
 .markdown-body .pl-c {
@@ -328,7 +376,7 @@
 .markdown-body code,
 .markdown-body kbd,
 .markdown-body pre {
-  font-family: monospace, monospace;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 1em;
 }
 .markdown-body hr {
@@ -767,11 +815,27 @@
 body {
   padding: 1em;
   font-size: 16px;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 code {
-  font-family: 'Fira Mono', monospace;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
+a.lipstick-logo,
 a.lipstick-logo:hover {
   text-decoration: none;
+}
+.container {
+  position: relative;
+}
+.spec-title {
+  font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+.controls {
+  position: absolute;
+  right: .2rem;
+  top: .2rem;
+  margin-bottom: 1rem;
+}
+.controls * {
+  display: inline-block;
 }
